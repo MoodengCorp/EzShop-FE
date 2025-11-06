@@ -1,5 +1,13 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <h1>Index</h1>
+    <>
+      <h1>메인 페이지 구현 전까지 라우팅 가능한 페이지 목록 나열</h1>
+      <div className="flex flex-col">
+        <Link href="/auth/Signup">회원가입</Link>
+        <Link href="/auth/Login">로그인</Link>
+      </div>
+    </>
   )
 }
