@@ -12,7 +12,7 @@ export default function Signup(){
       <TabsContent value="customer" className="flex justify-center">
         <CustomerSignupForm/>
       </TabsContent>
-      <TabsContent value="seller">
+      <TabsContent value="seller" className="flex justify-center">
         <SellerSignupForm/>
       </TabsContent>
     </Tabs>
