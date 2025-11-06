@@ -46,7 +46,7 @@ export default function Footer() {
                 ['통신판매업 : 제 2020-경기안양-12345호'],
                 ['주소 : 경기도 안양시 귀인로 123, 12층', '대표이사 : 손병찬'],
                 ['채용문의 : moodeng@moodengcorp.com'],
-                ['팩스: 070 - 1234 - 1234']
+                ['팩스: 070 - 1234 - 1234'],
               ]}
             />
           </div>
@@ -58,7 +58,8 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 w-dvw text-center text-xs text-muted-foreground py-8">
+      <div
+        className="bg-gray-100 w-screen min-w-[1050px] text-center text-xs text-muted-foreground py-8">
         EZ-Shop에서 판매되는 상품 중에는 moodeng에 입점한 개별 판매자가 판매하는 마켓플레이스(오픈마켓) 상품이 포함되어 있습니다.
         <br />
         마켓플레이스(오픈마켓) 상품의 경우 moodeng은 통신판매중개자로서 통신판매의 당사자가 아닙니다. moodeng은 해당 상품의 주문, 품질, 교환/환불 등 의무와 책임을 부담하지 않습니다.
