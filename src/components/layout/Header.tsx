@@ -7,9 +7,9 @@ export default function Header(){
   return (
     <header className="w-[1050px] overflow-hidden mx-auto my-0">
       <div className="flex items-center justify-end gap-2 pt-4 mt-4 text-xs text-muted-foreground">
-        <Link href="/signup" className="">회원가입</Link>
+        <Link href="/auth/Signup" className="">회원가입</Link>
         <Separator orientation="vertical" className="h-3"></Separator>
-        <Link href="/login">로그인</Link>
+        <Link href="/auth/Login">로그인</Link>
       </div>
       <div className="flex justify-between items-center h-16">
         <Link href={"/"}>
@@ -21,7 +21,7 @@ export default function Header(){
             <Search />
           </button>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-[150px] justify-end">
           <ShoppingCart/>
           <Heart />
         </div>
