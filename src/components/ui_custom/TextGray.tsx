@@ -1,11 +1,14 @@
 import { Separator } from '@/components/ui/separator'
 
-export function TextGray({descriptions} : {descriptions: string[][]}) {
+export function TextGray({ descriptions }: { descriptions: string[][] }) {
   return (
     <div>
       {descriptions.map((desc, index) => {
         return (
-          <div key={index} className="flex text-xs gap-1 items-center text-muted-foreground">
+          <div
+            key={index}
+            className="flex items-center gap-1 text-xs text-muted-foreground"
+          >
             {desc[0]}
             {desc.length === 2 && (
               <>
