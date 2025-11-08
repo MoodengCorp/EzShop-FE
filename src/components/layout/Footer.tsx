@@ -51,10 +51,10 @@ export default function Footer() {
             />
           </div>
           <div className="flex gap-2">
-            <Image className="cursor-pointer" width="30" height="30" src="/ico_instagram.png" alt="asdasd" />
-            <Image className="cursor-pointer" width="30" height="30" src="/ico_fb.png" alt="asdasd" />
-            <Image className="cursor-pointer" width="30" height="30" src="/ico_blog.png" alt="asdasd" />
-            <Image className="cursor-pointer" width="30" height="30" src="/ico_youtube.png" alt="asdasd" />
+            <Image className="cursor-pointer" width="30" height="30" src="/ico_instagram.png" alt="instagram" />
+            <Image className="cursor-pointer" width="30" height="30" src="/ico_fb.png" alt="facebook" />
+            <Image className="cursor-pointer" width="30" height="30" src="/ico_blog.png" alt="blog" />
+            <Image className="cursor-pointer" width="30" height="30" src="/ico_youtube.png" alt="youtube" />
           </div>
         </div>
       </div>

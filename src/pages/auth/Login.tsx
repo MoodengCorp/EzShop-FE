@@ -41,8 +41,8 @@ export default function Login() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Button onClick={handleLoginClick} className="h-10 w-80 bg-blue-300 py-6">로그인</Button>
-          <Button className="h-10 w-80 border-[1px] border-blue-300 bg-white py-6 text-blue-300">
+          <Button onClick={handleLoginClick} className="h-10 w-80 bg-deepBlue py-6 hover:bg-muted-foreground hover:bg-deepBlue">로그인</Button>
+          <Button className="h-10 w-80 border-[1px] border-deepBlue bg-white py-6 text-blue-300 hover:bg-white">
             <Link href="/auth/Signup">회원가입</Link>
           </Button>
         </div>
