@@ -51,6 +51,7 @@ const config: Config = {
         mainBlue: '#2878F5', // 메인
         vividBlue: '#3A8DFD', // 포인트/gradient
         deepBlue: '#0082CD', // hover, 진한 포인트
+        borderGray: '#DFE4EB',
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
@@ -60,15 +61,16 @@ const config: Config = {
         },
       },
       fontSize: {
-        extraSmall: '2.5rem',
-        small: '3rem',
-        main: '4.2rem',
+        extraSmall: '0.5rem',
+        small: '0.9rem',
+        main: '1rem',
         subTitle: '4rem',
         title: '4.8rem',
       },
       fontWeight: {
         DEFAULT: '400',
-        bold: '600',
+        semibold: '600',
+        bold: '700',
       },
       borderRadius: {
         lg: 'var(--radius)',

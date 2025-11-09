@@ -1,3 +1,5 @@
+import CarouselItem from '@/components/ui_custom/CarouselItem'
+import { CarouselItems } from '@/mock/CarouselItems'
 import Link from 'next/link'
 
 export default function Home() {
@@ -7,6 +9,10 @@ export default function Home() {
       <div className="flex flex-col">
         <Link href="/auth/Signup">회원가입</Link>
         <Link href="/auth/Login">로그인</Link>
+
+        <div className="p-4">
+          <CarouselItem item={CarouselItems[0]} />
+        </div>
       </div>
     </>
   )
