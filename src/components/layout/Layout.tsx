@@ -8,9 +8,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen gap-24">
+    <div className="flex flex-col min-h-screen gap-12 ">
       <Header/>
-      <main className="mx-auto w-[1050px]">
+      <main className="flex justify-center mx-auto w-full overflow-hidden bg-[#F2F5F8] ">
         {children}
       </main>
       <Footer />

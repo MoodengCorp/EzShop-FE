@@ -5,7 +5,7 @@ import { CircleUserRound, Component, Info, LayoutList } from 'lucide-react'
 export default function Sidebar() {
   return (
     <>
-      <div className="flex flex-col rounded-sm border-[1px] border-gray-200 px-4 py-4 shadow">
+      <div className="flex flex-col w-48 h-56 rounded-2xl bg-white border-[1px] border-gray-200 px-4 py-4 shadow">
         <div className="flex items-center gap-4 pb-4">
           <CircleUserRound className="size-8" />
           <div>

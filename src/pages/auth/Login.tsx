@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { TextGray } from '@/components/ui_custom/TextGray'
 import { useState } from 'react'
-import { login } from '@/api/auth'
+import { login } from '@/lib/api/auth'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 

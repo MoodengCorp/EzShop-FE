@@ -7,11 +7,9 @@ type MyPageLayoutProps = {
 
 export default function MyPageLayout({ children }: MyPageLayoutProps) {
   return (
-    <div className="flex w-[1050px] gap-6">
+    <div className="flex w-[1050px] gap-6 bg-[#F2F5F8] py-12 overflow-hidden">
       <Sidebar />
-      <div className="flex-1">
-        {children}
-      </div>
+      <div className="w-full">{children}</div>
     </div>
   )
 }
