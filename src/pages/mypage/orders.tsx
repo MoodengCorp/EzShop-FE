@@ -82,11 +82,12 @@ export default function OrdersPage() {
           </div>
         </div>
         {pagination.currentData.length === 0 ? (
+          // todo: 주문 내역 없는 경우의 컴포넌트 구현 필요
           <div>주문 내역이 없습니다.</div>
         ) : (
           <>
             {pagination.currentData.map((orderItem) => (
-              <OrderItem key={orderItem.id} item={orderItem} />
+              <OrderItem key={orderItem.id} item={orderItem} viewDateAndOrderNum={true} />
             ))}
           </>
         )}
