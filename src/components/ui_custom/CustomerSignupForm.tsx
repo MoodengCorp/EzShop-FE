@@ -156,7 +156,7 @@ export function CustomerSignupForm() {
         <Field className="flex justify-center" orientation="horizontal">
           <Button
             type="submit"
-            className="w-72 h-14 text-lg rounded-s"
+            className="w-72 h-14 text-lg rounded-s bg-deepBlue hover:bg-deepBlue"
             disabled={isLoading}
           >
             {isLoading ? '처리중...' : '가입하기'}
