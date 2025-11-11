@@ -1,8 +1,10 @@
+import type { Product } from '@/types'
+
 // 다른 이미지 url 오류 나서, 해당 이미지 url로 공통으로 임시 처리
 const img =
   'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg'
 
-export const Products = [
+export const MOCK_PRODUCTS: Product[] = [
   { id: 1, name: '[사미헌] 갈비탕', price: 11700, thumbnailFile: img },
   {
     id: 2,

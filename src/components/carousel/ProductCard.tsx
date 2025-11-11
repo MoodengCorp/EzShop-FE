@@ -2,26 +2,22 @@ import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
+import type { Product } from '@/types'
 
-type ProductProps = {
-  item: {
-    id: number
-    name: string
-    price: number
-    thumbnailFile: string
-  }
+type Props = {
+  item: Product
 }
 
-export default function ProductCard({ item }: ProductProps) {
+export default function ProductCard({ item }: Props) {
   return (
     <Card className="w-full rounded-none border-0 p-0 shadow-none">
       <CardContent className="p-0">
-        <div className="relative aspect-[10/13] w-full overflow-hidden">
+        <div className="relative aspect-[10/13] w-full overflow-hidden rounded-[4px]">
           <Image
             src={item.thumbnailFile}
             alt={item.name}
             fill
-            className="absolute inset-0 m-auto block max-h-full min-h-full min-w-full max-w-full rounded-[4px] object-cover transition-transform duration-200 ease-out hover:scale-[1.03]"
+            className="absolute inset-0 m-auto block max-h-full min-h-full min-w-full max-w-full object-cover transition-transform duration-200 ease-out hover:scale-[1.03]"
             sizes="(max-width: 768px) 240px, 360px"
           />
         </div>

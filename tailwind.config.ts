@@ -64,12 +64,12 @@ const config: Config = {
         extraSmall: '0.5rem',
         small: '0.9rem',
         main: '1rem',
-        subTitle: '4rem',
-        title: '4.8rem',
+        subTitle: '2rem',
+        title: '3rem',
       },
       fontWeight: {
         DEFAULT: '400',
-        semibold: '600',
+        semibold: '500',
         bold: '700',
       },
       borderRadius: {
