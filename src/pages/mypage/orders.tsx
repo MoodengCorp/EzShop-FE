@@ -19,7 +19,7 @@ import { usePagination } from '@/hooks/usePagination'
 import DefaultPagination from '@/components/ui_custom/DefaultPagination'
 import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
 import { toast } from 'sonner'
-import {mockOrders} from '@/mock/OrderData';
+import {mockOrders} from '@/mocks/OrderData';
 
 export default function OrdersPage() {
   const [period, setPeriod] = useState<OrderPeriod>('3개월')

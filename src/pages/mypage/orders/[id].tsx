@@ -11,7 +11,7 @@ import { SelectDateFilter } from '@/pages/mypage/orders'
 import { fetchOrderDetail, fetchOrders } from '@/lib/api/orders'
 import Image from 'next/image'
 import OrderItem from '@/components/ui_custom/OrderItem'
-import { mockOrders } from '@/mock/OrderData'
+import { mockOrders } from '@/mocks/OrderData'
 import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
 
 export default function OrderDetailPage() {
