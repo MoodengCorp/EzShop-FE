@@ -10,7 +10,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="flex min-h-screen flex-col gap-24">
       <Header />
-      <main className="mx-auto w-[1050px]">{children}</main>
+      <main className="mx-auto w-full">{children}</main>
       <Footer />
     </div>
   )

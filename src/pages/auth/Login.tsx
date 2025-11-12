@@ -1,24 +1,31 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { TextGray } from '@/components/ui_custom/TextGray'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { login } from '@/lib/api/auth'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useAuthStore } from '@/store/authStore'
+import { useAuth } from '@/hooks/useAuth'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const route = useRouter();
+  const { login, isLoggingIn, loginError, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if(isAuthenticated){
+      router.push('/');
+    }
+  }, [isAuthenticated, router])
 
   const handleLoginClick = async () => {
     if(email.trim() === "") return;
     if(password.trim() === "") return;
-    const isSuccess = await login({email, password});
-    if (isSuccess) {
-      await route.push("/");
-    }
-  }
+    login({ email, password });
+  };
 
   return (
     <>
@@ -26,11 +33,14 @@ export default function Login() {
         <h2 className="text-lg font-bold">로그인</h2>
         <div className="mb-2 flex w-80 flex-col gap-4">
           <Input
+            id={email}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="py-6"
             type="email"
-            placeholder="example@abc.com" />
+            placeholder="example@abc.com"
+            disabled={isLoggingIn}
+          />
           <Input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -38,6 +48,11 @@ export default function Login() {
           <div className="flex w-full items-end justify-end">
             <TextGray descriptions={[['아이디 찾기', '비밀번호 찾기']]} />
           </div>
+          {loginError && (
+            <Alert variant="destructive">
+              <AlertDescription>{loginError.message}</AlertDescription>
+            </Alert>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
