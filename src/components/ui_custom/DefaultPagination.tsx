@@ -16,11 +16,11 @@ type DefaultPaginationProps = {
 }
 
 export default function DefaultPagination({
-                                            currentPage,
-                                            totalPages,
-                                            onPageChange,
-                                            maxVisiblePages = 5,
-                                          }: DefaultPaginationProps) {
+  currentPage,
+  totalPages,
+  onPageChange,
+  maxVisiblePages = 5,
+}: DefaultPaginationProps) {
   // 표시할 페이지 번호 계산
   const getPageNumbers = (): (number | 'ellipsis')[] => {
     if (totalPages <= maxVisiblePages) {

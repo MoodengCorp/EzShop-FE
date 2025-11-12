@@ -1,45 +1,109 @@
-import { ApiResponse, Order, OrdersData } from '@/types/api'
-import { apiClient } from '@/lib/api/client'
+// src/lib/api/orders.ts
+import { apiClient } from '@/lib/apiClient';
+import {
+  Order,
+  OrderDetail,
+  OrderListResponse,
+  OrderDetailResponse,
+  OrderPeriod, ApiResponse,
+} from '@/types/order'
 
-export async function fetchOrders(period: string): Promise<ApiResponse<OrdersData>> {
+// 주문 목록 조회 (period만 받아서 전체 데이터 반환)
+export async function fetchOrders(period: OrderPeriod) {
   try {
-    // 원래 토큰 꺼내와서 넣어야 함
-    // const token = typeof window !== 'undefined'
-    //   ? localStorage.getItem('accessToken')
-    //   : null
+    const endpoint = `/orders?period=${encodeURIComponent(period)}`;
 
-    return await apiClient<ApiResponse<OrdersData>>(
-      `api/orders?period=${period}`,
-      {
-        method: 'GET',
-        token: undefined,
-      },
-    )
-  } catch (error) {
+    const response = await apiClient.get<OrderListResponse>(endpoint);
+
+    if (response.success && response.data) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        error: response.error || {
+          code: 'UNKNOWN_ERROR',
+          message: '주문 목록을 불러오는데 실패했습니다.',
+        },
+      };
+    }
+  } catch (error: any) {
     return {
       success: false,
       error: {
-        code: '400',
-        message: '뭔가 에러가 났다.',
+        code: error.statusCode?.toString() || 'NETWORK_ERROR',
+        message: error.message || '주문 목록을 불러오는데 실패했습니다.',
       },
-    }
+    };
   }
 }
 
 // 주문 상세 조회
-export async function fetchOrderDetail(orderId: string): Promise<ApiResponse<Order>> {
+export async function fetchOrderDetail(orderId: string) {
   try {
-    return await apiClient<ApiResponse<Order>>(
-      `/api/orders/${orderId}`,
-      { method: 'GET', token: undefined },
-    )
-  } catch (error){
+    const response = await apiClient.get<OrderDetailResponse>(
+      `/orders/${orderId}`
+    );
+
+    if (response.success && response.data) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        error: response.error || {
+          code: 'UNKNOWN_ERROR',
+          message: '주문 상세 정보를 불러오는데 실패했습니다.',
+        },
+      };
+    }
+  } catch (error: any) {
     return {
       success: false,
       error: {
-        code: 'FETCH_ERROR',
-        message: "주문 상세 정보를 불러오는데 실패했습니다."
-      }
+        code: error.statusCode?.toString() || 'NETWORK_ERROR',
+        message: error.message || '주문 상세 정보를 불러오는데 실패했습니다.',
+      },
+    };
+  }
+}
+
+// 주문 생성
+export async function createOrder(orderData: {
+  cartItemIds: number[];
+  deliveryRequest?: string;
+}) {
+  try {
+    const response = await apiClient.post<ApiResponse<Order>>(
+      '/orders',
+      orderData
+    );
+
+    if (response.success && response.data) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        error: response.error || {
+          code: 'UNKNOWN_ERROR',
+          message: '주문 생성에 실패했습니다.',
+        },
+      };
     }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: {
+        code: error.statusCode?.toString() || 'NETWORK_ERROR',
+        message: error.message || '주문 생성에 실패했습니다.',
+      },
+    };
   }
 }

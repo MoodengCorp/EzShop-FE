@@ -14,6 +14,12 @@ const fields = [
     type: 'email',
   },
   {
+    fieldName: '이름',
+    name: 'name',
+    placeholder: '이름을 입력해주세요',
+    type: 'text',
+  },
+  {
     fieldName: '비밀번호',
     name: 'password',
     placeholder: '비밀번호를 입력해주세요',
@@ -37,6 +43,7 @@ export function CustomerSignupForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
+    name: '',
     password: '',
     passwordConfirm: '',
     address: '',
@@ -66,7 +73,7 @@ export function CustomerSignupForm() {
     setError('')
 
     // 유효성 검사
-    if (!formData.email || !formData.password || !formData.passwordConfirm || !formData.address || !formData.phone) {
+    if (!formData.email || !formData.name || !formData.password || !formData.passwordConfirm || !formData.address || !formData.phone) {
       setError('모든 필수 항목을 입력해주세요.')
       return
     }
@@ -86,9 +93,11 @@ export function CustomerSignupForm() {
         },
         body: JSON.stringify({
           email: formData.email,
+          name: formData.name,
           password: formData.password,
           address: formData.address,
           phone: formData.phone,
+          role: "SELLER"
         }),
       })
 
