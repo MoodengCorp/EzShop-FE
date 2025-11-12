@@ -56,6 +56,6 @@ export default function Header() {
           <Heart />
         </div>
       </div>
-    </header>
+    </header >
   )
 }

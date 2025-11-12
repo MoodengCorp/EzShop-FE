@@ -14,7 +14,7 @@ export default function ProductCard({ item }: Props) {
       <CardContent className="p-0">
         <div className="relative aspect-[10/13] w-full overflow-hidden rounded-[4px]">
           <Image
-            src={item.thumbnailFile}
+            src={item.thumbnailUrl}
             alt={item.name}
             fill
             className="absolute inset-0 m-auto block max-h-full min-h-full min-w-full max-w-full object-cover transition-transform duration-200 ease-out hover:scale-[1.03]"
