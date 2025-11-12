@@ -1,8 +1,10 @@
-// pages/dev/cart-item-demo.tsx
 import { useState } from 'react'
 import CartItem from '@/components/cart/CartItem'
 import type { Item } from '@/types/cart'
 import { MOCK_PRODUCTS } from '@/mocks/products'
+import PaymentSummary from '@/components/ui_custom/PaymentSummary'
+import AddressCard from '@/components/ui_custom/AddressCard'
+import OrderCTA from '@/components/ui_custom/OrderCTA'
 
 const toItem = (p: (typeof MOCK_PRODUCTS)[number]): Item => ({
     id: p.id,
@@ -23,7 +25,6 @@ export default function CartItemDemoPage() {
         setItem((it) => (it.id === id ? { ...it, quantity: Math.max(1, next) } : it))
 
     const onRemove = (id: number) => {
-        // 프리뷰용: 삭제 시 수량 1 & 체크 해제만
         setItem((it) => (it.id === id ? { ...it, quantity: 1, checked: false } : it))
         alert('프리뷰: 삭제 클릭됨')
     }
@@ -37,6 +38,17 @@ export default function CartItemDemoPage() {
                 onChangeQty={onChangeQty}
                 onRemove={onRemove}
             />
+
+            {/* 임시 확인용 */}
+            <div className='flex flex-col gap-12'>
+
+                <AddressCard />
+
+                <PaymentSummary itemsSubtotal={9980} />
+
+                <OrderCTA amount={1000} disabled={false} />
+
+            </div>
         </div>
     )
 }
