@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col gap-24">
+    <div className="flex min-h-screen flex-col">
       <Header />
       <main className="mx-auto w-full">{children}</main>
       <Footer />

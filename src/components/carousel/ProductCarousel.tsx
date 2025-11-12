@@ -10,22 +10,14 @@ import ProductAllCard from './ProductAllCard'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 
-type ProductProps = {
-  id: number
-  name: string
-  price: number
-  thumbnailFile: string
-}
+import type { Product } from '@/types/product'
 
-interface ProductCarouselProps {
-  products: ProductProps[]
+interface Props {
+  products: Product[]
   viewAllHref: string
 }
 
-export default function ProductCarousel({
-  products,
-  viewAllHref,
-}: ProductCarouselProps) {
+export default function ProductCarousel({ products, viewAllHref }: Props) {
   const [api, setApi] = useState<CarouselApi>()
   const [snap, setSnap] = useState(0)
 
@@ -88,7 +80,7 @@ export default function ProductCarousel({
         }}
         plugins={[wheelPlugin]}
       >
-        <CarouselContent className="-mx-[9px] touch-pan-x">
+        <CarouselContent className="-ml-[9px] touch-pan-x">
           {products.map((item) => (
             <CarouselItem key={item.id} className="basis-1/4 px-[9px]">
               <ProductCard item={item} />
