@@ -66,9 +66,8 @@ export const useAuthStore = create<AuthState>()(
           const decoded = jwtDecode<DecodedToken>(accessToken);
           const currentTime = Date.now() / 1000;
 
-          // 토큰이 만료되었는지 확인 (5초 버퍼 추가)
-          console.log(decoded.exp);
-          return decoded.exp > currentTime + 5;
+          // 토큰이 만료되었는지 확인 (1초 버퍼 추가)
+          return decoded.exp > currentTime + 1;
         } catch (error) {
           console.error('Token decode error:', error);
           return false;

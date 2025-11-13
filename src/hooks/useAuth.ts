@@ -25,7 +25,7 @@ export const useAuth = () => {
   } = useQuery({
     queryKey: ['currentName'],
     queryFn: () => apiClient.get<User>('/user/info'),
-    enabled: isAuthenticated,
+    enabled: false,
     staleTime: 10 * 60 * 1000, // 10분
   });
 
@@ -34,7 +34,6 @@ export const useAuth = () => {
     mutationFn: async (credentials: LoginRequest) => {
       return apiClient.post<ApiResponse<LoginResponse>>('/user/login', credentials, {
         requiresAuth: false,
-        credentials: "include"
       });
     },
     onSuccess: (response) => {

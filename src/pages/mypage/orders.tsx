@@ -1,3 +1,5 @@
+'use client';
+
 // pages/mypage/orders.tsx
 import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
@@ -20,6 +22,7 @@ import DefaultPagination from '@/components/ui_custom/DefaultPagination'
 import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
 import { toast } from 'sonner'
 import {mockOrders} from '@/mocks/OrderData';
+import { useAuth } from '@/hooks/useAuth'
 
 export default function OrdersPage() {
   const [period, setPeriod] = useState<OrderPeriod>('3개월')
@@ -27,6 +30,11 @@ export default function OrdersPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const {refetchUser} = useAuth();
+
+  useEffect(() => {
+    refetchUser();
+  }, []);
 
   const filteredOrders = orders.filter((order) =>
     order.items.some((item) =>
