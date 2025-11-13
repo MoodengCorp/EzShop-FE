@@ -1,5 +1,6 @@
 // src/lib/apiClient.ts
 import { ApiError, ErrorResponse, RefreshResponse } from '@/types/auth';
+import Cookies from 'js-cookie';
 import { ApiResponse } from '@/types/order'; // 또는 공통 타입 위치
 import { useAuthStore } from '@/store/authStore';
 
@@ -43,6 +44,10 @@ class ApiClient {
     }
 
     refreshPromise = (async () => {
+      const refreshToken = Cookies.get('refresh_token');
+      if (!refreshToken) {
+        throw new ApiError('리프레시 토큰이 없습니다.', 401);
+      }
       try {
         console.log('🔄 토큰 갱신 요청 전송 (/user/reissue)');
 
@@ -117,8 +122,10 @@ class ApiClient {
     try {
       let response = await fetch(`${this.baseURL}${endpoint}`, requestConfig);
 
+      // 401 에러 처리 (토큰 만료)
       if (response.status === 401 && requiresAuth) {
         if (isRefreshing) {
+          // 이미 토큰 갱신 중이면 대기열에 추가
           const token = await new Promise<string>((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           });
@@ -135,9 +142,11 @@ class ApiClient {
             credentials: 'include',
           });
         } else {
+          // 토큰 갱신 시작
           isRefreshing = true;
           try {
             const newToken = await this.refreshAccessToken();
+            // 대기 중인 요청들 처리
             processQueue(null, newToken);
 
             const retryHeaders = {
@@ -160,6 +169,7 @@ class ApiClient {
         }
       }
 
+      // 응답이 성공적이지 않으면 에러 처리
       if (!response.ok) {
         const errorData: ErrorResponse = await response.json().catch(() => ({
           statusCode: response.status,

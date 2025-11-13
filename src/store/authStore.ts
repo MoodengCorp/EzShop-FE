@@ -50,11 +50,9 @@ export const useAuthStore = create<AuthState>()(
         set({
           accessToken: null,
           name: null,
+          role: null,
           isAuthenticated: false,
         });
-
-        // 리프레시 토큰 쿠키 삭제
-        Cookies.remove('refreshToken', { path: '/' });
       },
 
       isTokenValid: () => {

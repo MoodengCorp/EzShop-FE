@@ -11,7 +11,7 @@ import Link from 'next/link'
 type dropdownElement = {
   dropdownItemName: string
   dropdownItemLink: string
-
+  onClickAction?: () => void
 }
 
 type defaultDropDownProps = {
@@ -31,7 +31,11 @@ export default function DefaultDropdown({
           {/*<DropdownMenuLabel>{title}</DropdownMenuLabel>*/}
           {/*<DropdownMenuSeparator />*/}
           {dropdownItemElements.map((item) => (
-              <Link key={item.dropdownItemName} href={item.dropdownItemLink}>
+              <Link
+                key={item.dropdownItemName}
+                href={item.dropdownItemLink}
+                {...(item.onClickAction && { onClick: item.onClickAction })}
+              >
                 <DropdownMenuItem>{item.dropdownItemName}</DropdownMenuItem>
               </Link>
           ))}
