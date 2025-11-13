@@ -99,6 +99,7 @@ class ApiClient {
     const requestConfig: RequestInit = {
       ...restConfig,
       headers: requestHeaders,
+      credentials: 'include'
     };
 
     try {
@@ -116,6 +117,7 @@ class ApiClient {
           response = await fetch(`${this.baseURL}${endpoint}`, {
             ...requestConfig,
             headers: requestHeaders,
+            credentials: 'include'
           });
         } else {
           // 토큰 갱신 시작
@@ -130,6 +132,7 @@ class ApiClient {
             response = await fetch(`${this.baseURL}${endpoint}`, {
               ...requestConfig,
               headers: requestHeaders,
+              credentials: 'include'
             });
           } catch (refreshError) {
             processQueue(refreshError as ApiError, null);
