@@ -1,6 +1,6 @@
 // src/lib/apiClient.ts
 import { ApiError, ErrorResponse, RefreshResponse } from '@/types/auth';
-import Cookies from 'js-cookie';
+import { ApiResponse } from '@/types/order'; // 또는 공통 타입 위치
 import { useAuthStore } from '@/store/authStore';
 
 let isRefreshing = false;
@@ -43,31 +43,45 @@ class ApiClient {
     }
 
     refreshPromise = (async () => {
-      const refreshToken = Cookies.get('refresh_token');
-      if (!refreshToken) {
-        throw new ApiError('리프레시 토큰이 없습니다.', 401);
-      }
       try {
-        const response = await fetch(`${this.baseURL}/user/refresh`, {
+        console.log('🔄 토큰 갱신 요청 전송 (/user/reissue)');
+
+        const response = await fetch(`${this.baseURL}/user/reissue`, {
           method: 'POST',
           credentials: 'include',
           headers: this.defaultHeaders,
         });
+
+        console.log('📥 토큰 갱신 응답:', response.status);
+
         if (!response.ok) {
-          const errorData: ErrorResponse = await response.json().catch(() => ({
-            statusCode: response.status,
-            message: '토큰 갱신에 실패했습니다.',
-          }));
-          throw new ApiError(errorData.message, response.status, errorData);
+          throw new ApiError('토큰 갱신 요청 실패', response.status);
         }
-        const data: RefreshResponse = await response.json();
-        useAuthStore.getState().setAccessToken(data.accessToken);
-        return data.accessToken;
+
+        // ✅ ApiResponse 구조로 받기
+        const apiResponse: ApiResponse<RefreshResponse> = await response.json();
+        console.log('📦 응답 데이터:', apiResponse);
+
+        // ✅ success 체크
+        if (!apiResponse.success || !apiResponse.data) {
+          const errorMessage = apiResponse.error?.message || '토큰 갱신에 실패했습니다.';
+          console.error('❌ 토큰 갱신 실패:', apiResponse.error);
+          throw new ApiError(errorMessage, response.status);
+        }
+
+        // ✅ data에서 accessToken 추출
+        const newAccessToken = apiResponse.data.accessToken;
+        console.log('✅ 새 액세스 토큰 받음');
+
+        useAuthStore.getState().setAccessToken(newAccessToken);
+        return newAccessToken;
       } catch (error) {
+        console.error('❌ 토큰 갱신 중 에러:', error);
         useAuthStore.getState().logout();
         throw error;
       }
     })();
+
     try {
       const token = await refreshPromise;
       return token;
@@ -76,14 +90,12 @@ class ApiClient {
     }
   }
 
-  // 메인 request 메서드
   private async request<T>(
     endpoint: string,
     config: RequestConfig = {}
   ): Promise<T> {
     const { requiresAuth = true, headers = {}, ...restConfig } = config;
 
-    // 헤더를 일반 객체로 구성
     const requestHeaders: Record<string, string> = {
       ...this.defaultHeaders,
       ...(headers as Record<string, string>),
@@ -99,37 +111,45 @@ class ApiClient {
     const requestConfig: RequestInit = {
       ...restConfig,
       headers: requestHeaders,
+      credentials: 'include',
     };
 
     try {
       let response = await fetch(`${this.baseURL}${endpoint}`, requestConfig);
 
-      // 401 에러 처리 (토큰 만료)
       if (response.status === 401 && requiresAuth) {
         if (isRefreshing) {
-          // 이미 토큰 갱신 중이면 대기열에 추가
           const token = await new Promise<string>((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           });
-          // 새 토큰으로 재시도
-          requestHeaders.Authorization = `Bearer ${token}`;
+
+          const retryHeaders = {
+            ...this.defaultHeaders,
+            ...(headers as Record<string, string>),
+            Authorization: `Bearer ${token}`,
+          };
+
           response = await fetch(`${this.baseURL}${endpoint}`, {
-            ...requestConfig,
-            headers: requestHeaders,
+            ...restConfig,
+            headers: retryHeaders,
+            credentials: 'include',
           });
         } else {
-          // 토큰 갱신 시작
           isRefreshing = true;
           try {
             const newToken = await this.refreshAccessToken();
-            // 대기 중인 요청들 처리
             processQueue(null, newToken);
 
-            // 원래 요청 재시도
-            requestHeaders.Authorization = `Bearer ${newToken}`;
+            const retryHeaders = {
+              ...this.defaultHeaders,
+              ...(headers as Record<string, string>),
+              Authorization: `Bearer ${newToken}`,
+            };
+
             response = await fetch(`${this.baseURL}${endpoint}`, {
-              ...requestConfig,
-              headers: requestHeaders,
+              ...restConfig,
+              headers: retryHeaders,
+              credentials: 'include',
             });
           } catch (refreshError) {
             processQueue(refreshError as ApiError, null);
@@ -140,7 +160,6 @@ class ApiClient {
         }
       }
 
-      // 응답이 성공적이지 않으면 에러 처리
       if (!response.ok) {
         const errorData: ErrorResponse = await response.json().catch(() => ({
           statusCode: response.status,

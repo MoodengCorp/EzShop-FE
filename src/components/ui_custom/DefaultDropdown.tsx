@@ -11,6 +11,7 @@ import Link from 'next/link'
 type dropdownElement = {
   dropdownItemName: string
   dropdownItemLink: string
+
 }
 
 type defaultDropDownProps = {
