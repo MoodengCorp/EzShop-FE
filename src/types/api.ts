@@ -1,12 +1,4 @@
 // src/types/api.ts
-// API 관련 공통 타입
-
-import { CLIENT_ERROR_TYPE } from '@/constants'
-
-/**
- * 에러 타입 (백엔드 + 프론트 전용)
- */
-export type ErrorType = string | (typeof CLIENT_ERROR_TYPE)[keyof typeof CLIENT_ERROR_TYPE]
 
 /**
  * 백엔드 API 에러 응답 형식
@@ -21,11 +13,13 @@ export interface ApiErrorResponse {
  * - success: 요청 성공 여부
  * - data: 성공 시 데이터 (optional)
  * - error: 실패 시 에러 정보 (optional)
+ * - statusCode: HTTP 상태 코드 (추가)
  */
 export interface ApiResponse<T = void> {
   success: boolean
   data?: T
   error?: ApiErrorResponse
+  statusCode: number  // ✅ 추가: HTTP 상태 코드
 }
 
 /**
@@ -34,19 +28,15 @@ export interface ApiResponse<T = void> {
 export class ApiError extends Error {
   readonly type: string
   readonly statusCode: number
-  readonly response?: ApiErrorResponse
 
   constructor(
-    message: string,
-    type: string,
     statusCode: number,
-    response?: ApiErrorResponse
+    response: ApiErrorResponse
   ) {
-    super(message)
+    super(response.message)
     this.name = 'ApiError'
-    this.type = type
+    this.type = response.type
     this.statusCode = statusCode
-    this.response = response
 
     Object.setPrototypeOf(this, ApiError.prototype)
   }

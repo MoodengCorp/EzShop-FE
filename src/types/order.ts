@@ -1,45 +1,58 @@
 // src/types/order.ts
+/**
+ * 주문 관련 타입 정의
+ */
 
-// 주문 상태
-import { ApiResponse } from '@/types/api'
+/**
+ * 주문 상태
+ */
+export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED' | 'CANCELLED'
 
-export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED' | 'CANCELLED';
+/**
+ * 주문 기간 필터
+ */
+export type OrderPeriod = '3개월' | '6개월' | '1년'
 
-// 주문 기간
-export type OrderPeriod = '3개월' | '6개월' | '1년';
-
-// 주문 아이템
+/**
+ * 주문 아이템 (상품)
+ */
 export interface OrderItem {
-  itemId: number;
-  name: string;
-  quantity: number;
-  purchasePrice: number;
-  thumbnailUrl: string;
+  itemId: number
+  name: string
+  quantity: number
+  purchasePrice: number
+  thumbnailUrl: string
 }
 
-// 주문
+/**
+ * 주문 기본 정보
+ */
 export interface Order {
-  orderId: number;
-  orderNumber: number;
-  orderDate: string;
-  orderStatus: OrderStatus;
-  totalPrice: number;
-  items: OrderItem[];
+  orderId: number
+  orderNumber: number
+  orderDate: string
+  orderStatus: OrderStatus
+  totalPrice: number
+  items: OrderItem[]
 }
 
-// 주문 상세 (확장)
+/**
+ * 주문 상세 정보 (배송지 포함)
+ */
 export interface OrderDetail extends Order {
   user: {
-    name: string;
-    phone: string;
-    address: string;
-    addressDetail?: string;
-  };
-  deliveryRequest?: string;
+    name: string
+    phone: string
+    address: string
+    addressDetail?: string
+  }
+  deliveryRequest?: string
 }
 
-// 주문 목록 응답 (모든 데이터를 한 번에 받음)
-export type OrderListResponse = ApiResponse<Order[]>;
-
-// 주문 상세 응답
-export type OrderDetailResponse = ApiResponse<OrderDetail>;
+/**
+ * 주문 생성 요청
+ */
+export interface CreateOrderRequest {
+  cartItemIds: number[]
+  deliveryRequest?: string
+}
