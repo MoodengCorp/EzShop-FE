@@ -1,47 +1,79 @@
 // src/types/auth.ts
+// 인증 관련 타입
+
+/**
+ * 사용자 역할
+ */
+export type UserRole = 'USER' | 'SELLER'
+
+/**
+ * 사용자 기본 정보
+ */
 export interface User {
-  id: string;
-  email: string;
-  name: string;
+  id: string
+  email: string
+  name: string
+  role: UserRole
 }
 
+/**
+ * 로그인 요청
+ */
 export interface LoginRequest {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
+/**
+ * 로그인 응답
+ */
 export interface LoginResponse {
-  name: string;
-  role: "SELLER" | "USER";
-  accessToken: string;
-  tokenType: string;
+  name: string
+  role: UserRole
+  accessToken: string
+  tokenType: string
 }
 
+/**
+ * 토큰 갱신 응답
+ */
 export interface RefreshResponse {
-  accessToken: string;
+  accessToken: string
 }
 
+/**
+ * 디코딩된 JWT 토큰
+ * - 백엔드가 토큰에 담는 정보에 따라 수정 필요
+ */
 export interface DecodedToken {
-  exp: number;
-  iat: number;
-  userId: string;
+  sub: string       // subject (userId 대신 사용하는 경우)
+  role: UserRole    // 역할 (백엔드가 담는 경우)
+  iat: number        // 발급 시간 (필수)
+  exp: number        // 만료 시간 (필수)
+  // userId는 백엔드가 토큰에 담지 않으므로 제거
 }
 
-// 백엔드 에러 응답 형식
-export interface ErrorResponse {
-  statusCode: number;
-  message: string;
-  error?: string;
+/**
+ * 회원가입 폼 데이터 (프론트엔드 전용)
+ * - passwordConfirm은 프론트에서만 검증용
+ */
+export interface SignupFormData {
+  email: string
+  password: string
+  passwordConfirm: string  // 프론트 검증용
+  name: string
+  phone: string
+  role?: UserRole
 }
 
-export class ApiError extends Error {
-  statusCode: number;
-  response?: ErrorResponse;
-
-  constructor(message: string, statusCode: number, response?: ErrorResponse) {
-    super(message);
-    this.name = 'ApiError';
-    this.statusCode = statusCode;
-    this.response = response;
-  }
+/**
+ * 회원가입 API 요청 (백엔드로 전송)
+ * - passwordConfirm 제외
+ */
+export interface SignupRequest {
+  email: string
+  password: string  // passwordConfirm 없음
+  name: string
+  phone: string
+  role?: UserRole
 }

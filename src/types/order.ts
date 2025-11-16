@@ -1,6 +1,8 @@
 // src/types/order.ts
 
 // 주문 상태
+import { ApiResponse } from '@/types/api'
+
 export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED' | 'CANCELLED';
 
 // 주문 기간
@@ -34,19 +36,6 @@ export interface OrderDetail extends Order {
     addressDetail?: string;
   };
   deliveryRequest?: string;
-}
-
-// API 에러 응답
-export interface ApiErrorResponse {
-  code: string;
-  message: string;
-}
-
-// API 기본 응답 구조
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T | null;
-  error: ApiErrorResponse | null;
 }
 
 // 주문 목록 응답 (모든 데이터를 한 번에 받음)

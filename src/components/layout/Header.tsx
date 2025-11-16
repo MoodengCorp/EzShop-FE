@@ -3,7 +3,6 @@ import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import { Heart, Search, ShoppingCart } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
-import DefaultPagination from '@/components/ui_custom/DefaultPagination'
 import DefaultDropdown from '@/components/ui_custom/DefaultDropdown'
 
 export default function Header() {

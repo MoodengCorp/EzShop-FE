@@ -1,12 +1,12 @@
 // src/lib/api/orders.ts
-import { apiClient } from '@/lib/apiClient';
+import { apiClient } from '@/lib/apiClient'
 import {
   Order,
-  OrderDetail,
-  OrderListResponse,
   OrderDetailResponse,
-  OrderPeriod, ApiResponse,
+  OrderListResponse,
+  OrderPeriod,
 } from '@/types/order'
+import { ApiResponse } from '@/types/api'
 
 // 주문 목록 조회 (period만 받아서 전체 데이터 반환)
 export async function fetchOrders(period: OrderPeriod) {
