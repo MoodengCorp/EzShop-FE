@@ -1,10 +1,10 @@
-// src/lib/api/orders.ts
+// src/lib/api/ordersApi.ts
 import { apiClient } from '@/lib/apiClient'
 import {
   CreateOrderRequest,
   Order, OrderDetail,
   OrderPeriod,
-} from '@/types/order'
+} from '@/features/orders/types/order'
 import { ApiResponse } from '@/types/api'
 
 /**

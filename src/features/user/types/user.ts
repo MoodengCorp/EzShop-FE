@@ -1,7 +1,7 @@
 // src/types/user.ts
 // 사용자 정보 관련 타입
 
-import { UserRole } from './auth'
+import { UserRole } from '../../auth/types/auth'
 
 /**
  * 사용자 상세 정보

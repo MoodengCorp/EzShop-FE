@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CustomerSignupForm } from '@/components/ui_custom/CustomerSignupForm'
-import { SellerSignupForm } from '@/components/ui_custom/SellerSignupForm'
+import { CustomerSignupForm } from '@/features/auth/components/CustomerSignupForm'
+import { SellerSignupForm } from '@/features/auth/components/SellerSignupForm'
 
 export default function Signup() {
   return (

@@ -1,5 +1,5 @@
 import MyPageLayout from '@/components/layout/MyPageLayout'
-import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
+import { ProtectedRoute } from '@/guards/ProtectedRoute'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -8,7 +8,7 @@ import { apiClient } from '@/lib/apiClient'
 import { ApiResponse } from '@/types/api'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
-import { useAuthStore } from '@/store/authStore'
+import { useAuthStore } from '@/features/auth/store/authStore'
 
 // 사용자 정보 타입
 interface UserInfo {

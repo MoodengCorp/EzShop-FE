@@ -2,7 +2,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { jwtDecode } from 'jwt-decode'
-import { DecodedToken } from '@/types/auth'
+import { DecodedToken } from '@/features/auth/types/auth'
 
 interface AuthState {
   role: 'SELLER' | 'USER' | null

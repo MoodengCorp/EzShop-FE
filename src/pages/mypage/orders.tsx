@@ -12,20 +12,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { OrderPeriod } from '@/types/order'
+import { OrderPeriod } from '@/features/orders/types/order'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import OrderItem from '@/components/ui_custom/OrderItem'
+import OrderItem from '@/features/orders/components/OrderItem'
 import { usePagination } from '@/hooks/usePagination'
-import DefaultPagination from '@/components/ui_custom/DefaultPagination'
-import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
-import { useAuth } from '@/hooks/useAuth'
-import { useOrders } from '@/hooks/useOrders'
+import DefaultPagination from '@/components/common/DefaultPagination'
+import { ProtectedRoute } from '@/guards/ProtectedRoute'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useOrders } from '@/features/orders/hooks/useOrders'
 import { mockOrders } from '@/mocks/OrderData'
 import { useRouter } from 'next/router'
 import { ApiError } from '@/types'
 import { toast } from 'sonner'
-import { options } from 'prettier-plugin-tailwindcss'
 
 export default function OrdersPage() {
   const [period, setPeriod] = useState<OrderPeriod>('3개월')
@@ -53,9 +52,12 @@ export default function OrdersPage() {
 
         // 서버 에러 → 특별한 메시지
         if (error.isServerError()) {
-          toast.error('서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.', {
-            position: 'top-center',
-          })
+          toast.error(
+            '서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            {
+              position: 'top-center',
+            },
+          )
           return
         }
 
@@ -138,9 +140,7 @@ export default function OrdersPage() {
           {/* 에러 상태 */}
           {error && !isLoading && (
             <div className="rounded-2xl bg-white p-8 text-center">
-              <p className="mb-2 text-red-600">
-                {error.message}
-              </p>
+              <p className="mb-2 text-red-600">{error.message}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="text-primary underline"
@@ -205,9 +205,9 @@ type SelectDateFilterProps = {
 }
 
 export function SelectDateFilter({
-                                   value,
-                                   onPeriodChange,
-                                 }: SelectDateFilterProps) {
+  value,
+  onPeriodChange,
+}: SelectDateFilterProps) {
   return (
     <Select value={value} onValueChange={onPeriodChange}>
       {/* ✅ defaultValue 제거, value 사용 */}

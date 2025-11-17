@@ -1,7 +1,7 @@
-// src/components/ui_custom/ProtectedRoute.tsx
+// src/components/common/ProtectedRoute.tsx
 import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import { apiClient } from '@/lib/apiClient';
 
 interface ProtectedRouteProps {

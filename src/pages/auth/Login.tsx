@@ -1,10 +1,10 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { TextGray } from '@/components/ui_custom/TextGray'
+import { TextGray } from '@/components/common/TextGray'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export default function Login() {

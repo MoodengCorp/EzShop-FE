@@ -2,7 +2,7 @@
 import { ApiError, ApiResponse, RequestConfig } from '@/types/api'
 import { CLIENT_ERROR_TYPE, HTTP_STATUS } from '@/constants'
 import Cookies from 'js-cookie'
-import { useAuthStore } from '@/store/authStore'
+import { useAuthStore } from '@/features/auth/store/authStore'
 
 let isRefreshing = false
 let refreshPromise: Promise<string> | null = null

@@ -1,5 +1,5 @@
 import MyPageLayout from '@/components/layout/MyPageLayout'
-import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
+import { ProtectedRoute } from '@/guards/ProtectedRoute'
 
 export default function CouponsPage() {
   return (

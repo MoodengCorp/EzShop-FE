@@ -1,7 +1,7 @@
 // pages/dev/cart-item-demo.tsx
 import { useState } from 'react'
-import CartItem from '@/components/cart/CartItem'
-import type { Item } from '@/types/cart'
+import CartItem from '@/features/cart/components/CartItem'
+import type { Item } from '@/features/cart/types/cart'
 import { MOCK_PRODUCTS } from '@/mocks/products'
 
 const toItem = (p: (typeof MOCK_PRODUCTS)[number]): Item => ({
