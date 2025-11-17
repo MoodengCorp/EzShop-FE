@@ -1,23 +1,26 @@
 // src/store/authStore.ts
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
-import { User, DecodedToken } from '@/types/auth';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { jwtDecode } from 'jwt-decode'
+import { DecodedToken } from '@/features/auth/types/auth'
 
 interface AuthState {
-  role: "SELLER" | "USER" | null
-  name: string | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
+  role: 'SELLER' | 'USER' | null
+  name: string | null
+  accessToken: string | null
+  isAuthenticated: boolean
 
   // Actions
-  setAccessToken: (token: string) => void;
-  setEmail: (email: string) => void;
-  login: (accessToken: string, name: string, role: "SELLER" | "USER" | null) => void;
-  logout: () => void;
-  isTokenValid: () => boolean;
-  getTokenExpiry: () => number | null;
+  setAccessToken: (token: string) => void
+  setEmail: (email: string) => void
+  login: (
+    accessToken: string,
+    name: string,
+    role: 'SELLER' | 'USER' | null,
+  ) => void
+  logout: () => void
+  isTokenValid: () => boolean
+  getTokenExpiry: () => number | null
 }
 
 export const useAuthStore = create<AuthState>()(

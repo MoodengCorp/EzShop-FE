@@ -1,5 +1,5 @@
 // src/mock/orderData.ts
-import { Order, OrderDetail } from '@/types/order';
+import { Order, OrderDetail } from '@/features/orders/types/order';
 
 // 주문 목록 목 데이터
 export const mockOrders: Order[] = [

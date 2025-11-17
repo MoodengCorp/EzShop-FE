@@ -1,14 +1,14 @@
 import MyPageLayout from '@/components/layout/MyPageLayout'
-import { ProtectedRoute } from '@/components/ui_custom/ProtectedRoute'
+import { ProtectedRoute } from '@/guards/ProtectedRoute'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { apiClient } from '@/lib/apiClient'
-import { ApiResponse } from '@/types/order'
+import { ApiResponse } from '@/types/api'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
-import { useAuthStore } from '@/store/authStore'
+import { useAuthStore } from '@/features/auth/store/authStore'
 
 // 사용자 정보 타입
 interface UserInfo {
@@ -317,7 +317,7 @@ export function AfterPasswordMatchProfile() {
 
       // 2. 로그아웃 요청 (인증 정보 제거)
       try {
-        await apiClient.post<ApiResponse<void>>('/user/logout')
+        await apiClient.get<ApiResponse<void>>('/user/logout')
       } catch (logoutErr) {
         // 로그아웃 실패해도 클라이언트 측 정보는 제거
         console.error('로그아웃 요청 실패:', logoutErr)

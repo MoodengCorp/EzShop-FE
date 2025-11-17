@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { BoxWithDesc } from '@/components/ui_custom/BoxWithDesc'
 import Image from 'next/image'
-import { TextGray } from '@/components/ui_custom/TextGray'
+import { TextGray } from '@/components/common/TextGray'
+import { Item, ItemContent, ItemTitle } from '@/components/ui/item'
 
 export default function Footer() {
   return (
@@ -68,5 +68,23 @@ export default function Footer() {
         MOODENG CORP. ALL RIGHTS RESERVED
       </div>
     </footer>
+  )
+}
+
+type BoxWithDescProps = {
+  title: string,
+  descriptions: string[][],
+}
+
+export function BoxWithDesc({ title, descriptions }: BoxWithDescProps) {
+  return (
+    <div className="flex gap-4 border-gray-400">
+      <Item variant="outline" className="py-2 rounded-s">
+        <ItemContent className="flex items-center w-28">
+          <ItemTitle>{title}</ItemTitle>
+        </ItemContent>
+      </Item>
+      <TextGray descriptions={descriptions}></TextGray>
+    </div>
   )
 }

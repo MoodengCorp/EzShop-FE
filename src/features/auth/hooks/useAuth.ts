@@ -2,9 +2,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { apiClient } from '@/lib/apiClient';
-import { useAuthStore } from '@/store/authStore';
-import { LoginRequest, LoginResponse, User, ApiError } from '@/types/auth';
-import { ApiResponse } from '@/types/order'
+import { useAuthStore } from '@/features/auth/store/authStore';
+import { LoginRequest, LoginResponse, User } from '@/features/auth/types/auth';
+import { ApiError, ApiResponse } from '@/types/api'
 
 export const useAuth = () => {
   const router = useRouter();

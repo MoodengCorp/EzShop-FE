@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import SidebarItem from '@/components/ui_custom/SidebarItem'
+import SidebarItem from '@/components/common/SidebarItem'
 import { CircleUserRound, Component, Info, LayoutList } from 'lucide-react'
 
 export default function Sidebar() {
