@@ -15,6 +15,13 @@ export interface UserInfo {
   role?: UserRole
 }
 
+export interface DeliveryAddress {
+  name: string
+  phone: string
+  address: string
+  addressDetail?: string
+}
+
 /**
  * 사용자 정보 수정 폼 데이터 (프론트엔드)
  */

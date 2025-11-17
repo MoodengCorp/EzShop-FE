@@ -3,6 +3,8 @@
  * 주문 관련 타입 정의
  */
 
+import { DeliveryAddress } from '@/features/user/types/user'
+
 /**
  * 주문 상태
  */
@@ -40,12 +42,7 @@ export interface Order {
  * 주문 상세 정보 (배송지 포함)
  */
 export interface OrderDetail extends Order {
-  user: {
-    name: string
-    phone: string
-    address: string
-    addressDetail?: string
-  }
+  user: DeliveryAddress  // 재사용!
   deliveryRequest?: string
 }
 
