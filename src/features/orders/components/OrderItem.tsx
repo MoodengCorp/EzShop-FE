@@ -9,7 +9,7 @@ interface OrderItemProps {
   viewDateAndOrderNum: boolean
 }
 
-export default function OrderItem({
+export function OrderItem({
   order,
   viewDateAndOrderNum,
 }: OrderItemProps) {
@@ -47,7 +47,7 @@ export default function OrderItem({
   )
 }
 
-export function DateAndOrderNum({ order }: { order: Order }) {
+function DateAndOrderNum({ order }: { order: Order }) {
   return (
     <>
       <div className="flex items-center justify-between">

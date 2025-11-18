@@ -3,8 +3,6 @@
  * 주문 관련 타입 정의
  */
 
-import { DeliveryAddress } from '@/features/user/types/user'
-
 /**
  * 주문 상태
  */
@@ -36,6 +34,13 @@ export interface Order {
   orderStatus: OrderStatus
   totalPrice: number
   items: OrderItem[]
+}
+
+export interface DeliveryAddress {
+  name: string
+  phone: string
+  address: string
+  addressDetail?: string
 }
 
 /**

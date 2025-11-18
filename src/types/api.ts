@@ -87,4 +87,5 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
  */
 export interface RequestConfig extends RequestInit {
   requiresAuth?: boolean
+  params?: Record<string, string | number | boolean | undefined>
 }
