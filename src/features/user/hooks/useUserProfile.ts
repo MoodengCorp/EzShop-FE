@@ -29,3 +29,20 @@ export const useVerifyPassword = () => {
     mutationFn: userApi.verifyPassword,
   })
 }
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: userApi.changePassword,
+    onSuccess: () => {
+      toast.success('비밀번호가 변경되었습니다.', {
+        position: 'top-center'
+      })
+    },
+    onError: (error: any) => {
+      const message = error.message || '비밀번호 변경에 실패했습니다'
+      toast.error(message, {
+        position: 'top-center',
+      })
+    }
+  })
+}

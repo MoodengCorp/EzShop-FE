@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { useRouter} from 'next/router';
 import type { E164Number } from 'libphonenumber-js/core'
+import { SignupFormData, UserRole } from '@/features/auth/types/auth'
 
 const fields = [
   {
@@ -37,17 +38,24 @@ const fields = [
     placeholder: '주소를 입력해주세요',
     type: 'text',
   },
+  {
+    fieldName: '상세 주소',
+    name: 'address_detail',
+    placeholder: '상세 주소를 입력해주세요',
+    type: 'text',
+  },
 ]
 
 export function CustomerSignupForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignupFormData>({
     email: '',
-    name: '',
     password: '',
     passwordConfirm: '',
+    name: '',
+    phone: '',
     address: '',
-    phone: '' as E164Number | '',
+    addressDetail: '',
     role: 'USER'
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -117,26 +125,19 @@ export function CustomerSignupForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="w-[640px]">
-        <FieldSet className="mb-8 border-b-[1px] border-black">
+      <div className="whitespace-nowrap">
+        <FieldSet className="w-[400px] mb-8 border-b-[1px] border-black">
           <FieldLegend className="text-center">
             <p className="text-2xl">회원가입</p>
           </FieldLegend>
-          <FieldDescription className="text-end text-xs border-b-2 border-black py-4">* 필수입력사항</FieldDescription>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
-
           <FieldGroup>
             {fields.map((field, index) => {
               return (
                 <Field key={index}>
-                  <div className="flex items-center">
-                    <FieldLabel htmlFor={field.name} className="w-36">{field.fieldName}</FieldLabel>
+                  <div className="flex items-center justify-between">
+                    <FieldLabel htmlFor={field.name}>{field.fieldName}</FieldLabel>
                     <Input
+                      className="w-72"
                       id={field.name}
                       type={field.type}
                       autoComplete="off"
@@ -150,16 +151,17 @@ export function CustomerSignupForm() {
               )
             })}
             <Field>
-              <div className="flex items-center mb-6">
-                <FieldLabel htmlFor="phone" className="w-36">전화번호</FieldLabel>
+              <div className="flex items-center justify-between mb-6">
+                <FieldLabel htmlFor="phone">전화번호</FieldLabel>
                 <PhoneInput
-                  className="w-full"
+                  className="w-72"
                   value={formData.phone}
                   onChange={handlePhoneChange}
                   defaultCountry="KR"
                 />
               </div>
             </Field>
+
           </FieldGroup>
         </FieldSet>
         <Field className="flex justify-center" orientation="horizontal">
