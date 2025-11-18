@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import QuantityStepper from './QuantityStepper'
-import type { Item } from '@/types/cart'
+import QuantityStepper from '../../../components/common/QuantityStepper'
+import type { Item } from '@/features/cart/types/cart'
 
 type Props = {
     item: Item
@@ -31,7 +31,7 @@ export default function CartItem(props: Props) {
             <div className="min-w-0 grow flex-col flex">
                 <div className="flex items-start justify-between">
                     <Link
-                        href="/#"
+                        href="/public#"
                         className="truncate hover:underline font-semibold"
                         title={name}
                     >

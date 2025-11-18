@@ -1,4 +1,4 @@
-import { Order } from '@/types/order'
+import { Order } from '@/features/orders/types/order'
 import { ChevronRight, ShoppingCart } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
@@ -9,7 +9,7 @@ interface OrderItemProps {
   viewDateAndOrderNum: boolean
 }
 
-export default function OrderItem({
+export function OrderItem({
   order,
   viewDateAndOrderNum,
 }: OrderItemProps) {
@@ -34,7 +34,7 @@ export default function OrderItem({
                 <p>{item.purchasePrice}원</p>
               </div>
             </div>
-            <Link href="/">
+            <Link href="/public">
               <ShoppingCart
                 className="size-9 rounded-lg border-[1px] border-gray-200 p-2"
                 strokeOpacity={0.7}
@@ -47,7 +47,7 @@ export default function OrderItem({
   )
 }
 
-export function DateAndOrderNum({ order }: { order: Order }) {
+function DateAndOrderNum({ order }: { order: Order }) {
   return (
     <>
       <div className="flex items-center justify-between">

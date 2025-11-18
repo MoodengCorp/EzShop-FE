@@ -1,7 +1,7 @@
 import BannerCarousel from '@/components/carousel/BannerCarousel'
 import CarouselSet from '@/components/carousel/CarouselSet'
 import ProductCarousel from '@/components/carousel/ProductCarousel'
-import HomeCategory from '@/components/ui_custom/HomeCategory'
+import HomeCategory from '@/components/common/HomeCategory'
 import { MOCK_PRODUCTS } from '@/mocks/products'
 
 export default function Home({ best, meat }: any) {

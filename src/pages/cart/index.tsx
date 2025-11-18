@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import CartItem from '@/components/cart/CartItem'
-import type { Item } from '@/types/cart'
+import CartItem from '@/features/cart/components/CartItem'
+import type { Item } from '@/features/cart/types/cart'
 import { MOCK_PRODUCTS } from '@/mocks/products'
-import PaymentSummary from '@/components/ui_custom/PaymentSummary'
-import AddressCard from '@/components/ui_custom/AddressCard'
-import OrderCTA from '@/components/ui_custom/OrderCTA'
+import PaymentSummary from '@/components/common/PaymentSummary'
+import AddressCard from '@/components/common/AddressCard'
+import OrderCTA from '@/components/common/OrderCTA'
 
 const toItem = (p: (typeof MOCK_PRODUCTS)[number]): Item => ({
     id: p.id,

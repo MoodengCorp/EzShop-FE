@@ -1,23 +1,26 @@
 // src/store/authStore.ts
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
-import { User, DecodedToken } from '@/types/auth';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { jwtDecode } from 'jwt-decode'
+import { DecodedToken } from '@/features/auth/types/auth'
 
 interface AuthState {
-  role: "SELLER" | "USER" | null
-  name: string | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
+  role: 'SELLER' | 'USER' | null
+  name: string | null
+  accessToken: string | null
+  isAuthenticated: boolean
 
   // Actions
-  setAccessToken: (token: string) => void;
-  setEmail: (email: string) => void;
-  login: (accessToken: string, name: string, role: "SELLER" | "USER" | null) => void;
-  logout: () => void;
-  isTokenValid: () => boolean;
-  getTokenExpiry: () => number | null;
+  setAccessToken: (token: string) => void
+  setEmail: (email: string) => void
+  login: (
+    accessToken: string,
+    name: string,
+    role: 'SELLER' | 'USER' | null,
+  ) => void
+  logout: () => void
+  isTokenValid: () => boolean
+  getTokenExpiry: () => number | null
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -50,11 +53,9 @@ export const useAuthStore = create<AuthState>()(
         set({
           accessToken: null,
           name: null,
+          role: null,
           isAuthenticated: false,
         });
-
-        // 리프레시 토큰 쿠키 삭제
-        Cookies.remove('refreshToken', { path: '/' });
       },
 
       isTokenValid: () => {
@@ -68,9 +69,8 @@ export const useAuthStore = create<AuthState>()(
           const decoded = jwtDecode<DecodedToken>(accessToken);
           const currentTime = Date.now() / 1000;
 
-          // 토큰이 만료되었는지 확인 (5초 버퍼 추가)
-          console.log(decoded.exp);
-          return decoded.exp > currentTime + 5;
+          // 토큰이 만료되었는지 확인 (1초 버퍼 추가)
+          return decoded.exp > currentTime + 1;
         } catch (error) {
           console.error('Token decode error:', error);
           return false;

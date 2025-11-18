@@ -2,9 +2,8 @@ import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import { Heart, Search, ShoppingCart } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
-import DefaultPagination from '@/components/ui_custom/DefaultPagination'
-import DefaultDropdown from '@/components/ui_custom/DefaultDropdown'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import DefaultDropdown from '@/components/common/DefaultDropdown'
 
 export default function Header() {
   const { isAuthenticated, name, logout, isLoggingOut } = useAuth()
@@ -17,10 +16,25 @@ export default function Header() {
               <DefaultDropdown
                 title={name}
                 dropdownItemElements={[
-                  { dropdownItemName: '주문내역', dropdownItemLink: '/mypage/orders' },
-                  { dropdownItemName: '내 정보 관리', dropdownItemLink: '/mypage/profile' },
-                  { dropdownItemName: '쿠폰', dropdownItemLink: '/mypage/coupons' },
-                  { dropdownItemName: '로그아웃', dropdownItemLink: '/' },
+                  {
+                    dropdownItemName: '주문내역',
+                    dropdownItemLink: '/mypage/orders',
+                  },
+                  {
+                    dropdownItemName: '내 정보 관리',
+                    dropdownItemLink: '/mypage/profile',
+                  },
+                  {
+                    dropdownItemName: '쿠폰',
+                    dropdownItemLink: '/mypage/coupons',
+                  },
+                  {
+                    dropdownItemName: '로그아웃',
+                    dropdownItemLink: '/',
+                    onClickAction: () => {
+                      logout()
+                    },
+                  },
                 ]}
               />
             </Link>
@@ -56,6 +70,6 @@ export default function Header() {
           <Heart />
         </div>
       </div>
-    </header >
+    </header>
   )
 }
