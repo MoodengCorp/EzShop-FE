@@ -30,6 +30,15 @@ export const useAuth = () => {
     staleTime: 10 * 60 * 1000, // 10분
   })
 
+  // 회원가입 Mutation
+  const signupMutation = useMutation({
+    mutationFn: authApi.signup,
+    onSuccess: (response )=> {
+      router.push('/')
+    }
+
+  })
+
   // 로그인 Mutation
   const loginMutation = useMutation({
     mutationFn: authApi.login,
@@ -69,6 +78,9 @@ export const useAuth = () => {
     name: storeName,
     isLoadingUser,
 
+    // 회원가입
+    signup: signupMutation.mutate,
+    signupAsync: signupMutation.mutateAsync,
     // 로그인
     login: loginMutation.mutate,
     loginAsync: loginMutation.mutateAsync,

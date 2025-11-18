@@ -1,18 +1,21 @@
 import { apiClient } from '@/lib/apiClient'
 import { ApiResponse } from '@/types/api'
 import {
+  PasswordChangeRequest, UpdateUserInfoFormData,
   UserInfo,
-  UserProfileFormData,
   VerifyPasswordRequest,
 } from '../types/user'
 
 export const userApi = {
-  getProfile: (): Promise<UserInfo> =>
-    apiClient.get<UserInfo>('/user/profile'),
+  getProfile: () =>
+    apiClient.get<ApiResponse<UserInfo>>('/user/info'),
 
-  updateProfile: (data: UserProfileFormData) =>
-    apiClient.put<ApiResponse<void>>('/user/profile', data),
+  updateProfile: (data: UpdateUserInfoFormData) =>
+    apiClient.patch<ApiResponse<void>>('/user', data),
 
   verifyPassword: (data: VerifyPasswordRequest) =>
     apiClient.post<ApiResponse<void>>('/user/passwordcheck', data),
+
+  changePassword: (data: PasswordChangeRequest) =>
+    apiClient.patch<ApiResponse<void>>('/user/password', data),
 }
