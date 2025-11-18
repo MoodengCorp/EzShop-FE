@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import CartItem from '@/features/cart/components/CartItem'
 import type { Item } from '@/features/cart/types/cart'
-import { MOCK_PRODUCTS } from '@/mocks/products'
+import { MOCK_ITEMS } from '@/mocks/items'
 import PaymentSummary from '@/components/common/PaymentSummary'
 import AddressCard from '@/components/common/AddressCard'
 import OrderCTA from '@/components/common/OrderCTA'
 
-const toItem = (p: (typeof MOCK_PRODUCTS)[number]): Item => ({
+const toItem = (p: (typeof MOCK_ITEMS)[number]): Item => ({
     id: p.id,
     name: p.name,
     price: p.price,
@@ -16,7 +16,7 @@ const toItem = (p: (typeof MOCK_PRODUCTS)[number]): Item => ({
 })
 
 export default function CartItemDemoPage() {
-    const [item, setItem] = useState<Item>(toItem(MOCK_PRODUCTS[0]))
+    const [item, setItem] = useState<Item>(toItem(MOCK_ITEMS[0]))
 
     const onToggle = (id: number, checked: boolean) =>
         setItem((it) => (it.id === id ? { ...it, checked } : it))

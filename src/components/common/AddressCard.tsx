@@ -16,7 +16,7 @@ const MOCK: Address = {
     name: '유다현',
     phone: '010-1234-5678',
     postcode: '06000',
-    line1: '경기도 광명시 디지털로 24 107동 2202호',
+    line1: '블라블라',
     line2: '',
     memo: '',
 }

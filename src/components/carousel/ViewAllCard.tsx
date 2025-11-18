@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 
-export default function ProductAllCard({
+export default function ViewAllCard({
   href,
   label = '전체보기',
 }: {

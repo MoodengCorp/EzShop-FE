@@ -1,4 +1,3 @@
-// src/mock/orderData.ts
 import { Order, OrderDetail } from '@/features/orders/types/order';
 
 // 주문 목록 목 데이터

@@ -1,6 +1,5 @@
 import { Minus, Plus } from 'lucide-react'
 
-
 // TODO : max는 판매자가 정한 숫자로 수정하면 된다.
 export default function QuantityStepper({
     value,

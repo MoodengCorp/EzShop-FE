@@ -2,13 +2,13 @@ import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
-import type { Product } from '@/types'
+import type { Item } from '@/types'
 
 type Props = {
-  item: Product
+  item: Item
 }
 
-export default function ProductCard({ item }: Props) {
+export default function ItemCard({ item }: Props) {
   return (
     <Card className="w-full rounded-none border-0 p-0 shadow-none">
       <CardContent className="p-0">
