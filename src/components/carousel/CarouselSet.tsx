@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { Item } from '@/types'
+import type { Item } from '@/features/item/types/item'
 import ItemCarousel from '@/components/carousel/ItemCarousel'
 
 export type Props = {

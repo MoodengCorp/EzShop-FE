@@ -1,41 +1,27 @@
-// src/hooks/useOrders.ts
-import { ApiError } from '@/types'
 import { useQuery } from '@tanstack/react-query'
-import { mockOrderDetails } from '@/mocks/OrderData'
-import { OrderPeriod } from '@/features/orders/types/order'
-import { ordersApi } from '@/features/orders/api/ordersApi'
+import { itemKeys } from '@/features/item/api/queryKeys'
+import { MOCK_ITEMS_DETAIL } from '@/mocks/items'
+// import { itemApi } from '@/features/item/api/itemApi'
 
-/**
- * 주문 목록 조회 훅
- */
-export const useOrders = (period: OrderPeriod) => {
+export const useItemDetail = (itemId?: number) => {
   return useQuery({
-    queryKey: ['orders', period],
+    queryKey: itemKeys.detail(itemId ?? 0),
     queryFn: async () => {
-      return await ordersApi.getOrders(period)
-    },
-    staleTime: 5 * 60 * 1000,
-  })
-}
+      // Mock 데이터로 테스트 (백엔드 준비 전)
+      // 실제 API 호출 대신 MOCK_ITEMS_DETAIL 사용
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-/**
- * 주문 상세 조회 훅
- */
-export const useOrderDetail = (orderId: string) => {
-  return useQuery({
-    queryKey: ['order', orderId], // ✅ 상세는 'order' (단수형) 유지
-    queryFn: async () => {
-      // ✅ Mock 데이터로 테스트 (백엔드 준비 전)
-      // 실제 API 호출 대신 mockOrderDetails 사용
-      const id = parseInt(orderId)
-      const mockData = mockOrderDetails[id]
-      await new Promise(resolve => setTimeout(resolve, 500))
-      return mockData
+      const foundItem = MOCK_ITEMS_DETAIL.find((item) => item.itemId === itemId)
+      if (!foundItem) {
+        throw new Error('상품을 찾을 수 없습니다.')
+      }
 
-      // ✅ 백엔드 준비되면 아래 코드로 교체
-      // return await ordersApi.getOrderDetail(orderId)
+      return foundItem
+
+      // 백엔드 준비되면 아래 코드로 교체
+      // return await itemApi.getItemDetail(Number(itemId))
     },
-    enabled: !!orderId,
-    staleTime: 5 * 60 * 1000,
+    enabled: !!itemId,
+    staleTime: 5 * 60 * 1000, // 5분
   })
 }
