@@ -205,8 +205,8 @@ class ApiClient {
     const { requiresAuth = true, params, headers, ...restConfig } = config
 
     // ✨ params가 있으면 URL에 추가
-    const urlWithParams = this.buildUrlWithParams(endpoint, params)
-
+    // const urlWithParams = this.buildUrlWithParams(`/api/${endpoint}`, params)
+    const urlWithParams = this.buildUrlWithParams(`${endpoint}`, params)
     // Headers 객체 생성 및 구성
     const requestHeaders = new Headers(this.defaultHeaders)
 

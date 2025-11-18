@@ -1,54 +1,54 @@
-import { useState } from 'react'
-import CartItem from '@/features/cart/components/CartItem'
-import type { Item } from '@/features/cart/types/cart'
-import { MOCK_ITEMS } from '@/mocks/items'
-import PaymentSummary from '@/components/common/PaymentSummary'
-import AddressCard from '@/components/common/AddressCard'
-import OrderCTA from '@/components/common/OrderCTA'
+// import { useState } from 'react'
+// import CartItem from '@/features/cart/components/CartItem'
+// import type { Item } from '@/features/cart/types/cart'
+// import { MOCK_ITEMS } from '@/mocks/items'
+// import PaymentSummary from '@/components/common/PaymentSummary'
+// import AddressCard from '@/components/common/AddressCard'
+// import OrderCTA from '@/components/common/OrderCTA'
 
-const toItem = (p: (typeof MOCK_ITEMS)[number]): Item => ({
-    id: p.id,
-    name: p.name,
-    price: p.price,
-    thumbnailUrl: p.thumbnailUrl,
-    quantity: 1,
-    checked: true,
-})
+// const toItem = (p: (typeof MOCK_ITEMS)[number]): Item => ({
+//     id: p.id,
+//     name: p.name,
+//     price: p.price,
+//     thumbnailUrl: p.thumbnailUrl,
+//     quantity: 1,
+//     checked: true,
+// })
 
-export default function CartItemDemoPage() {
-    const [item, setItem] = useState<Item>(toItem(MOCK_ITEMS[0]))
+// export default function CartItemDemoPage() {
+//     const [item, setItem] = useState<Item>(toItem(MOCK_ITEMS[0]))
 
-    const onToggle = (id: number, checked: boolean) =>
-        setItem((it) => (it.id === id ? { ...it, checked } : it))
+//     const onToggle = (id: number, checked: boolean) =>
+//         setItem((it) => (it.id === id ? { ...it, checked } : it))
 
-    const onChangeQty = (id: number, next: number) =>
-        setItem((it) => (it.id === id ? { ...it, quantity: Math.max(1, next) } : it))
+//     const onChangeQty = (id: number, next: number) =>
+//         setItem((it) => (it.id === id ? { ...it, quantity: Math.max(1, next) } : it))
 
-    const onRemove = (id: number) => {
-        setItem((it) => (it.id === id ? { ...it, quantity: 1, checked: false } : it))
-        alert('프리뷰: 삭제 클릭됨')
-    }
+//     const onRemove = (id: number) => {
+//         setItem((it) => (it.id === id ? { ...it, quantity: 1, checked: false } : it))
+//         alert('프리뷰: 삭제 클릭됨')
+//     }
 
-    return (
-        <div className="container max-w-xl py-8">
-            <h1 className="mb-4 text-xl font-bold">CartItem Preview</h1>
-            <CartItem
-                item={item}
-                onToggle={onToggle}
-                onChangeQty={onChangeQty}
-                onRemove={onRemove}
-            />
+//     return (
+//         <div className="container max-w-xl py-8">
+//             <h1 className="mb-4 text-xl font-bold">CartItem Preview</h1>
+//             <CartItem
+//                 item={item}
+//                 onToggle={onToggle}
+//                 onChangeQty={onChangeQty}
+//                 onRemove={onRemove}
+//             />
 
-            {/* 임시 확인용 */}
-            <div className='flex flex-col gap-12'>
+//             {/* 임시 확인용 */}
+//             <div className='flex flex-col gap-12'>
 
-                <AddressCard />
+//                 <AddressCard />
 
-                <PaymentSummary itemsSubtotal={9980} />
+//                 <PaymentSummary itemsSubtotal={9980} />
 
-                <OrderCTA amount={1000} disabled={false} />
+//                 <OrderCTA amount={1000} disabled={false} />
 
-            </div>
-        </div>
-    )
-}
+//             </div>
+//         </div>
+//     )
+// }

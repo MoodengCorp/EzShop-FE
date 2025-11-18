@@ -3,12 +3,15 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
-import {OrderItem} from '@/features/orders/components/OrderItem'
+import { OrderItem } from '@/features/orders/components/OrderItem'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
 import { useOrderDetail } from '@/features/orders/hooks/useOrders'
 import { ApiError } from '@/types'
 import { toast } from 'sonner'
-import { OrderInfoColumn, OrderInfoRow } from '@/features/orders/components/OrderInfo'
+import {
+  OrderInfoColumn,
+  OrderInfoRow,
+} from '@/features/orders/components/OrderInfo'
 
 export default function OrderDetailPage() {
   const router = useRouter()
@@ -16,7 +19,6 @@ export default function OrderDetailPage() {
 
   // ✅ useOrderDetail 훅으로 데이터 조회
   const { data: orderDetail, isLoading, error } = useOrderDetail(id as string)
-
 
   // ✅ 에러 처리
   useEffect(() => {
@@ -90,18 +92,20 @@ export default function OrderDetailPage() {
                   <p className="text-sm font-semibold text-gray-400">
                     {orderDetail.orderDate}
                   </p>
-                  <p className="font-bold">주문번호 {orderDetail.orderNumber}</p>
+                  <p className="font-bold">
+                    주문번호 {orderDetail.orderNumber}
+                  </p>
                 </div>
                 <Separator />
                 <div>
                   <p className="font-sans font-medium">
-                    {orderDetail.user.address}
+                    {orderDetail.deliveryInfo.address}
                   </p>
-                  {orderDetail.user.addressDetail && (
+                  {
                     <p className="font-sans font-medium">
-                      {orderDetail.user.addressDetail}
+                      {orderDetail.deliveryInfo.addressDetail}
                     </p>
-                  )}
+                  }
                 </div>
               </div>
             </div>
@@ -116,14 +120,20 @@ export default function OrderDetailPage() {
             <div>
               <p className="mb-2 text-lg font-bold">주문 정보</p>
               <div className="mb-4 flex flex-col gap-2 rounded-2xl bg-white px-4 py-4">
-                <OrderInfoRow label="주문번호" value={orderDetail.orderNumber.toString()} primary />
-                <OrderInfoRow label="보내는분" value={orderDetail.user.name} />
+                <OrderInfoRow
+                  label="주문번호"
+                  value={orderDetail.orderNumber.toString()}
+                  primary
+                />
                 <OrderInfoRow label="결제일시" value={orderDetail.orderDate} />
-                <OrderInfoRow label="상품 금액" value={`${orderDetail.totalPrice.toLocaleString()}원`} />
-                <OrderInfoRow label="연락처" value={orderDetail.user.phone} />
+                <OrderInfoRow
+                  label="상품 금액"
+                  value={`${orderDetail.totalPrice.toLocaleString()}원`}
+                />
+                <OrderInfoRow label="수령인 연락처" value={orderDetail.deliveryInfo.recipientPhone} />
                 <OrderInfoRow
                   label="배송지"
-                  value={`${orderDetail.user.address} ${orderDetail.user.addressDetail || ''}`}
+                  value={`${orderDetail.deliveryInfo.address} ${orderDetail.deliveryInfo.addressDetail}`}
                 />
                 {orderDetail.deliveryRequest && (
                   <OrderInfoColumn
