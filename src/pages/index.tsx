@@ -1,8 +1,7 @@
 import BannerCarousel from '@/components/carousel/BannerCarousel'
 import CarouselSet from '@/components/carousel/CarouselSet'
-import ProductCarousel from '@/components/carousel/ProductCarousel'
 import HomeCategory from '@/components/common/HomeCategory'
-import { MOCK_PRODUCTS } from '@/mocks/products'
+import { MOCK_ITEMS } from '@/mocks/items'
 
 export default function Home({ best, meat }: any) {
   return (
@@ -27,7 +26,7 @@ export default function Home({ best, meat }: any) {
           <CarouselSet
             title="지금 가장 많이 담는 특가"
             subtitle="꼭 담아야 할 추천 특가템 최대 60% OFF"
-            products={MOCK_PRODUCTS}
+            items={MOCK_ITEMS}
             viewAllHref="/temp"
           />
         </div>
@@ -38,7 +37,7 @@ export default function Home({ best, meat }: any) {
           <CarouselSet
             title="정육 특가 모음"
             subtitle="신선한 정육을 합리적인 가격에"
-            products={MOCK_PRODUCTS}
+            items={MOCK_ITEMS}
             viewAllHref="/temp"
             icon={<span className="text-2xl">🥩</span>}
           />

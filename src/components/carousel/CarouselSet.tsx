@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
-import ProductCarousel from '@/components/carousel/ProductCarousel'
 import type { ReactNode } from 'react'
-import type { Product } from '@/types'
+import type { Item } from '@/types'
+import ItemCarousel from '@/components/carousel/ItemCarousel'
 
 export type Props = {
   title: string
   subtitle?: string
-  products: Product[]
+  items: Item[]
   viewAllHref: string
   icon?: ReactNode
   className?: string
@@ -16,7 +16,7 @@ export type Props = {
 export default function CarouselSet({
   title,
   subtitle,
-  products,
+  items,
   viewAllHref,
   icon = <span className="text-2xl">🛒</span>,
   className,
@@ -43,7 +43,7 @@ export default function CarouselSet({
         <p className="text-center text-sm text-gray-400">{subtitle}</p>
       )}
 
-      <ProductCarousel products={products} viewAllHref={viewAllHref} />
+      <ItemCarousel items={items} viewAllHref={viewAllHref} />
     </section>
   )
 }

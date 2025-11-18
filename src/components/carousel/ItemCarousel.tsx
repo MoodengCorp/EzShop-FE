@@ -5,19 +5,19 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { useEffect, useMemo, useState } from 'react'
-import ProductCard from './ProductCard'
-import ProductAllCard from './ProductAllCard'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 
-import type { Product } from '@/types/product'
+import type { Item } from '@/types/item'
+import ViewAllCard from './ViewAllCard'
+import ItemCard from './ItemCard'
 
 interface Props {
-  products: Product[]
+  items: Item[]
   viewAllHref: string
 }
 
-export default function ProductCarousel({ products, viewAllHref }: Props) {
+export default function ItemCarousel({ items, viewAllHref }: Props) {
   const [api, setApi] = useState<CarouselApi>()
   const [snap, setSnap] = useState(0)
 
@@ -81,14 +81,14 @@ export default function ProductCarousel({ products, viewAllHref }: Props) {
         plugins={[wheelPlugin]}
       >
         <CarouselContent className="-ml-[9px] touch-pan-x">
-          {products.map((item) => (
+          {items.map((item) => (
             <CarouselItem key={item.id} className="basis-1/4 px-[9px]">
-              <ProductCard item={item} />
+              <ItemCard item={item} />
             </CarouselItem>
           ))}
 
           <CarouselItem className="basis-1/4 px-[9px]">
-            <ProductAllCard href={viewAllHref} />
+            <ViewAllCard href={viewAllHref} />
           </CarouselItem>
         </CarouselContent>
       </Carousel>
