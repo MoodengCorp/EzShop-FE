@@ -3,11 +3,12 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
-import OrderItem from '@/features/orders/components/OrderItem'
+import {OrderItem} from '@/features/orders/components/OrderItem'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
 import { useOrderDetail } from '@/features/orders/hooks/useOrders'
 import { ApiError } from '@/types'
 import { toast } from 'sonner'
+import { OrderInfoColumn, OrderInfoRow } from '@/features/orders/components/OrderInfo'
 
 export default function OrderDetailPage() {
   const router = useRouter()
@@ -136,35 +137,5 @@ export default function OrderDetailPage() {
         )}
       </MyPageLayout>
     </ProtectedRoute>
-  )
-}
-
-// ✅ 반복되는 UI를 컴포넌트로 분리
-interface OrderInfoRowProps {
-  label: string
-  value: string
-  primary?: boolean
-}
-
-function OrderInfoRow({ label, value, primary }: OrderInfoRowProps) {
-  return (
-    <div className={`flex justify-between ${primary ? 'text-lg font-semibold' : 'text-sm font-semibold text-gray-400'}`}>
-      <p>{label}</p>
-      <p>{value}</p>
-    </div>
-  )
-}
-
-interface OrderInfoColumnProps {
-  label: string
-  value: string
-}
-
-function OrderInfoColumn({ label, value }: OrderInfoColumnProps) {
-  return (
-    <div className="flex flex-col gap-1 text-sm font-semibold text-gray-400">
-      <p>{label}</p>
-      <p className="font-extrabold">{value}</p>
-    </div>
   )
 }

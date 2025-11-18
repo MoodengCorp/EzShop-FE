@@ -36,16 +36,18 @@ export interface Order {
   items: OrderItem[]
 }
 
+export interface DeliveryAddress {
+  name: string
+  phone: string
+  address: string
+  addressDetail?: string
+}
+
 /**
  * 주문 상세 정보 (배송지 포함)
  */
 export interface OrderDetail extends Order {
-  user: {
-    name: string
-    phone: string
-    address: string
-    addressDetail?: string
-  }
+  user: DeliveryAddress  // 재사용!
   deliveryRequest?: string
 }
 

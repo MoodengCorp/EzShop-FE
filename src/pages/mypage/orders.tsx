@@ -15,7 +15,6 @@ import {
 import { OrderPeriod } from '@/features/orders/types/order'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import OrderItem from '@/features/orders/components/OrderItem'
 import { usePagination } from '@/hooks/usePagination'
 import DefaultPagination from '@/components/common/DefaultPagination'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
@@ -25,14 +24,17 @@ import { mockOrders } from '@/mocks/OrderData'
 import { useRouter } from 'next/router'
 import { ApiError } from '@/types'
 import { toast } from 'sonner'
+import { OrderItem, useOrderFilters } from '@/features/orders'
+import { useErrorHandler } from '@/hooks/useErrorHandler'
 
 export default function OrdersPage() {
-  const [period, setPeriod] = useState<OrderPeriod>('3개월')
+  const { period, setPeriod } = useOrderFilters()  // URL에서 관리
   const [searchQuery, setSearchQuery] = useState('')
   const { refetchUser } = useAuth()
   const router = useRouter()
 
   const { data: orders = [], isLoading, error } = useOrders(period)
+  useErrorHandler(error);
 
   useEffect(() => {
     refetchUser()

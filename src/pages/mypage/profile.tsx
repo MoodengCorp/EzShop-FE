@@ -9,26 +9,7 @@ import { ApiResponse } from '@/types/api'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/features/auth/store/authStore'
-
-// 사용자 정보 타입
-interface UserInfo {
-  email: string
-  name: string
-  phone: string
-  address?: string
-  addressDetail?: string
-}
-
-// 사용자 정보 수정 요청 타입
-interface UpdateUserInfoRequest {
-  currentPassword?: string
-  newPassword?: string
-  newPasswordConfirm?: string
-  name: string
-  phone: string
-  address?: string
-  addressDetail?: string
-}
+import { UpdateUserInfoFormData, UserInfo } from '@/features/user/types/user'
 
 export default function ProfilePage() {
   const [password, setPassword] = useState('')
@@ -258,7 +239,7 @@ export function AfterPasswordMatchProfile() {
     setIsLoading(true)
 
     try {
-      const updateData: UpdateUserInfoRequest = {
+      const updateData: UpdateUserInfoFormData = {
         name: userInfo.name,
         phone: userInfo.phone,
         address: userInfo.address,
@@ -440,21 +421,19 @@ export function AfterPasswordMatchProfile() {
             placeholder="주소를 입력해주세요"
           />
         </div>
-
-        {/* 상세주소 (선택사항) */}
-        {/*<div className="flex items-center">*/}
-        {/*  <p className="mr-20 w-32 whitespace-nowrap font-semibold">*/}
-        {/*    상세주소*/}
-        {/*  </p>*/}
-        {/*  <Input*/}
-        {/*    className="w-72"*/}
-        {/*    value={userInfo.addressDetail}*/}
-        {/*    onChange={(e) =>*/}
-        {/*      handleUserInfoChange('addressDetail', e.target.value)*/}
-        {/*    }*/}
-        {/*    placeholder="상세주소를 입력해주세요"*/}
-        {/*  />*/}
-        {/*</div>*/}
+        <div className="flex items-center">
+          <p className="mr-20 w-32 whitespace-nowrap font-semibold">
+            상세주소
+          </p>
+          <Input
+            className="w-72"
+            value={userInfo.addressDetail}
+            onChange={(e) =>
+              handleUserInfoChange('addressDetail', e.target.value)
+            }
+            placeholder="상세주소를 입력해주세요"
+          />
+        </div>
       </div>
 
       <Separator className="border-[1px] border-black bg-black" />

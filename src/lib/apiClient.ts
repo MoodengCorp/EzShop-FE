@@ -35,6 +35,41 @@ class ApiClient {
   }
 
   /**
+   * Query params를 URL에 추가하는 헬퍼 함수
+   * @param endpoint - 기본 엔드포인트
+   * @param params - query params 객체
+   * @returns query string이 추가된 URL
+   */
+  private buildUrlWithParams(
+    endpoint: string,
+    params?: Record<string, string | number | boolean | undefined>
+  ): string {
+    if (!params) {
+      return endpoint
+    }
+
+    const searchParams = new URLSearchParams()
+
+    Object.entries(params).forEach(([key, value]) => {
+      // undefined나 null은 제외
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, String(value))
+      }
+    })
+
+    const queryString = searchParams.toString()
+
+    // query string이 있으면 추가
+    if (queryString) {
+      // endpoint에 이미 ?가 있으면 &로 연결, 없으면 ?로 시작
+      const separator = endpoint.includes('?') ? '&' : '?'
+      return `${endpoint}${separator}${queryString}`
+    }
+
+    return endpoint
+  }
+
+  /**
    * 토큰 갱신
    */
   private async refreshAccessToken(): Promise<string> {
@@ -167,7 +202,10 @@ class ApiClient {
     endpoint: string,
     config: RequestConfig = {}
   ): Promise<T> {
-    const { requiresAuth = true, headers, ...restConfig } = config
+    const { requiresAuth = true, params, headers, ...restConfig } = config
+
+    // ✨ params가 있으면 URL에 추가
+    const urlWithParams = this.buildUrlWithParams(endpoint, params)
 
     // Headers 객체 생성 및 구성
     const requestHeaders = new Headers(this.defaultHeaders)
@@ -198,12 +236,12 @@ class ApiClient {
     }
 
     try {
-      // 1. 요청 전송
-      let response = await fetch(`${this.baseURL}${endpoint}`, requestConfig)
+      // 1. 요청 전송 (params가 추가된 URL 사용)
+      let response = await fetch(`${this.baseURL}${urlWithParams}`, requestConfig)
 
       // 2. 401 에러면 토큰 갱신 후 재요청
       if (response.status === HTTP_STATUS.UNAUTHORIZED && requiresAuth) {
-        response = await this.handleUnauthorized(endpoint, requestConfig)
+        response = await this.handleUnauthorized(urlWithParams, requestConfig)
       }
 
       // 3. 응답 파싱 및 에러 체크
@@ -234,6 +272,7 @@ class ApiClient {
   /**
    * GET 요청
    * - request()에 method: 'GET'을 전달
+   * - params를 통해 query string 추가 가능
    */
   async get<T = any>(endpoint: string, config?: RequestConfig): Promise<T> {
     return this.request<T>(endpoint, { ...config, method: 'GET' })

@@ -1,7 +1,7 @@
 // src/types/user.ts
 // 사용자 정보 관련 타입
 
-import { UserRole } from '../../auth/types/auth'
+import { UserRole } from '@/features/auth'
 
 /**
  * 사용자 상세 정보
@@ -13,6 +13,13 @@ export interface UserInfo {
   address?: string
   addressDetail?: string
   role?: UserRole
+}
+
+export interface UserProfileFormData {
+  name: string
+  phone: string
+  address: string
+  addressDetail?: string
 }
 
 /**
@@ -44,7 +51,7 @@ export interface UpdateUserInfoRequest {
 /**
  * 비밀번호 확인 요청
  */
-export interface PasswordCheckRequest {
+export interface VerifyPasswordRequest {
   password: string
 }
 
