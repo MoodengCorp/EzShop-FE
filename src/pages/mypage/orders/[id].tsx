@@ -12,6 +12,7 @@ import {
   OrderInfoColumn,
   OrderInfoRow,
 } from '@/features/orders/components/OrderInfo'
+import { useErrorHandler } from '@/hooks/useErrorHandler'
 
 export default function OrderDetailPage() {
   const router = useRouter()
@@ -19,34 +20,7 @@ export default function OrderDetailPage() {
 
   // ✅ useOrderDetail 훅으로 데이터 조회
   const { data: orderDetail, isLoading, error } = useOrderDetail(id as string)
-
-  // ✅ 에러 처리
-  useEffect(() => {
-    if (error) {
-      if (error instanceof ApiError) {
-        if (error.isAuthError()) {
-          toast.error('로그인이 필요합니다.')
-          router.push('/auth/Login')
-          return
-        }
-
-        if (error.statusCode === 404) {
-          toast.error('주문 정보를 찾을 수 없습니다.')
-          router.push('/mypage/orders')
-          return
-        }
-
-        if (error.isServerError()) {
-          toast.error('서버에 일시적인 문제가 발생했습니다.')
-          return
-        }
-
-        toast.error(error.message)
-      } else {
-        toast.error('알 수 없는 오류가 발생했습니다.')
-      }
-    }
-  }, [error, router])
+  useErrorHandler(error);
 
   return (
     <ProtectedRoute>

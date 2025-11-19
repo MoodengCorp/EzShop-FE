@@ -22,8 +22,6 @@ import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useOrders } from '@/features/orders/hooks/useOrders'
 import { mockOrders } from '@/mocks/OrderData'
 import { useRouter } from 'next/router'
-import { ApiError } from '@/types'
-import { toast } from 'sonner'
 import { OrderItem, useOrderFilters } from '@/features/orders'
 import { useErrorHandler } from '@/hooks/useErrorHandler'
 
@@ -39,39 +37,6 @@ export default function OrdersPage() {
   useEffect(() => {
     refetchUser()
   }, [])
-
-  useEffect(() => {
-    if (error) {
-      if (error instanceof ApiError) {
-        // 인증 에러 → 로그인 페이지로
-        if (error.isAuthError()) {
-          toast.error('로그인이 필요합니다.', {
-            position: 'top-center',
-          })
-          router.push('/auth/Login')
-          return
-        }
-
-        // 서버 에러 → 특별한 메시지
-        if (error.isServerError()) {
-          toast.error(
-            '서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-            {
-              position: 'top-center',
-            },
-          )
-          return
-        }
-
-        // 일반 에러
-        toast.error(error.message, {
-          position: 'top-center',
-        })
-      } else {
-        toast.error('알 수 없는 오류가 발생했습니다.')
-      }
-    }
-  }, [error, router])
 
   // // 검색 필터링, 백엔드 완성되면 이걸로 교체
   // const filteredOrders = useMemo(() => {
