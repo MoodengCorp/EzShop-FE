@@ -4,7 +4,7 @@ export type deliveryType = 'FAST' | 'NORMAL'
 
 export interface Item {
   itemId: number
-  categoryId: number
+  categoryName: string
   name: string
   price: number
   thumbnailUrl: string
@@ -13,7 +13,7 @@ export interface Item {
 // 아이템 상세 조회 응답
 export interface ItemDetailResponse {
   itemId: number
-  catergoryId: number
+  categoryName: string
   name: string
   origin: string
   deliveryType: deliveryType
@@ -27,7 +27,7 @@ export interface ItemDetailResponse {
 }
 
 export interface ItemCreateRequest {
-  categoryId: number
+  categoryName: string
   name: string
   origin: string
   deliveryType: deliveryType

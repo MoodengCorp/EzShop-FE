@@ -2,9 +2,8 @@
  * 장바구니 아이템
  */
 export interface CartItem {
-  cartItemId: number // ✅ 장바구니 항목 ID (명확하게 구분)
-  itemId: number // ✅ 실제 상품 ID
-  cartId: number
+  cartItemId: number
+  itemId: number
   name: string
   price: number
   quantity: number
@@ -12,6 +11,11 @@ export interface CartItem {
   checked: boolean // UI 전용 (API 요청 시 제외)
 }
 
+export interface CartResponse {
+  cartItems: CartItem[]
+  totalPrice: number
+  totalCount: number // 헤더 장바구니 최종 갯수 표시하기 위함
+}
 /**
  * 장바구니 추가 요청
  */
@@ -23,15 +27,11 @@ export interface CartAddRequest {
 /**
  * 장바구니 수량 변경 요청
  */
-export interface CartUpdateQuantityRequest {
-  quantity: number
+export interface CartUpdateRequest {
+  cartItemId: number
+  count: number
 }
 
-/**
- * 장바구니 응답
- */
-export interface CartResponse {
-  cartItems: CartItem[]
-  totalPrice: number
-  totalCount: number
+export interface CartDeleteRequest {
+  cartItemIds: number[]
 }

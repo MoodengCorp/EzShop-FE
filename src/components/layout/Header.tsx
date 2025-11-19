@@ -10,7 +10,7 @@ export default function Header() {
   const { isAuthenticated, name, logout, isLoggingOut } = useAuth()
 
   const { data: cartData } = useCart()
-  const totalCount = cartData?.totalCount ?? 0
+  const totalCount = cartData?.data?.totalCount ?? 0
 
   return (
     <header className="mx-auto my-0 w-[1050px] overflow-hidden">
@@ -75,7 +75,7 @@ export default function Header() {
             <div className="relative cursor-pointer">
               <ShoppingCart />
               {totalCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-deepBlue text-[10px] font-bold text-white">
                   {totalCount > 99 ? '99+' : totalCount}
                 </span>
               )}
