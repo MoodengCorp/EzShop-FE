@@ -10,7 +10,7 @@ export function OrderStatusColorBox({ orderStatus, orderStatusCount, icon }: Ord
   const colors = STATUS_COLORS[orderStatus]
   const status = STATUS_KR[orderStatus]
   return (
-    <div className={`flex justify-between items-center gap-14 rounded-lg p-3 mx-4 w-52 ${colors}`}>
+    <div className={`flex justify-between items-center rounded-lg p-3 mx-2 w-40 ${colors}`}>
       <div>
         <p>{status}</p>
         <p>{orderStatusCount}</p>
