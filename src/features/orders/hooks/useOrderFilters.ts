@@ -5,7 +5,6 @@ export const useOrderFilters = () => {
   const router = useRouter()
 
   const period = (router.query.period as OrderPeriod) || '3개월'
-  const searchQuery = (router.query.search as string) || ''
 
   const setPeriod = (newPeriod: OrderPeriod) => {
     router.push(
@@ -18,16 +17,5 @@ export const useOrderFilters = () => {
     )
   }
 
-  const setSearchQuery = (query: string) => {
-    router.push(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, search: query },
-      },
-      undefined,
-      { shallow: true }
-    )
-  }
-
-  return { period, searchQuery, setPeriod, setSearchQuery }
+  return { period, setPeriod, }
 }

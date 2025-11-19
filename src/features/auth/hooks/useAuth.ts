@@ -18,18 +18,6 @@ export const useAuth = () => {
     role: storeRole,
   } = useAuthStore()
 
-  // 현재 사용자 정보 조회
-  const {
-    data: currentUser,
-    isLoading: isLoadingUser,
-    refetch: refetchUser,
-  } = useQuery({
-    queryKey: authKeys.currentUser(),
-    queryFn: authApi.getCurrentUser,
-    enabled: isAuthenticated, // 자동으로 로그인 상태 추적
-    staleTime: 10 * 60 * 1000, // 10분
-  })
-
   // 회원가입 Mutation
   const signupMutation = useMutation({
     mutationFn: authApi.signup,
@@ -76,7 +64,6 @@ export const useAuth = () => {
     // 상태
     isAuthenticated,
     name: storeName,
-    isLoadingUser,
     storeRole,
 
     // 회원가입
@@ -91,8 +78,5 @@ export const useAuth = () => {
     // 로그아웃
     logout: logoutMutation.mutate,
     isLoggingOut: logoutMutation.isPending,
-
-    // 기타
-    refetchUser,
   }
 }

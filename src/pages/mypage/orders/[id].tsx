@@ -5,14 +5,13 @@ import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
 import { OrderItem } from '@/features/orders/components/OrderItem'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
-import { useOrderDetail } from '@/features/orders/hooks/useOrders'
 import { ApiError } from '@/types'
-import { toast } from 'sonner'
 import {
   OrderInfoColumn,
   OrderInfoRow,
 } from '@/features/orders/components/OrderInfo'
 import { useErrorHandler } from '@/hooks/useErrorHandler'
+import { useOrderDetail } from '@/features/orders'
 
 export default function OrderDetailPage() {
   const router = useRouter()

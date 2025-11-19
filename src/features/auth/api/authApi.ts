@@ -5,7 +5,7 @@ import { SignupRequest } from '@/features/auth/types/auth'
 
 
 /**
- * login, logout, getCurrentUser
+ * signup, login, logout
  */
 export const authApi = {
   signup: (request : SignupRequest) => (
@@ -19,8 +19,5 @@ export const authApi = {
     )
   ),
   logout: () =>
-    apiClient.get('/user/logout'),
-  getCurrentUser: (): Promise<User> => (
-    apiClient.get<User>('/user/info')
-  )
+    apiClient.get<ApiResponse<void>>('/user/logout'),
 }
