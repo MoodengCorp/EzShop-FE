@@ -1,6 +1,6 @@
 // src/features/orders/types/seller-order.types.ts
 import { PaginationDto } from '@/types/common'
-import { Order, OrderStatus } from '@/features/orders'
+import { OrderDetail, OrderStatus } from '@/features/orders'
 
 /**
  * 판매자 주문 검색 파라미터
@@ -20,7 +20,7 @@ export interface SellerOrderSearchParams {
  * ✅ 백엔드 ItemSearchResponseDto와 유사한 구조
  */
 export interface SellerOrderSearchResponse {
-  orders: Order[]
+  orders: OrderDetail[]
   pagination: PaginationDto
 }
 
