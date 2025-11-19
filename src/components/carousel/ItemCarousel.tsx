@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 
-import type { Item } from '@/types/item'
+import type { Item } from '@/features/item/types/item'
 import ViewAllCard from './ViewAllCard'
 import ItemCard from './ItemCard'
 
@@ -82,7 +82,7 @@ export default function ItemCarousel({ items, viewAllHref }: Props) {
       >
         <CarouselContent className="-ml-[9px] touch-pan-x">
           {items.map((item) => (
-            <CarouselItem key={item.id} className="basis-1/4 px-[9px]">
+            <CarouselItem key={item.itemId} className="basis-1/4 px-[9px]">
               <ItemCard item={item} />
             </CarouselItem>
           ))}
