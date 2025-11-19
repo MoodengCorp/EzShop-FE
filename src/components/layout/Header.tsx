@@ -4,9 +4,14 @@ import Image from 'next/image'
 import { Heart, Search, ShoppingCart } from 'lucide-react'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import DefaultDropdown from '@/components/common/DefaultDropdown'
+import { useCart } from '@/features/cart/hooks/useCart'
 
 export default function Header() {
   const { isAuthenticated, name, logout, isLoggingOut } = useAuth()
+
+  const { data: cartData } = useCart()
+  const totalCount = cartData?.totalCount ?? 0
+
   return (
     <header className="mx-auto my-0 w-[1050px] overflow-hidden">
       <div className="mt-4 flex items-center justify-end gap-2 pt-4 text-xs">
@@ -66,7 +71,16 @@ export default function Header() {
           </button>
         </div>
         <div className="flex w-[150px] justify-end gap-4">
-          <ShoppingCart />
+          <Link href={'/cart'}>
+            <div className="relative cursor-pointer">
+              <ShoppingCart />
+              {totalCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                  {totalCount > 99 ? '99+' : totalCount}
+                </span>
+              )}
+            </div>
+          </Link>
           <Heart />
         </div>
       </div>

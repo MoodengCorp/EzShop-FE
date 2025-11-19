@@ -24,7 +24,6 @@ export default function ItemCard({ item }: Props) {
               sizes="(max-width: 768px) 240px, 360px"
             />
           </div>
-          // TODO : 장바구니 담기 링크 연결
           <Button
             variant="outline"
             className="borderGray mt-[6px] flex h-[36px] w-full items-center justify-center gap-[4px] rounded-[4px] border text-base leading-[36px] text-black"
