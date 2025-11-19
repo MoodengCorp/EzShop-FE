@@ -3,7 +3,7 @@ import { cartApi } from '../api/cartApi'
 import { cartKeys } from '../api/qeuryKeys'
 import { CartAddRequest } from '../types/cart'
 
-// 1. 장바구니 조회 Hook
+// 장바구니 조회
 export const useCart = () => {
   return useQuery({
     queryKey: cartKeys.details(),
@@ -12,7 +12,7 @@ export const useCart = () => {
   })
 }
 
-// 2. 장바구니 담기 Hook
+// 장바구니 담기
 export const useAddToCart = () => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -23,7 +23,7 @@ export const useAddToCart = () => {
   })
 }
 
-// 3. 수량 변경 Hook
+// 수량 변경
 export const useUpdateCartQuantity = () => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -40,7 +40,7 @@ export const useUpdateCartQuantity = () => {
   })
 }
 
-// 4. 삭제 Hook
+// 삭제
 export const useRemoveCartItem = () => {
   const queryClient = useQueryClient()
   return useMutation({

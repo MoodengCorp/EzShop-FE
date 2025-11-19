@@ -24,13 +24,13 @@ export default function CartItem({
   const { cartItemId, name, thumbnailUrl, price, quantity, checked } = item
 
   return (
-    <div className={`flex items-start gap-4 bg-white p-5 ${className ?? ''}`}>
+    <div className={`flex items-start gap-4 bg-white p-4 ${className ?? ''}`}>
       {/* 체크박스 */}
       <div className="shrink-0 pt-1">
         <Checkbox
           checked={checked}
           onCheckedChange={(v) => onToggle(cartItemId, Boolean(v))}
-          className="h-6 w-6 rounded-full border-gray-300 data-[state=checked]:border-deepBlue data-[state=checked]:bg-deepBlue"
+          className="h-6 w-6 border-gray-300 data-[state=checked]:border-deepBlue data-[state=checked]:bg-deepBlue"
           aria-label={`${name} 선택`}
         />
       </div>

@@ -2,32 +2,34 @@ import { apiClient } from '@/lib/apiClient'
 import {
   CartResponse,
   CartAddRequest,
-  CartUpdateQuantityRequest,
+  CartUpdateRequest,
+  CartDeleteRequest,
 } from '../types/cart'
+import { ApiResponse } from '@/types'
 
-// API Functions
 export const cartApi = {
   // 조회
-  getCart: async (): Promise<CartResponse> => {
-    return apiClient.get<CartResponse>('/cart')
+  getCart: async (): Promise<ApiResponse<CartResponse>> => {
+    return apiClient.get<ApiResponse<CartResponse>>('/cart')
   },
 
   // 추가
-  addToCart: async (data: CartAddRequest): Promise<void> => {
-    return apiClient.post('/cart', data)
+  addToCart: async (data: CartAddRequest): Promise<ApiResponse<void>> => {
+    return apiClient.post<ApiResponse<void>>('/cart', data)
   },
 
-  // 수량 변경 (PATCH)
+  // 수량 변경
   updateQuantity: async (
     cartItemId: number,
-    quantity: number,
-  ): Promise<void> => {
-    const payload: CartUpdateQuantityRequest = { quantity }
-    return apiClient.patch(`/cart/${cartItemId}`, payload)
+    count: number,
+  ): Promise<ApiResponse<void>> => {
+    const payload: CartUpdateRequest = { cartItemId, count }
+    return apiClient.patch<ApiResponse<void>>(`/cart`, payload)
   },
 
-  // 삭제 (DELETE)
-  removeCartItem: async (cartItemId: number): Promise<void> => {
-    return apiClient.delete(`/cart/${cartItemId}`)
+  // 삭제
+  removeCartItem: async (cartItemIds: number[]): Promise<ApiResponse<void>> => {
+    const payload: CartDeleteRequest = { cartItemIds }
+    return apiClient.delete<ApiResponse<void>>(`/cart`, { data: payload })
   },
 }

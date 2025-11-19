@@ -28,8 +28,7 @@ export default function ItemDetailPage() {
       },
       {
         onSuccess: () => {
-          alert('장바구니에 상품이 담겼습니다!')
-          // 필요 시 모달 닫기 등의 로직
+          console.log('장바구니에 추가되었습니다.')
         },
       },
     )
@@ -69,7 +68,7 @@ export default function ItemDetailPage() {
           <div className="flex flex-col border-b border-[#f4f4f4] pb-[20px]">
             <div className="flex items-center justify-between gap-2">
               <span className="text-[14px] font-bold text-[#555]">
-                {item.deliveryType}
+                {item.deliveryType === 'FAST' ? '샛별배송' : '일반배송'}
               </span>
               <button
                 type="button"

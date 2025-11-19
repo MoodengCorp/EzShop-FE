@@ -42,7 +42,7 @@ class ApiClient {
    */
   private buildUrlWithParams(
     endpoint: string,
-    params?: Record<string, string | number | boolean | undefined>
+    params?: Record<string, string | number | boolean | undefined>,
   ): string {
     if (!params) {
       return endpoint
@@ -92,14 +92,18 @@ class ApiClient {
         headers: this.defaultHeaders,
       })
 
-      const apiResponse: ApiResponse<{ accessToken: string }> = await response.json()
+      const apiResponse: ApiResponse<{ accessToken: string }> =
+        await response.json()
 
       if (!response.ok || !apiResponse.success || !apiResponse.data) {
         useAuthStore.getState().logout()
-        throw new ApiError(response.status, apiResponse.error || {
-          type: CLIENT_ERROR_TYPE.UNKNOWN_ERROR,
-          message: '토큰 갱신에 실패했습니다.',
-        })
+        throw new ApiError(
+          response.status,
+          apiResponse.error || {
+            type: CLIENT_ERROR_TYPE.UNKNOWN_ERROR,
+            message: '토큰 갱신에 실패했습니다.',
+          },
+        )
       }
 
       const newAccessToken = apiResponse.data.accessToken
@@ -119,7 +123,7 @@ class ApiClient {
    */
   private async handleUnauthorized(
     endpoint: string,
-    config: RequestInit
+    config: RequestInit,
   ): Promise<Response> {
     // 이미 갱신 중이면 대기
     if (isRefreshing) {
@@ -151,7 +155,7 @@ class ApiClient {
       return fetch(`${this.baseURL}${endpoint}`, {
         ...config,
         headers: retryHeaders,
-        credentials: 'include'
+        credentials: 'include',
       })
     } catch (error) {
       processQueue(error as ApiError, null)
@@ -168,7 +172,7 @@ class ApiClient {
     const contentType = response.headers.get('content-type')
 
     // JSON 응답 파싱
-    let jsonData;
+    let jsonData
     if (contentType && contentType.includes('application/json')) {
       jsonData = await response.json()
     } else {
@@ -188,7 +192,7 @@ class ApiClient {
         result.error || {
           type: CLIENT_ERROR_TYPE.UNKNOWN_ERROR,
           message: `예상치 못한 에러가 발생했습니다: ${response.status}`,
-        }
+        },
       )
     }
     return result as T
@@ -200,7 +204,7 @@ class ApiClient {
    */
   private async request<T>(
     endpoint: string,
-    config: RequestConfig = {}
+    config: RequestConfig = {},
   ): Promise<T> {
     const { requiresAuth = true, params, headers, ...restConfig } = config
 
@@ -212,9 +216,8 @@ class ApiClient {
 
     // 사용자가 전달한 헤더 추가
     if (headers) {
-      const headerEntries = headers instanceof Headers
-        ? headers.entries()
-        : Object.entries(headers)
+      const headerEntries =
+        headers instanceof Headers ? headers.entries() : Object.entries(headers)
 
       for (const [key, value] of headerEntries) {
         requestHeaders.set(key, value as string)
@@ -230,14 +233,17 @@ class ApiClient {
     }
 
     const requestConfig: RequestInit = {
-      ...restConfig,  // method, body 등이 여기 포함됨
+      ...restConfig, // method, body 등이 여기 포함됨
       headers: requestHeaders,
       credentials: 'include',
     }
 
     try {
       // 1. 요청 전송 (params가 추가된 URL 사용)
-      let response = await fetch(`${this.baseURL}${urlWithParams}`, requestConfig)
+      let response = await fetch(
+        `${this.baseURL}${urlWithParams}`,
+        requestConfig,
+      )
 
       // 2. 401 에러면 토큰 갱신 후 재요청
       if (response.status === HTTP_STATUS.UNAUTHORIZED && requiresAuth) {
@@ -246,7 +252,6 @@ class ApiClient {
 
       // 3. 응답 파싱 및 에러 체크
       return await this.parseResponse<T>(response)
-
     } catch (error) {
       // 네트워크 에러 (fetch 자체가 실패)
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
@@ -285,7 +290,7 @@ class ApiClient {
   async post<T = any>(
     endpoint: string,
     data?: any,
-    config?: RequestConfig
+    config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...config,
@@ -300,7 +305,7 @@ class ApiClient {
   async put<T = any>(
     endpoint: string,
     data?: any,
-    config?: RequestConfig
+    config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...config,
@@ -315,7 +320,7 @@ class ApiClient {
   async patch<T = any>(
     endpoint: string,
     data?: any,
-    config?: RequestConfig
+    config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...config,
@@ -329,14 +334,19 @@ class ApiClient {
    */
   async delete<T = any>(
     endpoint: string,
-    config?: RequestConfig
+    data?: any,
+    config?: RequestConfig,
   ): Promise<T> {
-    return this.request<T>(endpoint, { ...config, method: 'DELETE' })
+    return this.request<T>(endpoint, {
+      ...config,
+      method: 'DELETE',
+      body: data ? JSON.stringify(data) : undefined,
+    })
   }
 }
 
 export const apiClient = new ApiClient(
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
 )
 
 export { ApiClient }
