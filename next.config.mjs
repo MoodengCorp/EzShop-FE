@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'img.kurly.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com'
+      }
     ],
   },
 }

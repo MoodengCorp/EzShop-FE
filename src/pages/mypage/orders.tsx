@@ -19,8 +19,7 @@ import { usePagination } from '@/hooks/usePagination'
 import DefaultPagination from '@/components/common/DefaultPagination'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
 import { useAuth } from '@/features/auth/hooks/useAuth'
-import { useOrders } from '@/features/orders/hooks/useOrders'
-import { mockOrders } from '@/mocks/OrderData'
+import { MOCK_SELLER_ORDERS  } from '@/mocks/SellerOrders'
 import { useRouter } from 'next/router'
 import { OrderItem, useOrderFilters } from '@/features/orders'
 import { useErrorHandler } from '@/hooks/useErrorHandler'
@@ -28,15 +27,7 @@ import { useErrorHandler } from '@/hooks/useErrorHandler'
 export default function OrdersPage() {
   const { period, setPeriod } = useOrderFilters()  // URL에서 관리
   const [searchQuery, setSearchQuery] = useState('')
-  const { refetchUser } = useAuth()
   const router = useRouter()
-
-  const { data: orders = [], isLoading, error } = useOrders(period)
-  useErrorHandler(error);
-
-  useEffect(() => {
-    refetchUser()
-  }, [])
 
   // // 검색 필터링, 백엔드 완성되면 이걸로 교체
   // const filteredOrders = useMemo(() => {
@@ -51,14 +42,14 @@ export default function OrdersPage() {
 
   // 검색 필터링
   const filteredOrders = useMemo(() => {
-    if (!searchQuery.trim()) return mockOrders
+    if (!searchQuery.trim()) return MOCK_SELLER_ORDERS
 
-    return mockOrders.filter((order) =>
+    return MOCK_SELLER_ORDERS.filter((order) =>
       order.items.some((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
     )
-  }, [mockOrders, searchQuery])
+  }, [MOCK_SELLER_ORDERS, searchQuery])
 
   const pagination = usePagination({
     data: filteredOrders,
@@ -96,26 +87,6 @@ export default function OrdersPage() {
               </div>
             </div>
           </div>
-
-          {/* 로딩 상태 */}
-          {isLoading && (
-            <div className="rounded-2xl bg-white p-8 text-center">
-              <p className="text-gray-600">주문 내역을 불러오는 중...</p>
-            </div>
-          )}
-
-          {/* 에러 상태 */}
-          {error && !isLoading && (
-            <div className="rounded-2xl bg-white p-8 text-center">
-              <p className="mb-2 text-red-600">{error.message}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="text-primary underline"
-              >
-                다시 시도
-              </button>
-            </div>
-          )}
 
           {filteredOrders.length === 0 ? (
             <div className="rounded-2xl bg-white p-8 text-center">
