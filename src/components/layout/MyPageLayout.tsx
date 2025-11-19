@@ -1,4 +1,4 @@
-import Sidebar from '@/components/common/Sidebar'
+import Sidebar from '@/features/user/components/Sidebar'
 import { ReactNode } from 'react'
 
 type MyPageLayoutProps = {

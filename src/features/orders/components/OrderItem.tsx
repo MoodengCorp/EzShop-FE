@@ -34,7 +34,7 @@ export function OrderItem({
                 <p>{item.purchasePrice}원</p>
               </div>
             </div>
-            <Link href="/public">
+            <Link href={`/item/${item.itemId}`}>
               <ShoppingCart
                 className="size-9 rounded-lg border-[1px] border-gray-200 p-2"
                 strokeOpacity={0.7}

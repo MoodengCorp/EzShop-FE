@@ -16,10 +16,8 @@ export {
 // Types
 export type {
   UserInfo,
-  UserProfileFormData,
   UpdateUserInfoRequest,
   VerifyPasswordRequest,
   PasswordChangeFormData,
   PasswordChangeRequest,
-  DeliveryAddress,
 } from './types/user'

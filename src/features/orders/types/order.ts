@@ -4,7 +4,7 @@
  * 주문 상태
  * ✅ 백엔드 OrderStatus enum과 일치
  */
-export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED'
+export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED | CANCEL'
 
 /**
  * 주문 기간 필터 (프론트엔드 전용)
@@ -53,7 +53,7 @@ export interface DeliveryInfo {
  */
 export interface OrderDetail extends Order {
   deliveryInfo: DeliveryInfo  // ✅ 구조 변경 (user -> deliveryInfo)
-  deliveryRequest: string
+  deliveryRequest?: string
 }
 
 /**

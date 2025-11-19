@@ -77,6 +77,7 @@ export const useAuth = () => {
     isAuthenticated,
     name: storeName,
     isLoadingUser,
+    storeRole,
 
     // 회원가입
     signup: signupMutation.mutate,
