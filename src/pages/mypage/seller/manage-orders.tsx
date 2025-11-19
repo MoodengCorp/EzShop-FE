@@ -65,6 +65,11 @@ export default function ManageOrders() {
               orderStatusCount={statusCounts?.DELIVERED ?? 0}
               icon={<PackageCheck />}
             />
+            <OrderStatusColorBox
+              orderStatus="CANCEL"
+              orderStatusCount={statusCounts?.CANCEL ?? 0}
+              icon={<PackageCheck />}
+            />
           </div>
 
           <Separator />

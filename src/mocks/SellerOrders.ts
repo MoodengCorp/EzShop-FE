@@ -247,6 +247,7 @@ export const MOCK_ORDER_STATUS_COUNTS: OrderStatusCounts = {
   PENDING: 4,
   DELIVERING: 3,
   DELIVERED: 3,
+  CANCEL: 1
 }
 
 /**

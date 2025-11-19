@@ -31,4 +31,5 @@ export interface OrderStatusCounts {
   PENDING: number
   DELIVERING: number
   DELIVERED: number
+  CANCEL: number
 }
