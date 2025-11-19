@@ -18,13 +18,14 @@ export default function ManageOrders() {
   const {
     data: orderData,
     isLoading: isLoadingOrders,
-    error: ordersError
+    error: ordersError,
+    refetch: refetchOrders,
   } = useSellerOrders({
     ...filters,
     page: currentPage,
     perPage: 10,
   })
-  const {data: statusCounts} = useOrderStatusCounts()
+  const {data: statusCounts, refetch: refetchCounts} = useOrderStatusCounts()
   useErrorHandler(ordersError)
 
   const handleSearch = (newFilters: Omit<SellerOrderSearchParams, 'page'| 'perPage'>)=> {
@@ -34,6 +35,12 @@ export default function ManageOrders() {
 
   const handlePageChange = (page: number)=> {
     setCurrentPage(page)
+  }
+
+  const handleRefresh = () => {
+    // 주문 목록과 상태 카운트 모두 새로고침
+    refetchOrders()
+    refetchCounts()
   }
 
   return (
@@ -78,7 +85,7 @@ export default function ManageOrders() {
           <SellerOrderFilter onSearch={handleSearch} />
 
           {/* 테이블 */}
-          <SellerOrderTable orders={orderData?.orders ?? []} isLoading={isLoadingOrders} />
+          <SellerOrderTable orders={orderData?.orders ?? []} isLoading={isLoadingOrders} onRefresh={handleRefresh}/>
 
           {/* 페이지네이션 */}
           {orderData?.pagination && (

@@ -3,6 +3,7 @@ import { apiClient } from '@/lib/apiClient'
 import { SellerOrderSearchParams, SellerOrderSearchResponse, OrderStatusCounts } from '../types/seller-order.types'
 import { ApiResponse } from '@/types/api'
 import { getMockSellerOrdersResponse, MOCK_ORDER_STATUS_COUNTS } from '@/mocks/SellerOrders'
+import { OrderStatus } from '@/features/orders'
 
 export const sellerOrdersApi = {
   /**
@@ -48,4 +49,21 @@ export const sellerOrdersApi = {
     // )
     // return response.data!
   },
+
+  /**
+   * 주문 상태 변경
+   * @param orderId 주문 ID
+   * @param newStatus 새로운 주문 상태
+   */
+  updateOrderStatus: async (
+    orderId: number,
+    newStatus: OrderStatus
+  ): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    // ✅ 백엔드 준비되면 아래 주석 해제
+    // await apiClient.patch<ApiResponse<void>>(
+    //   `/seller/orders/${orderId}/status`,
+    //   { status: newStatus }
+    // )
+  }
 }

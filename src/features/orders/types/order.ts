@@ -4,7 +4,7 @@
  * 주문 상태
  * ✅ 백엔드 OrderStatus enum과 일치
  */
-export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED | CANCEL'
+export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED' | 'CANCEL'
 
 /**
  * 주문 기간 필터 (프론트엔드 전용)
@@ -73,10 +73,19 @@ export interface OrderCreateFormData {
  * ✅ 백엔드 OrderCreateRequestDto와 완전히 일치
  */
 export interface OrderCreateRequest {
-  cartItemIds: number[]
+  cartId: number
+  orderItemInfo: OrderItemInfo[],
   recipientName: string
   recipientPhone: string
+  totalPrice: number
   address: string
   addressDetail: string
   deliveryRequest?: string
+}
+
+export interface OrderItemInfo {
+  cartItemId: number // ✅ 장바구니 항목 ID (명확하게 구분)
+  itemId: number // ✅ 실제 상품 ID
+  price: number
+  quantity: number
 }
