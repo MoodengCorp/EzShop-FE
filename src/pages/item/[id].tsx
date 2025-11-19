@@ -2,18 +2,38 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { Heart, Bell, Share2 } from 'lucide-react'
-
-// 사용자 프로젝트에 존재하는 컴포넌트 import
 import { Button } from '@/components/ui/button'
 import QuantityStepper from '@/components/common/QuantityStepper'
 import { MOCK_ITEMS_DETAIL } from '@/mocks/items'
+import { useAddToCart } from '@/features/cart/hooks/useCart'
 
 export default function ItemDetailPage() {
+  const [liked, setLiked] = useState(false)
   const router = useRouter()
   const { id } = router.query
 
   const [quantity, setQuantity] = useState(1)
   const [item, setItem] = useState(MOCK_ITEMS_DETAIL[0])
+
+  // 장바구니 담기
+  const { mutate: addToCart } = useAddToCart()
+
+  const handleAddToCart = () => {
+    if (!item) return
+
+    addToCart(
+      {
+        itemId: item.itemId,
+        quantity: quantity,
+      },
+      {
+        onSuccess: () => {
+          alert('장바구니에 상품이 담겼습니다!')
+          // 필요 시 모달 닫기 등의 로직
+        },
+      },
+    )
+  }
 
   useEffect(() => {
     if (id && router.isReady) {
@@ -27,8 +47,6 @@ export default function ItemDetailPage() {
   if (!item) return null
 
   const totalPrice = item.price * quantity
-
-  const [liked, setLiked] = useState(false)
 
   return (
     <div className="mx-auto w-[1050px] pb-[100px] pt-24 font-sans text-[#333]">
@@ -165,7 +183,10 @@ export default function ItemDetailPage() {
             >
               <Bell className="!h-6 !w-6 text-[#333]" strokeWidth={1.5} />
             </Button>
-            <Button className="h-[56px] flex-1 rounded-[3px] bg-deepBlue text-[16px] font-bold hover:bg-paleBlue">
+            <Button
+              className="h-[56px] flex-1 rounded-[3px] bg-deepBlue text-[16px] font-bold hover:bg-paleBlue"
+              onClick={handleAddToCart}
+            >
               장바구니 담기
             </Button>
           </div>
