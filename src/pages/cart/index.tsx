@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+
 // Header import 제거됨
 import CartItem from '@/features/cart/components/CartItem'
 import PaymentSummary from '@/components/common/PaymentSummary'
@@ -64,6 +66,7 @@ const MOCK_DATA = [
 ]
 
 export default function CartPage() {
+  const router = useRouter()
   const [cartItems, setCartItems] = useState(MOCK_DATA)
   const isLoading = false
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
@@ -73,7 +76,7 @@ export default function CartPage() {
       const allIds = cartItems.map((item) => item.cartItemId)
       setSelectedIds(new Set(allIds))
     }
-  }, [cartItems, selectedIds])
+  }, [cartItems])
 
   // 개별 선택 핸들러
   const handleToggle = (id: number, checked: boolean) => {
@@ -157,6 +160,17 @@ export default function CartPage() {
     )
     return { fastItems, normalItems }
   }, [cartItems])
+
+  const handleOrderClick = () => {
+    if (totalCount === 0) {
+      alert('주문할 상품을 선택해주세요.')
+      return
+    }
+    router.push({
+      pathname: '/orders',
+      query: { items: Array.from(selectedIds).join(',') },
+    })
+  }
 
   if (isLoading)
     return <div className="py-40 text-center">장바구니를 불러오는 중...</div>
@@ -321,7 +335,7 @@ export default function CartPage() {
                 <OrderCTA
                   amount={totalPrice}
                   disabled={totalCount === 0}
-                  onClick={() => alert('주문 페이지로 이동합니다!')}
+                  onClick={handleOrderClick}
                 />
 
                 <div className="px-2 text-[12px] leading-5 text-[#666]">

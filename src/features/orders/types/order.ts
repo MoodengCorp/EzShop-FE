@@ -29,8 +29,8 @@ export interface OrderItem {
  */
 export interface Order {
   orderId: number
-  orderNumber: string  // ✅ number에서 string으로 수정
-  orderDate: string    // yyyy-MM-dd 형식
+  orderNumber: string // ✅ number에서 string으로 수정
+  orderDate: string // yyyy-MM-dd 형식
   orderStatus: OrderStatus
   totalPrice: number
   items: OrderItem[]
@@ -52,7 +52,7 @@ export interface DeliveryInfo {
  * ✅ 백엔드 OrderDetailResponseDto와 완전히 일치
  */
 export interface OrderDetail extends Order {
-  deliveryInfo: DeliveryInfo  // ✅ 구조 변경 (user -> deliveryInfo)
+  deliveryInfo: DeliveryInfo // ✅ 구조 변경 (user -> deliveryInfo)
   deliveryRequest?: string
 }
 
@@ -74,7 +74,7 @@ export interface OrderCreateFormData {
  */
 export interface OrderCreateRequest {
   cartId: number
-  orderItemInfo: OrderItemInfo[],
+  orderItemInfo: OrderItemInfo[]
   recipientName: string
   recipientPhone: string
   totalPrice: number
@@ -88,4 +88,12 @@ export interface OrderItemInfo {
   itemId: number // ✅ 실제 상품 ID
   price: number
   quantity: number
+}
+
+// 주문 생성 API 응답
+// 최종 결제 페이지에 보여줘야 함
+export interface OrderCreateResponse {
+  address: string
+  addressDetail: string
+  totalPrice: number
 }
