@@ -9,12 +9,12 @@ const IconWrapper = ({ Icon }: { Icon: any }) => (
 )
 
 const categories = [
-  { id: 'fruit-nuts', name: '과일·견과', icon: Apple },
-  { id: 'vegetables', name: '채소', icon: Carrot },
-  { id: 'seafood', name: '수산·해산물', icon: Fish },
-  { id: 'meat-eggs', name: '정육·계란', icon: Beef },
-  { id: 'bakery', name: '베이커리', icon: Croissant },
-  { id: 'drinks', name: '음료', icon: GlassWater },
+  { name: '과일', icon: Apple },
+  { name: '채소', icon: Carrot },
+  { name: '해산물', icon: Fish },
+  { name: '정육', icon: Beef },
+  { name: '베이커리', icon: Croissant },
+  { name: '음료', icon: GlassWater },
 ]
 
 export default function HomeCategory() {
@@ -24,10 +24,10 @@ export default function HomeCategory() {
         <div className="pb-3 text-[18px] font-bold text-gray-600">카테고리</div>
 
         <div className="flex items-center justify-between">
-          {categories.map(({ id, name, icon: Icon }) => (
+          {categories.map(({ name, icon: Icon }) => (
             <Link
-              href={`/category/${id}`}
-              key={id}
+              href={`/item?category=${name}`}
+              key={name}
               className="group relative flex w-[150px] flex-col items-center justify-center text-center transition-transform duration-300 hover:scale-105"
             >
               <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-paleBlue/20 transition-all duration-300 group-hover:bg-paleBlue/40">
