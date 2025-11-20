@@ -38,13 +38,13 @@ export default function ItemCard({ item }: Props) {
       <Card className="w-full cursor-pointer rounded-none border-0 p-0 shadow-none">
         <CardContent className="p-0">
           {/* 이미지 영역 */}
-          <div className="relative aspect-[10/13] w-full overflow-hidden rounded-[4px]">
+          <div className="relative h-[320px] w-[249px] overflow-hidden rounded-[4px] bg-gray-100">
             <Image
               src={item.thumbnailUrl}
               alt={item.name}
               fill
-              className="absolute inset-0 m-auto block max-h-full min-h-full min-w-full max-w-full object-cover transition-transform duration-200 ease-out hover:scale-[1.03]"
-              sizes="(max-width: 768px) 240px, 360px"
+              className="absolute inset-0 m-auto block object-cover transition-transform duration-200 ease-out hover:scale-[1.03]"
+              sizes="249px"
             />
           </div>
 

@@ -4,18 +4,22 @@ import Image from 'next/image'
 import { Heart, Bell, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import QuantityStepper from '@/components/common/QuantityStepper'
-import { MOCK_ITEMS_DETAIL } from '@/mocks/items'
 import { useAddToCart } from '@/features/cart/hooks/useCart'
+import { useItemDetailQuery } from '@/features/item/hooks/useItem'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function ItemDetailPage() {
   const [liked, setLiked] = useState(false)
   const router = useRouter()
   const { id } = router.query
+  const itemId = Number(id)
 
   const [quantity, setQuantity] = useState(1)
-  const [item, setItem] = useState(MOCK_ITEMS_DETAIL[0])
 
-  // 장바구니 담기
+  const { data: response, isLoading, isError } = useItemDetailQuery(itemId)
+  const item = response?.data
+
+  // 장바구니 담기 훅
   const { mutate: addToCart } = useAddToCart()
 
   const handleAddToCart = () => {
@@ -23,37 +27,62 @@ export default function ItemDetailPage() {
 
     addToCart(
       {
-        itemId: item.itemId,
-        quantity: quantity,
+        itemId,
+        quantity,
       },
       {
         onSuccess: () => {
+          // TODO: 토스트 메시지나 알림 모달 띄울 수 있으면 하기
           console.log('장바구니에 추가되었습니다.')
+        },
+        onError: (error) => {
+          console.error('장바구니 추가 실패:', error)
         },
       },
     )
   }
 
-  useEffect(() => {
-    if (id && router.isReady) {
-      const found = MOCK_ITEMS_DETAIL.find((i) => i.itemId === Number(id))
-      if (found) {
-        setItem(found)
-      }
-    }
-  }, [id, router.isReady])
+  if (isLoading) {
+    return (
+      <div className="mx-auto w-[1050px] pb-[100px] pt-24">
+        <div className="flex justify-between gap-[60px]">
+          <Skeleton className="h-[550px] w-[430px] rounded-[10px]" />
+          <div className="flex-1 space-y-4">
+            <Skeleton className="h-8 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-10 w-1/3" />
+            <Skeleton className="h-[200px] w-full" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
-  if (!item) return null
+  // 에러 또는 데이터 없음 처리
+  if (isError || !item) {
+    return (
+      <div className="flex h-[50vh] flex-col items-center justify-center gap-4">
+        <p className="text-lg text-gray-500">상품 정보를 불러올 수 없습니다.</p>
+        <Button onClick={() => router.back()} variant="outline">
+          뒤로 가기
+        </Button>
+      </div>
+    )
+  }
 
   const totalPrice = item.price * quantity
+
+  // 이미지 URL 폴백
+  const mainImage = item.thumbnailUrl || '/ezshop_logo.png'
+  const detailImage = item.detailImageUrl || '/ezshop_logo.png'
 
   return (
     <div className="mx-auto w-[1050px] pb-[100px] pt-24 font-sans text-[#333]">
       <div className="flex justify-between gap-[60px]">
-        {/* 좌 */}
+        {/* 좌측 이미지 */}
         <div className="relative h-[550px] w-[430px] shrink-0 overflow-hidden rounded-[10px] bg-gray-50">
           <Image
-            src={item.thumbnailUrl}
+            src={mainImage}
             alt={item.name}
             fill
             priority
@@ -62,7 +91,7 @@ export default function ItemDetailPage() {
           />
         </div>
 
-        {/* 우 */}
+        {/* 우측 정보 */}
         <div className="flex-1">
           {/* 타이틀 및 공유 */}
           <div className="flex flex-col border-b border-[#f4f4f4] pb-[20px]">
@@ -106,7 +135,7 @@ export default function ItemDetailPage() {
             <div className="flex flex-col gap-3">
               <DetailRow
                 label="배송"
-                value={item.deliveryType}
+                value={item.deliveryType === 'FAST' ? '샛별배송' : '일반배송'}
                 subValue="23시 전 주문 시 수도권/충청 내일 아침 7시 전 도착"
               />
               <DetailRow
@@ -134,7 +163,8 @@ export default function ItemDetailPage() {
                       value={quantity}
                       onChange={setQuantity}
                       min={1}
-                      max={item.stockQuantity}
+                      // 재고 수량만큼만 선택 가능하게 제한 (stockQuantity가 없으면 기본 99)
+                      max={item.stockQuantity || 99}
                     />
                     <div className="flex items-center gap-1">
                       <span className="font-bold text-[#333]">
@@ -160,7 +190,7 @@ export default function ItemDetailPage() {
             </span>
           </div>
 
-          {/* 장바구니 담기 */}
+          {/* 버튼 영역 */}
           <div className="flex gap-[12px]">
             <Button
               variant="outline"
@@ -183,7 +213,7 @@ export default function ItemDetailPage() {
               <Bell className="!h-6 !w-6 text-[#333]" strokeWidth={1.5} />
             </Button>
             <Button
-              className="h-[56px] flex-1 rounded-[3px] bg-deepBlue text-[16px] font-bold hover:bg-paleBlue"
+              className="h-[56px] flex-1 rounded-[3px] bg-mainBlue text-[16px] font-bold hover:bg-blue-700"
               onClick={handleAddToCart}
             >
               장바구니 담기
@@ -192,15 +222,15 @@ export default function ItemDetailPage() {
         </div>
       </div>
 
-      {/* 하단 상세 이미지 영역  */}
+      {/* 하단 상세 이미지 영역 */}
       <div className="mt-[100px] flex flex-col items-center border-t border-[#eee] pt-[40px]">
         <div className="relative w-full rounded-[10px]">
           <Image
-            src={item.detailImageUrl}
+            src={detailImage}
             alt="상세 정보"
             width={1050}
             height={750}
-            className="h-[750px] w-full object-contain"
+            className="h-auto w-full object-contain"
           />
         </div>
       </div>
@@ -219,13 +249,9 @@ function DetailRow({
 }) {
   return (
     <div className="flex border-b border-[#f4f4f4] py-[16px] text-[14px] leading-[20px]">
-      {/* 좌 라벨 */}
       <div className="w-[128px] shrink-0 font-medium text-[#666]">{label}</div>
-
-      {/* 우 값 */}
       <div className="flex flex-col text-[#333]">
         <div>{value}</div>
-
         {subValue && (
           <div className="mt-[4px] text-[12px] leading-[18px] text-[#666]">
             {subValue}

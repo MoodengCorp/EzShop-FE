@@ -1,7 +1,6 @@
 import type { ItemDetailResponse } from '@/features/item/types/item'
 import { ItemStatusCounts, SellerItemSearchResponse } from '@/features/seller/manage_items/types/seller-Item.types'
 
-// 이미지 URL 공통 처리
 const img =
   'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg'
 
@@ -12,6 +11,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[사미헌] 갈비탕',
     price: 11700,
     stockQuantity: 100,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -27,6 +27,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[귤로장생] 타이벡 감귤 2.5kg (로얄과)',
     price: 15900,
     stockQuantity: 50,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산(제주)',
@@ -42,6 +43,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[압구정주꾸미] 주꾸미 볶음 2종 (택1)',
     price: 6900,
     stockQuantity: 200,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '베트남산',
@@ -57,6 +59,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[주말특가] 고랭지 햇사과 1.3kg',
     price: 14900,
     stockQuantity: 30,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -72,6 +75,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[조선호텔] 떡갈비 345g',
     price: 8910,
     stockQuantity: 80,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산/호주산 섞음',
@@ -87,6 +91,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[겨울간식] 삼립 호빵 5종 골라담기 (택1)',
     price: 4304,
     stockQuantity: 150,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -102,6 +107,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[KF365] 호박고구마 800g (25년 햇)',
     price: 4990,
     stockQuantity: 999,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -117,6 +123,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[이연복의 목란] 짬뽕 2인분 (맵기선택)',
     price: 13050,
     stockQuantity: 60,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -128,10 +135,11 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
   },
   {
     itemId: 9,
-    categoryName: '베이커리', // 라면 등 면류
+    categoryName: '베이커리',
     name: '[골라담기] 농심 컵라면 7종 (택2)',
     price: 4650,
     stockQuantity: 300,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
@@ -147,6 +155,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[쁘띠봉봉 X 컬리] 치밥하기 좋은 순살 바베큐치킨',
     price: 11990,
     stockQuantity: 45,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '브라질산',
@@ -162,6 +171,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[KF365] 한돈 삼겹살 구이용 600g~ (냉장)',
     price: 13540,
     stockQuantity: 10,
+    itemStatus: 'SOLDOUT',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산(한돈)',
@@ -177,6 +187,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     name: '[제일맛계컬리] 육즙+왕교자 만두 1.01kg',
     price: 8483,
     stockQuantity: 120,
+    itemStatus: 'ACTIVE',
     thumbnailUrl: img,
     detailImageUrl: img,
     origin: '국산',
