@@ -45,7 +45,7 @@ export const sellerOrdersApi = {
 
     // ✅ 백엔드 준비되면 아래 주석 해제
     // const response = await apiClient.get<ApiResponse<OrderStatusCounts>>(
-    //   '/seller/orders/status-counts'
+    //   '/orders/seller/status-counts'
     // )
     // return response.data!
   },

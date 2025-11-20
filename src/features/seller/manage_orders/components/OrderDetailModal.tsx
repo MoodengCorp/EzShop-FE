@@ -26,7 +26,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import Image from 'next/image'
-import { STATUS_KR } from '@/features/seller/constants/seller-constants'
+import { ORDER_STATUS_KR } from '@/features/seller/constants/seller-constants'
 import { toast } from 'sonner'
 import { sellerOrdersApi } from '../api/sellerOrdersApi'
 
@@ -69,7 +69,9 @@ export function OrderDetailModal({
       onStatusUpdate?.()
       onClose()
     } catch (error) {
-      toast.error('상태 변경에 실패했습니다.')
+      toast.error('상태 변경에 실패했습니다.', {
+        position: 'top-center'
+      })
     } finally {
       setIsUpdating(false)
     }
@@ -107,15 +109,15 @@ export function OrderDetailModal({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="PENDING">
-                        {STATUS_KR.PENDING}
+                        {ORDER_STATUS_KR.PENDING}
                       </SelectItem>
                       <SelectItem value="DELIVERING">
-                        {STATUS_KR.DELIVERING}
+                        {ORDER_STATUS_KR.DELIVERING}
                       </SelectItem>
                       <SelectItem value="DELIVERED">
-                        {STATUS_KR.DELIVERED}
+                        {ORDER_STATUS_KR.DELIVERED}
                       </SelectItem>
-                      <SelectItem value="CANCEL">{STATUS_KR.CANCEL}</SelectItem>
+                      <SelectItem value="CANCEL">{ORDER_STATUS_KR.CANCEL}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -195,11 +197,11 @@ export function OrderDetailModal({
             <AlertDialogDescription>
               주문 상태를{' '}
               <span className="font-bold text-black">
-                {STATUS_KR[order.orderStatus]}
+                {ORDER_STATUS_KR[order.orderStatus]}
               </span>
               에서{' '}
               <span className="font-bold text-black">
-                {selectedStatus && STATUS_KR[selectedStatus]}
+                {selectedStatus && ORDER_STATUS_KR[selectedStatus]}
               </span>
               (으)로 변경하시겠습니까?
             </AlertDialogDescription>

@@ -1,4 +1,3 @@
-// src/features/orders/types/seller-order.types.ts
 import { PaginationDto } from '@/types/common'
 import { OrderDetail, OrderStatus } from '@/features/orders'
 

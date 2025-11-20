@@ -1,4 +1,4 @@
-// src/features/orders/components/seller/SellerOrderPagination.tsx
+// src/features/orders/components/seller/CustomPagination.tsx
 import {
   Pagination,
   PaginationContent,
@@ -15,7 +15,7 @@ type SellerOrderPaginationProps = {
   onPageChange: (page: number) => void
 }
 
-export function SellerOrderPagination({ pagination, onPageChange }: SellerOrderPaginationProps) {
+export function CustomPagination({ pagination, onPageChange }: SellerOrderPaginationProps) {
   const { page: currentPage, totalPage, hasNext, hasPrev } = pagination
 
   // 표시할 페이지 번호 계산

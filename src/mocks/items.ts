@@ -1,4 +1,5 @@
 import type { ItemDetailResponse } from '@/features/item/types/item'
+import { ItemStatusCounts, SellerItemSearchResponse } from '@/features/seller/manage_items/types/seller-Item.types'
 
 const img =
   'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg'
@@ -185,3 +186,31 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     weight: 1010,
   },
 ]
+
+export const MOCK_ITEM_STATUS_COUNTS: ItemStatusCounts = {
+  ALL: 10,
+  ACTIVE: 8,
+  SOLDOUT: 1,
+  HIDDEN: 1
+}
+
+export function getMockSellerItemsResponse(
+  page: number = 1,
+  perPage: number = 10
+): SellerItemSearchResponse {
+  const startIndex = (page - 1) * perPage
+  const endIndex = startIndex + perPage
+  const paginatedItems = MOCK_ITEMS_DETAIL.slice(startIndex, endIndex)
+
+  return {
+    items: paginatedItems,
+    pagination: {
+      page,
+      perPage,
+      totalPage: Math.ceil(MOCK_ITEMS_DETAIL.length / perPage),
+      totalCount: MOCK_ITEMS_DETAIL.length,
+      hasNext: endIndex < MOCK_ITEMS_DETAIL.length,
+      hasPrev: page > 1,
+    },
+  }
+}

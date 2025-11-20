@@ -84,9 +84,9 @@ export function SellerOrderFilter({ onSearch }: SellerOrderFilterProps) {
 
         {/* 상품명 */}
         <div className="space-y-2 col-span-3">
-          <Label htmlFor="productName">상품명</Label>
+          <Label htmlFor="itemName">상품명</Label>
           <Input
-            id="productName"
+            id="itemName"
             placeholder="상품명 입력"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
