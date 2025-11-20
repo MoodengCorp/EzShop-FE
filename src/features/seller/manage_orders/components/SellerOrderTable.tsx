@@ -8,8 +8,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import {
-  STATUS_COLORS,
-  STATUS_KR,
+  ORDER_STATUS_COLORS,
+  ORDER_STATUS_KR,
 } from '@/features/seller/constants/seller-constants'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -96,9 +96,9 @@ export function SellerOrderTable({
                 <TableCell>{order.totalPrice.toLocaleString()}원</TableCell>
                 <TableCell>
                   <p
-                    className={`${STATUS_COLORS[order.orderStatus]} rounded-lg py-1 text-center`}
+                    className={`${ORDER_STATUS_COLORS[order.orderStatus]} rounded-lg py-1 text-center`}
                   >
-                    {STATUS_KR[order.orderStatus]}
+                    {ORDER_STATUS_KR[order.orderStatus]}
                   </p>
                 </TableCell>
                 <TableCell>

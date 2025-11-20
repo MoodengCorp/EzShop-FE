@@ -9,7 +9,7 @@ import { useOrderStatusCounts, useSellerOrders } from '@/features/seller/manage_
 import { useErrorHandler } from '@/hooks/useErrorHandler'
 import { SellerOrderFilter } from '@/features/seller/manage_orders/components/SellerOrderFilter'
 import { SellerOrderTable } from '@/features/seller/manage_orders/components/SellerOrderTable'
-import { SellerOrderPagination } from '@/features/seller/manage_orders/components/SellerOrderPagination'
+import { CustomPagination } from '@/components/common/CustomPagination'
 
 export default function ManageOrders() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -89,7 +89,7 @@ export default function ManageOrders() {
 
           {/* 페이지네이션 */}
           {orderData?.pagination && (
-            <SellerOrderPagination
+            <CustomPagination
               pagination={orderData.pagination}
               onPageChange={handlePageChange}
             />

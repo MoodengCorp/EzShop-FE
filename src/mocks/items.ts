@@ -1,4 +1,5 @@
 import type { ItemDetailResponse } from '@/features/item/types/item'
+import { ItemStatusCounts, SellerItemSearchResponse } from '@/features/seller/manage_items/types/seller-Item.types'
 
 // 이미지 URL 공통 처리
 const img =
@@ -15,6 +16,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1팩',
     weight: 1000,
@@ -29,6 +31,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산(제주)',
     deliveryType: 'NORMAL',
+    itemStatus: 'ACTIVE',
     packagingType: '상온 (종이포장)',
     salesUnit: '1박스',
     weight: 2500,
@@ -43,6 +46,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '베트남산',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1팩',
     weight: 300,
@@ -57,6 +61,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉장 (종이포장)',
     salesUnit: '1봉',
     weight: 1300,
@@ -71,6 +76,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산/호주산 섞음',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1팩',
     weight: 345,
@@ -85,6 +91,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'NORMAL',
+    itemStatus: 'ACTIVE',
     packagingType: '상온 (종이포장)',
     salesUnit: '1봉',
     weight: 400,
@@ -99,6 +106,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'NORMAL',
+    itemStatus: 'ACTIVE',
     packagingType: '상온 (종이포장)',
     salesUnit: '1봉',
     weight: 800,
@@ -113,6 +121,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1팩',
     weight: 1000,
@@ -127,6 +136,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'NORMAL',
+    itemStatus: 'ACTIVE',
     packagingType: '상온 (종이포장)',
     salesUnit: '2개',
     weight: 500,
@@ -141,6 +151,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '브라질산',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1팩',
     weight: 500,
@@ -155,6 +166,7 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산(한돈)',
     deliveryType: 'FAST',
+    itemStatus: 'ACTIVE',
     packagingType: '냉장 (종이포장)',
     salesUnit: '1팩',
     weight: 600,
@@ -169,8 +181,37 @@ export const MOCK_ITEMS_DETAIL: ItemDetailResponse[] = [
     detailImageUrl: img,
     origin: '국산',
     deliveryType: 'NORMAL',
+    itemStatus: 'ACTIVE',
     packagingType: '냉동 (종이포장)',
     salesUnit: '1봉',
     weight: 1010,
   },
 ]
+
+export const MOCK_ITEM_STATUS_COUNTS: ItemStatusCounts = {
+  ALL: 10,
+  ACTIVE: 8,
+  SOLDOUT: 1,
+  HIDDEN: 1
+}
+
+export function getMockSellerItemsResponse(
+  page: number = 1,
+  perPage: number = 10
+): SellerItemSearchResponse {
+  const startIndex = (page - 1) * perPage
+  const endIndex = startIndex + perPage
+  const paginatedItems = MOCK_ITEMS_DETAIL.slice(startIndex, endIndex)
+
+  return {
+    items: paginatedItems,
+    pagination: {
+      page,
+      perPage,
+      totalPage: Math.ceil(MOCK_ITEMS_DETAIL.length / perPage),
+      totalCount: MOCK_ITEMS_DETAIL.length,
+      hasNext: endIndex < MOCK_ITEMS_DETAIL.length,
+      hasPrev: page > 1,
+    },
+  }
+}

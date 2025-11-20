@@ -17,6 +17,7 @@ export interface ItemDetailResponse {
   name: string
   origin: string
   deliveryType: deliveryType
+  itemStatus: ItemStatus
   packagingType: string
   price: number
   salesUnit: string
