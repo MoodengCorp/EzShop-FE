@@ -2,7 +2,7 @@ import { PaginationDto } from '@/types/common'
 
 // 아이템 배송 타입
 export type deliveryType = 'FAST' | 'NORMAL'
-export type itemStatus = 'ACTIVE' | 'SOLDOUT' | 'HIDDEN'
+export type ItemStatus = 'ACTIVE' | 'SOLDOUT' | 'HIDDEN'
 
 export interface Item {
   itemId: number
@@ -38,5 +38,4 @@ export interface ItemDetailResponse extends Item {
   weight: number
   stockQuantity: number
   detailImageUrl: string
-  itemStatus?: itemStatus
 }
