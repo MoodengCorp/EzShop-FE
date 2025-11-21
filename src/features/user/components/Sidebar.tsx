@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import SidebarItem from '@/features/user/components/SidebarItem'
-import { CircleUserRound, Component, Info, LayoutList } from 'lucide-react'
+import { CircleUserRound, Clipboard, Component, Database, FilePlus2, Info, LayoutList } from 'lucide-react'
 import { useAuth } from '@/features/auth'
 
 export default function Sidebar() {
@@ -28,22 +28,22 @@ export default function Sidebar() {
             logo={<Info className="size-5" />}
             href="/mypage/profile"
           />
-          <SidebarItem
-            title="쿠폰"
-            logo={<Component className="size-5" />}
-            href="/mypage/coupons"
-          />
           {storeRole === 'SELLER' && (
             <>
               <Separator className="mb-2"/>
               <SidebarItem
                 title="상품 관리"
-                logo={<Component className="size-5" />}
+                logo={<Clipboard className="size-5" />}
                 href="/mypage/seller/manage-items"
               />
               <SidebarItem
+                title="상품 등록"
+                logo={<FilePlus2 className="size-5" />}
+                href="/mypage/seller/register-items"
+              />
+              <SidebarItem
                 title="주문 관리"
-                logo={<Component className="size-5" />}
+                logo={<Database className="size-5" />}
                 href="/mypage/seller/manage-orders"
               />
             </>

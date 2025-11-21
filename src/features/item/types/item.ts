@@ -1,7 +1,7 @@
 import { PaginationDto } from '@/types/common'
 
 // 아이템 배송 타입
-export type deliveryType = 'FAST' | 'NORMAL'
+export type DeliveryType = 'FAST' | 'NORMAL'
 export type ItemStatus = 'ACTIVE' | 'SOLDOUT' | 'HIDDEN'
 
 export interface Item {
@@ -31,7 +31,7 @@ export interface ItemSearchResponse {
 export interface ItemDetailResponse extends Item {
   origin: string
   categoryName: string
-  deliveryType: deliveryType
+  deliveryType: DeliveryType
   itemStatus: ItemStatus
   packagingType: string
   salesUnit: string

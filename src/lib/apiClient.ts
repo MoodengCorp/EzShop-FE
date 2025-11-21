@@ -224,6 +224,11 @@ class ApiClient {
       }
     }
 
+    if (restConfig.body instanceof FormData) {
+      requestHeaders.delete('Content-Type')
+    }
+
+
     // 인증 토큰 추가
     if (requiresAuth) {
       const token = useAuthStore.getState().accessToken
@@ -292,10 +297,11 @@ class ApiClient {
     data?: any,
     config?: RequestConfig,
   ): Promise<T> {
+    const isFormData = data instanceof FormData
     return this.request<T>(endpoint, {
       ...config,
       method: 'POST',
-      body: data ? JSON.stringify(data) : undefined,
+      body: data ? (isFormData ? data : JSON.stringify(data)) : undefined,
     })
   }
 
