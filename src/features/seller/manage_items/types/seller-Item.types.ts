@@ -1,4 +1,4 @@
-// src/features/orders/types/seller-order.types.ts
+// src/features/orders/types/seller-order.register-items.types.ts
 import { PaginationDto } from '@/types/common'
 import { ItemDetailResponse, ItemStatus } from '@/features/item/types/item'
 
