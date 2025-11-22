@@ -53,8 +53,27 @@ export default function BannerCarousel({
     }
   }, [api])
 
-  const handleNext = () => api?.scrollNext()
-  const handlePrev = () => api?.scrollPrev()
+  const handlePrev = () => {
+    if (!api) return
+    api.scrollPrev()
+
+    // ★ 핵심 수정: api.plugins()를 통해 실행 중인 오토플레이 인스턴스를 가져와서 리셋
+    // (Ref를 직접 쓰는 것보다 안전합니다)
+    const autoplay = api.plugins()?.autoplay
+    if (autoplay && playing) {
+      autoplay.reset()
+    }
+  }
+
+  const handleNext = () => {
+    if (!api) return
+    api.scrollNext()
+
+    const autoplay = api.plugins()?.autoplay
+    if (autoplay && playing) {
+      autoplay.reset()
+    }
+  }
   const pause = () => {
     autoplay.current.stop()
     setPlaying(false)
@@ -133,7 +152,7 @@ export default function BannerCarousel({
         </div>
 
         {/* 우하단 버튼 : 일시정지/시작 , 전체보기 버튼 */}
-        <div className="absolute inset-0 bottom-5 z-10 mr-48 flex items-end justify-end gap-2">
+        <div className="absolute inset-0 bottom-5 z-10 mx-48 flex items-end justify-end gap-2">
           <button
             onClick={togglePlay}
             className="flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white"
