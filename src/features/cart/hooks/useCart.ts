@@ -1,14 +1,32 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  UseQueryOptions,
+} from '@tanstack/react-query'
 import { cartApi } from '../api/cartApi'
 import { cartKeys } from '../api/qeuryKeys'
-import { CartAddRequest } from '../types/cart'
+import { CartAddRequest, CartItem, CartResponse } from '../types/cart'
 
 // 장바구니 조회
-export const useCart = () => {
+export const useCart = <T = CartResponse>(
+  options?: Omit<
+    UseQueryOptions<CartResponse, Error, T>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
   return useQuery({
     queryKey: cartKeys.details(),
-    queryFn: cartApi.getCart,
-    staleTime: 0, // 장바구니는 데이터가 자주 바뀔 수 있으므로 즉시 갱신 추천
+    queryFn: async () => {
+      const response = await cartApi.getCart()
+      if (!response || !response.data) {
+        throw new Error('장바구니 데이터를 불러올 수 없습니다.')
+      }
+      return response.data
+    },
+
+    staleTime: 0,
+    ...options,
   })
 }
 
