@@ -6,7 +6,5 @@ export const orderKeys = {
   list: (period: OrderPeriod, search: string) =>
     [...orderKeys.lists(), { period, search }] as const,
   details: () => [...orderKeys.all, 'detail'] as const,
-  // detail: (id: number) => [...orderKeys.details(), id] as const,
-  detail: (orderNumber: string | number) =>
-    [...orderKeys.all, 'detail', String(orderNumber)] as const,
+  detail: (id: number) => [...orderKeys.details(), id] as const,
 }
