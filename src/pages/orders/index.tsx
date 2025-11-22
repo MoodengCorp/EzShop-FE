@@ -102,7 +102,11 @@ export default function OrderPage() {
     alert('결제(테스트)가 완료되었습니다!')
     router.push({
       pathname: '/orders/complete',
-      query: { totalPrice: orderRequest.totalPrice },
+      query: {
+        totalPrice: orderRequest.totalPrice,
+        address: orderRequest.address,
+        addressDetail: orderRequest.addressDetail,
+      },
     })
   }
 
