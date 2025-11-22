@@ -84,8 +84,8 @@ export interface OrderCreateRequest {
 }
 
 export interface OrderItemInfo {
-  cartItemId: number // ✅ 장바구니 항목 ID (명확하게 구분)
-  itemId: number // ✅ 실제 상품 ID
+  cartItemId: number
+  itemId: number
   price: number
   quantity: number
 }
@@ -93,6 +93,7 @@ export interface OrderItemInfo {
 // 주문 생성 API 응답
 // 최종 결제 페이지에 보여줘야 함
 export interface OrderCreateResponse {
+  orderId: number
   orderNumber: string
   address: string
   addressDetail: string

@@ -7,33 +7,42 @@ import { Input } from '@/components/ui/input'
 import PaymentSummary from '@/components/common/PaymentSummary'
 import OrderCTA from '@/components/common/OrderCTA'
 
+import OrderComplete from '@/features/orders/components/OrderComplete'
+
+import { OrderCreateResponse } from '@/features/orders/types/order'
+
 import { useCart } from '@/features/cart/hooks/useCart'
 import { useCreateOrder } from '@/features/orders/hooks/useOrders'
 import { useUserProfile } from '@/features/user/hooks/useUserProfile'
-import { CartItem as CartItemType } from '@/features/cart/types/cart'
+import { CartResponse } from '@/features/cart/types/cart'
 import { OrderCreateRequest } from '@/features/orders/types/order'
-import { orderKeys } from '@/features/orders/api/queryKeys'
 
 export default function OrderPage() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
+  const [completedOrder, setCompletedOrder] =
+    useState<OrderCreateResponse | null>(null)
   const { items: itemIdsString } = router.query
 
-  const { data: orderItems = [], isLoading: isCartLoading } = useCart<
-    CartItemType[]
-  >({
-    enabled: router.isReady && !!itemIdsString,
+  const { data: cartData, isLoading: isCartLoading } = useCart<CartResponse>({
+    enabled: router.isReady && !!itemIdsString && !completedOrder,
     staleTime: 1000 * 60,
-
-    select: (data) => {
-      if (!itemIdsString || typeof itemIdsString !== 'string') return []
-      const targetIds = itemIdsString.split(',').map(Number)
-      return data.cartItems.filter((item) =>
-        targetIds.includes(item.cartItemId),
-      )
-    },
   })
+
+  // 없으면 우선 0으로 설정했는데, 이 부분 논의 필요
+  const cartId = cartData?.cartId || 0
+
+  const orderItems = useMemo(() => {
+    if (!cartData || !itemIdsString || typeof itemIdsString !== 'string')
+      return []
+
+    const targetIds = itemIdsString.split(',').map(Number)
+
+    return cartData.cartItems.filter((item) =>
+      targetIds.includes(item.cartItemId),
+    )
+  }, [cartData, itemIdsString])
 
   const { mutate: createOrder, isPending: isOrderPending } = useCreateOrder()
   const { data: userInfoResponse } = useUserProfile()
@@ -47,8 +56,7 @@ export default function OrderPage() {
 
   useEffect(() => {
     if (userInfoResponse && userInfoResponse.data) {
-      const user = userInfoResponse.data // 알맹이만 꺼냄
-
+      const user = userInfoResponse.data
       setSenderName(user.name)
       setSenderPhone(user.phone)
       setSenderEmail(user.email)
@@ -62,7 +70,6 @@ export default function OrderPage() {
   }, [orderItems])
 
   const handlePayment = () => {
-    // 유효성 검사
     if (!senderName || !senderPhone || !address) {
       alert('필수 배송 정보를 입력해주세요.')
       return
@@ -74,8 +81,7 @@ export default function OrderPage() {
     }
 
     const orderRequest: OrderCreateRequest = {
-      // 여기 carId 임시
-      cartId: 0,
+      cartId: cartId,
       totalPrice,
       recipientName: senderName,
       recipientPhone: senderPhone,
@@ -93,22 +99,12 @@ export default function OrderPage() {
     createOrder(orderRequest, {
       onSuccess: (response) => {
         const createdOrder = response.data
-
         if (!createdOrder) {
           console.error('주문은 성공했으나 데이터가 없습니다.')
           return
         }
-        const orderNumber = createdOrder.orderNumber
-
-        queryClient.setQueryData(
-          orderKeys.detail(String(orderNumber)),
-          createdOrder,
-        )
-
-        router.replace({
-          pathname: '/orders/complete',
-          query: { orderNumber },
-        })
+        setCompletedOrder(createdOrder)
+        window.scrollTo(0, 0)
       },
       onError: (error) => {
         console.error(error)
@@ -118,11 +114,21 @@ export default function OrderPage() {
   }
 
   useEffect(() => {
-    if (router.isReady && !itemIdsString) {
+    if (router.isReady && !itemIdsString && !completedOrder) {
       alert('잘못된 접근입니다. 장바구니로 이동합니다.')
       router.replace('/cart')
     }
-  }, [router.isReady, itemIdsString, router])
+  }, [router.isReady, itemIdsString, completedOrder, router])
+
+  if (completedOrder) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="mx-auto flex w-[1050px] items-center justify-center pb-[100px] pt-12">
+          <OrderComplete orderData={completedOrder} />
+        </div>
+      </div>
+    )
+  }
 
   const InfoRow = ({
     label,
@@ -231,13 +237,11 @@ export default function OrderPage() {
           <div className="w-[375px] shrink-0">
             <div className="sticky top-[80px] flex flex-col gap-5">
               <PaymentSummary itemsSubtotal={totalPrice} />
-
               <OrderCTA
                 amount={totalPrice}
                 disabled={isOrderPending || orderItems.length === 0}
                 onClick={handlePayment}
               />
-
               <div className="rounded-lg bg-[#f7f7f7] p-3 px-2 text-[12px] leading-5 text-[#666]">
                 <ul className="list-disc space-y-1 pl-4 text-[#888]">
                   <li>[주문완료] 상태일 경우에만 주문 취소가 가능합니다.</li>

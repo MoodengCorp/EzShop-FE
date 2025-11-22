@@ -20,7 +20,10 @@ export default function CartPage() {
   const router = useRouter()
 
   const { data, isLoading } = useCart()
-  const cartItems = data?.cartItems || []
+
+  const cartItems = useMemo(() => {
+    return data?.cartItems || []
+  }, [data])
 
   const { mutate: updateQuantity } = useUpdateCartQuantity()
   const { mutate: removeItem } = useRemoveCartItem()
