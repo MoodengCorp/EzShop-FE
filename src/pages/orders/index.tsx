@@ -1,95 +1,88 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Input } from '@/components/ui/input'
-import { OrderCreateRequest } from '@/features/orders/types/order'
+import Image from 'next/image'
+import { useQueryClient } from '@tanstack/react-query'
 
+import { Input } from '@/components/ui/input'
 import PaymentSummary from '@/components/common/PaymentSummary'
 import OrderCTA from '@/components/common/OrderCTA'
-import { useCreateOrder } from '@/features/orders/hooks/useOrders'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 
-// 테스트
-const MOCK_CART_DATA = {
-  cartId: 999,
-  totalPrice: 63454,
-  items: [
-    {
-      cartItemId: 1,
-      itemId: 101,
-      name: '[겨울간식] 삼립 발효미종 야채호빵(4입)',
-      price: 4704,
-      quantity: 1,
-      thumbnailUrl:
-        'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg',
-    },
-    {
-      cartItemId: 2,
-      itemId: 102,
-      name: '[사미헌] 갈비탕 (냉동)',
-      price: 12350,
-      quantity: 2,
-      thumbnailUrl: '',
-    },
-    {
-      cartItemId: 3,
-      itemId: 103,
-      name: '유기농 바나나 1송이',
-      price: 3900,
-      quantity: 1,
-      thumbnailUrl: '',
-    },
-    {
-      cartItemId: 4,
-      itemId: 104,
-      name: '[컬리] 동물복지 유정란 20구',
-      price: 8900,
-      quantity: 1,
-      thumbnailUrl:
-        'https://img-cf.kurly.com/shop/data/goods/1615967006664l0.jpg',
-    },
-  ],
-}
+import { useCart } from '@/features/cart/hooks/useCart'
+import { useCreateOrder } from '@/features/orders/hooks/useOrders'
+import { useUserProfile } from '@/features/user/hooks/useUserProfile'
+import { CartItem as CartItemType } from '@/features/cart/types/cart'
+import { OrderCreateRequest } from '@/features/orders/types/order'
+import { orderKeys } from '@/features/orders/api/queryKeys'
 
 export default function OrderPage() {
   const router = useRouter()
-  const { mutate: createOrder } = useCreateOrder()
-  const cartData = MOCK_CART_DATA
+  const queryClient = useQueryClient()
 
-  // 사용자 정보 상태
+  const { items: itemIdsString } = router.query
+
+  const { data: orderItems = [], isLoading: isCartLoading } = useCart<
+    CartItemType[]
+  >({
+    enabled: router.isReady && !!itemIdsString,
+    staleTime: 1000 * 60,
+
+    select: (data) => {
+      if (!itemIdsString || typeof itemIdsString !== 'string') return []
+      const targetIds = itemIdsString.split(',').map(Number)
+      return data.cartItems.filter((item) =>
+        targetIds.includes(item.cartItemId),
+      )
+    },
+  })
+
+  const { mutate: createOrder, isPending: isOrderPending } = useCreateOrder()
+  const { data: userInfoResponse } = useUserProfile()
+
   const [senderName, setSenderName] = useState('')
   const [senderPhone, setSenderPhone] = useState('')
   const [senderEmail, setSenderEmail] = useState('')
-
   const [address, setAddress] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
   const [deliveryRequest, setDeliveryRequest] = useState('')
-  const [isEditingRequest, setIsEditingRequest] = useState(true)
 
-  // 테스트
   useEffect(() => {
-    setSenderName('홍길동')
-    setSenderPhone('010-1234-5678')
-    setSenderEmail('hong@example.com')
-    setAddress('서울시 서울구 서울동')
-    setAddressDetail('102동 304호')
-  }, [])
+    if (userInfoResponse && userInfoResponse.data) {
+      const user = userInfoResponse.data // 알맹이만 꺼냄
+
+      setSenderName(user.name)
+      setSenderPhone(user.phone)
+      setSenderEmail(user.email)
+      setAddress(user.address || '')
+      setAddressDetail(user.addressDetail || '')
+    }
+  }, [userInfoResponse])
+
+  const totalPrice = useMemo(() => {
+    return orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  }, [orderItems])
 
   const handlePayment = () => {
+    // 유효성 검사
     if (!senderName || !senderPhone || !address) {
-      alert('필수 정보를 확인해주세요.')
+      alert('필수 배송 정보를 입력해주세요.')
+      return
+    }
+
+    if (orderItems.length === 0) {
+      alert('주문할 상품 정보가 없습니다.')
       return
     }
 
     const orderRequest: OrderCreateRequest = {
-      cartId: cartData.cartId,
-      totalPrice: cartData.totalPrice,
+      // 여기 carId 임시
+      cartId: 0,
+      totalPrice,
       recipientName: senderName,
       recipientPhone: senderPhone,
-      address,
-      addressDetail,
+      address: address,
+      addressDetail: addressDetail,
       deliveryRequest,
-      orderItemInfo: cartData.items.map((item) => ({
+      orderItemInfo: orderItems.map((item) => ({
         cartItemId: item.cartItemId,
         itemId: item.itemId,
         price: item.price,
@@ -97,18 +90,39 @@ export default function OrderPage() {
       })),
     }
 
-    // 테스트
-    console.log('Order Request:', orderRequest)
-    alert('결제(테스트)가 완료되었습니다!')
-    router.push({
-      pathname: '/orders/complete',
-      query: {
-        totalPrice: orderRequest.totalPrice,
-        address: orderRequest.address,
-        addressDetail: orderRequest.addressDetail,
+    createOrder(orderRequest, {
+      onSuccess: (response) => {
+        const createdOrder = response.data
+
+        if (!createdOrder) {
+          console.error('주문은 성공했으나 데이터가 없습니다.')
+          return
+        }
+        const orderNumber = createdOrder.orderNumber
+
+        queryClient.setQueryData(
+          orderKeys.detail(String(orderNumber)),
+          createdOrder,
+        )
+
+        router.replace({
+          pathname: '/orders/complete',
+          query: { orderNumber },
+        })
+      },
+      onError: (error) => {
+        console.error(error)
+        alert('결제 요청 중 오류가 발생했습니다.')
       },
     })
   }
+
+  useEffect(() => {
+    if (router.isReady && !itemIdsString) {
+      alert('잘못된 접근입니다. 장바구니로 이동합니다.')
+      router.replace('/cart')
+    }
+  }, [router.isReady, itemIdsString, router])
 
   const InfoRow = ({
     label,
@@ -124,6 +138,9 @@ export default function OrderPage() {
       <div className="flex-1 font-medium leading-6 text-[#333]">{children}</div>
     </div>
   )
+
+  if (!router.isReady || isCartLoading)
+    return <div className="py-40 text-center">주문서 생성 중...</div>
 
   return (
     <div className="min-h-screen bg-white">
@@ -156,44 +173,16 @@ export default function OrderPage() {
                     </span>
                   </div>
                 </InfoRow>
-
                 <div className="flex items-center py-4">
                   <div className="w-[140px] shrink-0 text-[#666]">
                     배송 요청사항
                   </div>
                   <div className="flex-1">
-                    {isEditingRequest ? (
-                      <div className="flex gap-2">
-                        <Input
-                          placeholder="배송요청사항을 적어주세요"
-                          value={deliveryRequest}
-                          onChange={(e) => setDeliveryRequest(e.target.value)}
-                          className="h-[44px] w-full border-[#ddd] focus:border-[#5f0080]"
-                        />
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsEditingRequest(false)}
-                          className="h-[44px] w-[60px] border-[#ddd] font-normal text-[#666] hover:bg-gray-50"
-                        >
-                          완료
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex h-[44px] items-center justify-between">
-                        <span className="pl-1 font-medium text-[#333]">
-                          {deliveryRequest || (
-                            <span className="text-gray-400">요청사항 없음</span>
-                          )}
-                        </span>
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsEditingRequest(true)}
-                          className="h-[44px] w-[60px] border-[#ddd] font-normal text-[#666] hover:bg-gray-50"
-                        >
-                          수정
-                        </Button>
-                      </div>
-                    )}
+                    <Input
+                      placeholder="문 앞 위탁 장소 등을 입력해주세요"
+                      value={deliveryRequest}
+                      onChange={(e) => setDeliveryRequest(e.target.value)}
+                    />
                   </div>
                 </div>
               </div>
@@ -203,9 +192,8 @@ export default function OrderPage() {
               <div className="border-b border-[#333] pb-4 text-[20px] font-semibold text-[#333]">
                 주문상품
               </div>
-
               <div className="divide-y divide-[#f4f4f4] border-b border-[#f4f4f4]">
-                {cartData.items.map((item) => (
+                {orderItems.map((item) => (
                   <div
                     key={item.cartItemId}
                     className="flex items-center gap-5 py-5"
@@ -215,8 +203,8 @@ export default function OrderPage() {
                         <Image
                           src={item.thumbnailUrl}
                           alt={item.name}
-                          width={56}
-                          height={72}
+                          width={60}
+                          height={78}
                           className="h-full w-full object-cover"
                         />
                       ) : (
@@ -242,22 +230,18 @@ export default function OrderPage() {
 
           <div className="w-[375px] shrink-0">
             <div className="sticky top-[80px] flex flex-col gap-5">
-              <PaymentSummary itemsSubtotal={cartData.totalPrice} />
+              <PaymentSummary itemsSubtotal={totalPrice} />
 
               <OrderCTA
-                amount={cartData.totalPrice}
-                disabled={false}
+                amount={totalPrice}
+                disabled={isOrderPending || orderItems.length === 0}
                 onClick={handlePayment}
               />
 
               <div className="rounded-lg bg-[#f7f7f7] p-3 px-2 text-[12px] leading-5 text-[#666]">
                 <ul className="list-disc space-y-1 pl-4 text-[#888]">
                   <li>[주문완료] 상태일 경우에만 주문 취소가 가능합니다.</li>
-                  <li>
-                    미성년자가 결제 시 법정대리인이 그 거래를 취소할 수
-                    있습니다.
-                  </li>
-                  <li>배송 불가 시 주문이 취소될 수 있습니다.</li>
+                  <li>미성년자가 결제 시 법정대리인이 취소할 수 있습니다.</li>
                 </ul>
               </div>
             </div>

@@ -93,6 +93,7 @@ export interface OrderItemInfo {
 // 주문 생성 API 응답
 // 최종 결제 페이지에 보여줘야 함
 export interface OrderCreateResponse {
+  orderNumber: string
   address: string
   addressDetail: string
   totalPrice: number

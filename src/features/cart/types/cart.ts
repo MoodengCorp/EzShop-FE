@@ -1,4 +1,7 @@
+import { DeliveryType } from '@/features/item/types/item'
+
 /**
+import { DeliveryType } from '@/features/item/types/item';
  * 장바구니 아이템
  */
 export interface CartItem {
@@ -8,6 +11,7 @@ export interface CartItem {
   price: number
   quantity: number
   thumbnailUrl: string
+  deliveryType: DeliveryType
   checked: boolean // UI 전용 (API 요청 시 제외)
 }
 
