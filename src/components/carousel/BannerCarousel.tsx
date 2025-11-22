@@ -57,8 +57,6 @@ export default function BannerCarousel({
     if (!api) return
     api.scrollPrev()
 
-    // ★ 핵심 수정: api.plugins()를 통해 실행 중인 오토플레이 인스턴스를 가져와서 리셋
-    // (Ref를 직접 쓰는 것보다 안전합니다)
     const autoplay = api.plugins()?.autoplay
     if (autoplay && playing) {
       autoplay.reset()
@@ -129,7 +127,6 @@ export default function BannerCarousel({
           </CarouselContent>
         </Carousel>
 
-        {/* 배너 위 < > 화살표 버튼*/}
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-4">
           <button
             onClick={handlePrev}
