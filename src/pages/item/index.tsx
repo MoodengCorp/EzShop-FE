@@ -116,7 +116,7 @@ export default function ItemListPage() {
 
         {/* 상품 목록 리스트 */}
         {isLoading ? (
-          <div className="grid grid-cols-4 gap-x-6 gap-y-10">
+          <div className="w-[1050px] grid grid-cols-4 gap-x-6 gap-y-10">
             {Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="flex flex-col space-y-3">
                 <Skeleton className="h-[320px] w-full rounded-xl bg-gray-200" />
@@ -128,7 +128,7 @@ export default function ItemListPage() {
             ))}
           </div>
         ) : isError ? (
-          <div className="py-20 text-center">
+          <div className="w-[1050px] py-20 text-center">
             <p className="mb-4 text-red-500">
               상품을 불러오는 중 오류가 발생했습니다.
             </p>
@@ -156,7 +156,7 @@ export default function ItemListPage() {
             </div>
           </>
         ) : (
-          <div className="rounded-lg border bg-gray-50 py-32 text-center">
+          <div className="w-[1050px] rounded-lg border bg-gray-50 py-32 text-center">
             <p className="text-lg text-gray-500">
               해당 조건에 맞는 상품이 없습니다.
             </p>

@@ -9,7 +9,7 @@ export type OrderStatus = 'PENDING' | 'DELIVERING' | 'DELIVERED' | 'CANCEL'
 /**
  * 주문 기간 필터 (프론트엔드 전용)
  */
-export type OrderPeriod = '3개월' | '6개월' | '1년'
+export type OrderPeriod = '3개월' | '6개월' | '1년' | '전체'
 
 /**
  * 주문 아이템 (상품)
