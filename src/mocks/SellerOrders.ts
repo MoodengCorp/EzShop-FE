@@ -1,6 +1,6 @@
 // src/mocks/sellerOrders.ts
 import { OrderDetail } from '@/features/orders/types/order'
-import { SellerOrderSearchResponse, OrderStatusCounts } from '@/features/seller/manage_orders/types/seller-order.types'
+import { OrderStatusCounts } from '@/features/seller/manage_orders/types/seller-order.types'
 
 
 /**
@@ -327,23 +327,23 @@ export const MOCK_ORDER_STATUS_COUNTS: OrderStatusCounts = {
 /**
  * 페이지네이션된 응답 생성 함수
  */
-export function getMockSellerOrdersResponse(
-  page: number = 1,
-  perPage: number = 10
-): SellerOrderSearchResponse {
-  const startIndex = (page - 1) * perPage
-  const endIndex = startIndex + perPage
-  const paginatedOrders = MOCK_SELLER_ORDERS.slice(startIndex, endIndex)
-
-  return {
-    orders: paginatedOrders,
-    pagination: {
-      page,
-      perPage,
-      totalPage: Math.ceil(MOCK_SELLER_ORDERS.length / perPage),
-      totalCount: MOCK_SELLER_ORDERS.length,
-      hasNext: endIndex < MOCK_SELLER_ORDERS.length,
-      hasPrev: page > 1,
-    },
-  }
-}
+// export function getMockSellerOrdersResponse(
+//   page: number = 1,
+//   perPage: number = 10
+// ): SellerOrderSearchResponse {
+//   const startIndex = (page - 1) * perPage
+//   const endIndex = startIndex + perPage
+//   const paginatedOrders = MOCK_SELLER_ORDERS.slice(startIndex, endIndex)
+//
+//   return {
+//     orders: paginatedOrders,
+//     pagination: {
+//       page,
+//       perPage,
+//       totalPage: Math.ceil(MOCK_SELLER_ORDERS.length / perPage),
+//       totalCount: MOCK_SELLER_ORDERS.length,
+//       hasNext: endIndex < MOCK_SELLER_ORDERS.length,
+//       hasPrev: page > 1,
+//     },
+//   }
+// }

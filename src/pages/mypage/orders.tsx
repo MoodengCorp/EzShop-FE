@@ -18,7 +18,6 @@ import { Search } from 'lucide-react'
 import { usePagination } from '@/hooks/usePagination'
 import DefaultPagination from '@/components/common/DefaultPagination'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
-import { useRouter } from 'next/router'
 import { OrderItem, useOrderFilters, useOrders } from '@/features/orders'
 
 export default function OrdersPage() {
@@ -135,7 +134,6 @@ export function SelectDateFilter({
 }: SelectDateFilterProps) {
   return (
     <Select value={value} onValueChange={onPeriodChange}>
-      {/* ✅ defaultValue 제거, value 사용 */}
       <SelectTrigger className="w-[80px]">
         <SelectValue />
       </SelectTrigger>
@@ -144,6 +142,7 @@ export function SelectDateFilter({
           <SelectItem value="3개월">3개월</SelectItem>
           <SelectItem value="6개월">6개월</SelectItem>
           <SelectItem value="1년">1년</SelectItem>
+          <SelectItem value="전체">전체</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

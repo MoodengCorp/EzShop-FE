@@ -29,7 +29,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex gap-2 text-xs text-muted-foreground font-bold mb-4">
+          <div className="flex gap-2 text-xs text-muted-foreground font-bold mb-4 whitespace-nowrap">
             <Link href="/#">회사소개</Link>
             <Link href="/#">소개영상</Link>
             <Link href="/#">투자정보</Link>

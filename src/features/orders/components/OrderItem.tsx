@@ -3,6 +3,7 @@ import { ChevronRight, ShoppingCart } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ORDER_STATUS_KR } from '@/features/seller/constants/seller-constants'
 
 interface OrderItemProps {
   order: Order
@@ -17,7 +18,7 @@ export function OrderItem({
     <>
       <div className="mb-4 flex flex-col gap-3 rounded-2xl bg-white px-4 py-4">
         {viewDateAndOrderNum && <DateAndOrderNum order={order} />}
-        <p className="font-bold">{order.orderStatus}</p>
+        <p className="font-bold">{ORDER_STATUS_KR[order.orderStatus]}</p>
         {order.items.map((item) => (
           <div className="flex justify-between px-2 py-2" key={item.itemId}>
             <div className="flex gap-3" >
