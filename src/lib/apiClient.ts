@@ -352,7 +352,13 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient(
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
+  (() => {
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL
+    // 배포 환경에서는 리버스 프록시(/api) 경유, 로컬은 직접 호출
+    return process.env.NODE_ENV === 'production'
+      ? '/api'
+      : 'http://localhost:8080'
+  })(),
 )
 
 export { ApiClient }
