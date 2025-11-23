@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { useRouter} from 'next/router';
 import type { E164Number } from 'libphonenumber-js/core'
+import { SignupFormData } from '@/features/auth/types/auth'
+import { useAuth } from '@/features/auth'
 
 const fields = [
   {
@@ -12,6 +14,12 @@ const fields = [
     name: 'email',
     placeholder: '아이디를 입력해주세요',
     type: 'email',
+  },
+  {
+    fieldName: '이름',
+    name: 'name',
+    placeholder: '이름을 입력해주세요',
+    type: 'text',
   },
   {
     fieldName: '비밀번호',
@@ -31,16 +39,25 @@ const fields = [
     placeholder: '주소를 입력해주세요',
     type: 'text',
   },
+  {
+    fieldName: '상세 주소',
+    name: 'address_detail',
+    placeholder: '상세 주소를 입력해주세요',
+    type: 'text',
+  },
 ]
 
 export function SellerSignupForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const {signupAsync} = useAuth();
+  const [formData, setFormData] = useState<SignupFormData>({
     email: '',
     password: '',
     passwordConfirm: '',
+    name: '',
+    phone: '',
     address: '',
-    phone: '' as E164Number | '',
+    addressDetail: '',
     role: 'SELLER'
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -79,20 +96,9 @@ export function SellerSignupForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          address: formData.address,
-          phone: formData.phone,
-        }),
-      })
+      const response = await signupAsync(formData)
 
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('회원가입에 실패했습니다.')
       }
 

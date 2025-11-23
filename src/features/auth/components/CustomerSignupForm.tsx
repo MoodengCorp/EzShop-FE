@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useRouter} from 'next/router';
 import type { E164Number } from 'libphonenumber-js/core'
 import { SignupFormData, UserRole } from '@/features/auth/types/auth'
+import { useAuth } from '@/features/auth'
 
 const fields = [
   {
@@ -48,6 +49,7 @@ const fields = [
 
 export function CustomerSignupForm() {
   const router = useRouter();
+  const {signupAsync} = useAuth();
   const [formData, setFormData] = useState<SignupFormData>({
     email: '',
     password: '',
@@ -94,22 +96,9 @@ export function CustomerSignupForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          name: formData.name,
-          password: formData.password,
-          address: formData.address,
-          phone: formData.phone,
-          role: "SELLER"
-        }),
-      })
+      const response = await signupAsync(formData)
 
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('회원가입에 실패했습니다.')
       }
 
