@@ -26,6 +26,7 @@ export function SellerOrderTable({
   isLoading,
   onRefresh,
 }: SellerOrderTableProps) {
+
   const [selectedOrder, setSelectedOrder] = useState<OrderDetail | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 

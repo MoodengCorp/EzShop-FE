@@ -85,7 +85,8 @@ export default function ManageOrders() {
           <SellerOrderFilter onSearch={handleSearch} />
 
           {/* 테이블 */}
-          <SellerOrderTable orders={orderData?.orders ?? []} isLoading={isLoadingOrders} onRefresh={handleRefresh}/>
+
+          <SellerOrderTable orders={orderData?.sellerOrderList ?? []} isLoading={isLoadingOrders} onRefresh={handleRefresh}/>
 
           {/* 페이지네이션 */}
           {orderData?.pagination && (

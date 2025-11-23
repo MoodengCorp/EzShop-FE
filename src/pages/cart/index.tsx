@@ -22,7 +22,8 @@ export default function CartPage() {
   const { data, isLoading } = useCart()
 
   const cartItems = useMemo(() => {
-    return data?.cartItems || []
+    if (!data) return []
+    return data.items
   }, [data])
 
   const { mutate: updateQuantity } = useUpdateCartQuantity()

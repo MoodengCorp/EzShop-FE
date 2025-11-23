@@ -32,24 +32,18 @@ export function ProtectedRoute({
         return;
       }
 
-      console.log('🔐 페이지 접근 시도:', router.asPath);
-
       // 인증되지 않았으면 로그인 페이지로
       if (!isAuthenticated) {
-        console.log('❌ 인증 안됨 → 로그인 페이지');
         router.replace(`${redirectTo}?redirect=${encodeURIComponent(router.asPath)}`);
         return;
       }
 
       // 인증되어 있으면 API 호출로 토큰 유효성 검증
       try {
-        console.log('🔍 토큰 검증 중...');
         await apiClient.get('/user/info');
-        console.log('✅ 인증 유효 → 페이지 접근 허용');
         setIsValid(true);
         setIsValidating(false);
       } catch (error: any) {
-        console.error('❌ 인증 실패 (토큰 갱신 실패) → 로그인 페이지');
         logout();
         router.replace(`${redirectTo}?redirect=${encodeURIComponent(router.asPath)}`);
       }

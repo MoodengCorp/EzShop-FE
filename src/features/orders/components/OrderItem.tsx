@@ -31,7 +31,10 @@ export function OrderItem({
               <div className="flex flex-col justify-between pb-2 text-sm">
                 <p className="font-semibold text-gray-400">샛별배송</p>
                 <p>{item.name}</p>
-                <p>{item.purchasePrice}원</p>
+                <div className="flex gap-2">
+                  <p>{item.purchasePrice}원</p>
+                  <p className="text-muted-foreground">{item.quantity}개</p>
+                </div>
               </div>
             </div>
             <Link href={`/item/${item.itemId}`}>

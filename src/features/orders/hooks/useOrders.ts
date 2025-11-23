@@ -2,7 +2,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { OrderCreateRequest, OrderPeriod } from '@/features/orders/types/order'
 import { ordersApi } from '@/features/orders/api/ordersApi'
-import { mockOrderDetails } from '@/mocks/OrderData'
 import { orderKeys } from '@/features/orders/api/queryKeys'
 
 /**
@@ -12,7 +11,8 @@ export const useOrders = (period: OrderPeriod, search: string = '') => {
   return useQuery({
     queryKey: orderKeys.list(period, search),
     queryFn: async () => {
-      return (await ordersApi.getOrders(period)) || []
+      const response = await ordersApi.getOrders(period) || []
+      return response.data!
     },
     staleTime: 5 * 60 * 1000,
   })
@@ -25,20 +25,8 @@ export const useOrderDetail = (orderId: string) => {
   return useQuery({
     queryKey: orderKeys.detail(parseInt(orderId)),
     queryFn: async () => {
-      const id = parseInt(orderId)
-
-      // 로딩 시뮬레이션 (500ms 대기)
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      const mockData = mockOrderDetails[22]
-
-      // ✅ undefined가 아닌 null을 반환하거나 에러를 던지기
-      if (!mockData) {
-        throw new Error(`주문 정보를 찾을 수 없습니다. (orderId: ${id})`)
-      }
-
-      return mockData
-      // return await ordersApi.getOrderDetail(orderId)
+      const response = await ordersApi.getOrderDetail(orderId);
+      return response.data!
     },
     enabled: !!orderId,
     staleTime: 5 * 60 * 1000,

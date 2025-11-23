@@ -11,7 +11,6 @@ export function useSellerItems(params: SellerItemSearchParams) {
   return useQuery({
     queryKey: sellerItemKeys.list(params),
     queryFn: () => sellerItemsApi.getSellerItems(params),
-    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -22,7 +21,6 @@ export function useItemStatusCounts() {
   return useQuery({
     queryKey: sellerItemKeys.statusCounts(),
     queryFn: sellerItemsApi.getItemStatusCounts,
-    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -34,7 +32,6 @@ export function useItemDetail(itemId: number | null) {
     queryKey: sellerItemKeys.detail(itemId!),
     queryFn: () => sellerItemsApi.getItemDetail(itemId!),
     enabled: itemId !== null,
-    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -76,16 +73,18 @@ export function useUpdateItemStatus() {
 
 /**
  * 상품 삭제
+ * 상품 삭제로 인한 사이드 이펙트의 예외 처리를 구현하지 않았기 때문에
+ * 삭제 기능은 제외
  */
-export function useDeleteItem() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (itemId: number) => sellerItemsApi.deleteItem(itemId),
-    onSuccess: () => {
-      // 상품 목록 및 카운트 재조회
-      queryClient.invalidateQueries({ queryKey: sellerItemKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: sellerItemKeys.statusCounts() })
-    },
-  })
-}
+// export function useDeleteItem() {
+//   const queryClient = useQueryClient()
+//
+//   return useMutation({
+//     mutationFn: (itemId: number) => sellerItemsApi.deleteItem(itemId),
+//     onSuccess: () => {
+//       // 상품 목록 및 카운트 재조회
+//       queryClient.invalidateQueries({ queryKey: sellerItemKeys.lists() })
+//       queryClient.invalidateQueries({ queryKey: sellerItemKeys.statusCounts() })
+//     },
+//   })
+// }

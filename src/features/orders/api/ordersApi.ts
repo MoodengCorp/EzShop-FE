@@ -15,14 +15,15 @@ export const ordersApi = {
   ): Promise<ApiResponse<Order[]>> => {
     const params: Record<string, string> = { period }
     if (searchQuery) params.search = searchQuery
-    return apiClient.get<ApiResponse<Order[]>>('/orders', { params })
+    return apiClient.get<ApiResponse<Order[]>>('/orders/my', { params })
   },
 
   getOrderDetail: async (
     orderId: string,
   ): Promise<ApiResponse<OrderDetail>> => {
-    return apiClient.get<ApiResponse<OrderDetail>>(`/orders/${orderId}`)
+    return apiClient.get<ApiResponse<OrderDetail>>(`/orders/my/${orderId}`)
   },
+
   createOrder: async (
     data: OrderCreateRequest,
   ): Promise<ApiResponse<OrderCreateResponse>> => {

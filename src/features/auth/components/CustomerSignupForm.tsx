@@ -1,11 +1,17 @@
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { PhoneInput } from '@/components/ui/phone-input'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { useRouter} from 'next/router';
+import { useRouter } from 'next/router'
 import type { E164Number } from 'libphonenumber-js/core'
-import { SignupFormData, UserRole } from '@/features/auth/types/auth'
+import { SignupFormData } from '@/features/auth/types/auth'
 import { useAuth } from '@/features/auth'
 
 const fields = [
@@ -41,15 +47,15 @@ const fields = [
   },
   {
     fieldName: '상세 주소',
-    name: 'address_detail',
+    name: 'addressDetail',
     placeholder: '상세 주소를 입력해주세요',
     type: 'text',
   },
 ]
 
 export function CustomerSignupForm() {
-  const router = useRouter();
-  const {signupAsync} = useAuth();
+  const router = useRouter()
+  const { signupAsync } = useAuth()
   const [formData, setFormData] = useState<SignupFormData>({
     email: '',
     password: '',
@@ -58,23 +64,23 @@ export function CustomerSignupForm() {
     phone: '',
     address: '',
     addressDetail: '',
-    role: 'USER'
+    role: 'USER',
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }))
   }
 
   const handlePhoneChange = (value: E164Number | undefined) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      phone: value || ''
+      phone: value || '',
     }))
   }
 
@@ -83,7 +89,14 @@ export function CustomerSignupForm() {
     setError('')
 
     // 유효성 검사
-    if (!formData.email || !formData.name || !formData.password || !formData.passwordConfirm || !formData.address || !formData.phone) {
+    if (
+      !formData.email ||
+      !formData.name ||
+      !formData.password ||
+      !formData.passwordConfirm ||
+      !formData.address ||
+      !formData.phone
+    ) {
       setError('모든 필수 항목을 입력해주세요.')
       return
     }
@@ -103,10 +116,11 @@ export function CustomerSignupForm() {
       }
 
       alert('회원가입이 완료되었습니다!')
-      router.push('/');
-
+      router.push('/')
     } catch (err) {
-      setError(err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.')
+      setError(
+        err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.',
+      )
     } finally {
       setIsLoading(false)
     }
@@ -115,7 +129,7 @@ export function CustomerSignupForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="whitespace-nowrap">
-        <FieldSet className="w-[400px] mb-8 border-b-[1px] border-black">
+        <FieldSet className="mb-8 w-[400px] border-b-[1px] border-black">
           <FieldLegend className="text-center">
             <p className="text-2xl">회원가입</p>
           </FieldLegend>
@@ -124,7 +138,9 @@ export function CustomerSignupForm() {
               return (
                 <Field key={index}>
                   <div className="flex items-center justify-between">
-                    <FieldLabel htmlFor={field.name}>{field.fieldName}</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>
+                      {field.fieldName}
+                    </FieldLabel>
                     <Input
                       className="w-72"
                       id={field.name}
@@ -140,7 +156,7 @@ export function CustomerSignupForm() {
               )
             })}
             <Field>
-              <div className="flex items-center justify-between mb-6">
+              <div className="mb-6 flex items-center justify-between">
                 <FieldLabel htmlFor="phone">전화번호</FieldLabel>
                 <PhoneInput
                   className="w-72"
@@ -150,13 +166,12 @@ export function CustomerSignupForm() {
                 />
               </div>
             </Field>
-
           </FieldGroup>
         </FieldSet>
         <Field className="flex justify-center" orientation="horizontal">
           <Button
             type="submit"
-            className="w-72 h-14 text-lg rounded-s bg-deepBlue hover:bg-deepBlue"
+            className="h-14 w-72 rounded-s bg-deepBlue text-lg hover:bg-deepBlue"
             disabled={isLoading}
           >
             {isLoading ? '처리중...' : '가입하기'}

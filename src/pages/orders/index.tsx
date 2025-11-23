@@ -39,7 +39,7 @@ export default function OrderPage() {
 
     const targetIds = itemIdsString.split(',').map(Number)
 
-    return cartData.cartItems.filter((item) =>
+    return cartData.items.filter((item) =>
       targetIds.includes(item.cartItemId),
     )
   }, [cartData, itemIdsString])

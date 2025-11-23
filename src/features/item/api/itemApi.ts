@@ -1,7 +1,6 @@
 import { apiClient } from '@/lib/apiClient'
 import { ApiResponse } from '@/types/api'
 import {
-  Item,
   ItemDetailResponse,
   ItemSearchParams,
   ItemSearchResponse,
@@ -21,13 +20,13 @@ export const itemApi = {
       })
     }
 
-    return apiClient.get('/items', { params: query })
+    return apiClient.get('/item', { params: query })
   },
 
   // 상품 상세 조회
   getItemDetail: async (
     itemId: number,
   ): Promise<ApiResponse<ItemDetailResponse>> => {
-    return apiClient.get<ApiResponse<ItemDetailResponse>>(`/items/${itemId}`)
+    return apiClient.get<ApiResponse<ItemDetailResponse>>(`/item/${itemId}`)
   },
 }

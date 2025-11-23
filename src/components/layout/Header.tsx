@@ -7,10 +7,10 @@ import DefaultDropdown from '@/components/common/DefaultDropdown'
 import { useCart } from '@/features/cart/hooks/useCart'
 
 export default function Header() {
-  const { isAuthenticated, name, logout, isLoggingOut } = useAuth()
+  const { isAuthenticated, name, logout } = useAuth()
 
   const { data: cartData } = useCart()
-  const totalCount = cartData?.data?.totalCount ?? 0
+  const totalCount = cartData?.totalCount ?? 0
 
   return (
     <header className="mx-auto my-0 w-[1050px] overflow-hidden">

@@ -1,5 +1,5 @@
 // src/pages/mypage/orders/[id].tsx
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
@@ -19,7 +19,7 @@ export default function OrderDetailPage() {
 
   // ✅ useOrderDetail 훅으로 데이터 조회
   const { data: orderDetail, isLoading, error } = useOrderDetail(id as string)
-  useErrorHandler(error);
+  useErrorHandler(error)
 
   return (
     <ProtectedRoute>
@@ -103,7 +103,14 @@ export default function OrderDetailPage() {
                   label="상품 금액"
                   value={`${orderDetail.totalPrice.toLocaleString()}원`}
                 />
-                <OrderInfoRow label="수령인 연락처" value={orderDetail.deliveryInfo.recipientPhone} />
+                <OrderInfoRow
+                  label="수령인"
+                  value={orderDetail.deliveryInfo.recipientName}
+                />
+                <OrderInfoRow
+                  label="수령인 연락처"
+                  value={orderDetail.deliveryInfo.recipientPhone}
+                />
                 <OrderInfoRow
                   label="배송지"
                   value={`${orderDetail.deliveryInfo.address} ${orderDetail.deliveryInfo.addressDetail}`}
