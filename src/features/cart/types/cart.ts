@@ -18,7 +18,7 @@ export interface CartResponse {
   cartId: number
   totalPrice: number
   totalCount: number // 헤더 장바구니 최종 갯수 표시하기 위함
-  cartItems: CartItem[]
+  items: CartItem[]
 }
 /**
  * 장바구니 추가 요청

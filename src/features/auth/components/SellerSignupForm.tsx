@@ -1,9 +1,15 @@
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { PhoneInput } from '@/components/ui/phone-input'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { useRouter} from 'next/router';
+import { useRouter } from 'next/router'
 import type { E164Number } from 'libphonenumber-js/core'
 import { SignupFormData } from '@/features/auth/types/auth'
 import { useAuth } from '@/features/auth'
@@ -41,15 +47,15 @@ const fields = [
   },
   {
     fieldName: '상세 주소',
-    name: 'address_detail',
+    name: 'addressDetail',
     placeholder: '상세 주소를 입력해주세요',
     type: 'text',
   },
 ]
 
 export function SellerSignupForm() {
-  const router = useRouter();
-  const {signupAsync} = useAuth();
+  const router = useRouter()
+  const { signupAsync } = useAuth()
   const [formData, setFormData] = useState<SignupFormData>({
     email: '',
     password: '',
@@ -58,23 +64,23 @@ export function SellerSignupForm() {
     phone: '',
     address: '',
     addressDetail: '',
-    role: 'SELLER'
+    role: 'SELLER',
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }))
   }
 
   const handlePhoneChange = (value: E164Number | undefined) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      phone: value || ''
+      phone: value || '',
     }))
   }
 
@@ -83,7 +89,13 @@ export function SellerSignupForm() {
     setError('')
 
     // 유효성 검사
-    if (!formData.email || !formData.password || !formData.passwordConfirm || !formData.address || !formData.phone) {
+    if (
+      !formData.email ||
+      !formData.password ||
+      !formData.passwordConfirm ||
+      !formData.address ||
+      !formData.phone
+    ) {
       setError('모든 필수 항목을 입력해주세요.')
       return
     }
@@ -103,10 +115,11 @@ export function SellerSignupForm() {
       }
 
       alert('회원가입이 완료되었습니다!')
-      router.push('/');
-
+      router.push('/')
     } catch (err) {
-      setError(err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.')
+      setError(
+        err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.',
+      )
     } finally {
       setIsLoading(false)
     }
@@ -119,10 +132,9 @@ export function SellerSignupForm() {
           <FieldLegend className="text-center">
             <p className="text-2xl">회원가입</p>
           </FieldLegend>
-          <FieldDescription className="text-end text-xs border-b-2 border-black py-4">* 필수입력사항</FieldDescription>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="mb-4 rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">
               {error}
             </div>
           )}
@@ -132,7 +144,9 @@ export function SellerSignupForm() {
               return (
                 <Field key={index}>
                   <div className="flex items-center">
-                    <FieldLabel htmlFor={field.name} className="w-36">{field.fieldName}</FieldLabel>
+                    <FieldLabel htmlFor={field.name} className="w-36">
+                      {field.fieldName}
+                    </FieldLabel>
                     <Input
                       id={field.name}
                       type={field.type}
@@ -147,8 +161,10 @@ export function SellerSignupForm() {
               )
             })}
             <Field>
-              <div className="flex items-center mb-6">
-                <FieldLabel htmlFor="phone" className="w-36">전화번호</FieldLabel>
+              <div className="mb-6 flex items-center">
+                <FieldLabel htmlFor="phone" className="w-36">
+                  전화번호
+                </FieldLabel>
                 <PhoneInput
                   className="w-full"
                   value={formData.phone}
@@ -162,7 +178,7 @@ export function SellerSignupForm() {
         <Field className="flex justify-center" orientation="horizontal">
           <Button
             type="submit"
-            className="w-72 h-14 text-lg rounded-s"
+            className="h-14 w-72 rounded-s text-lg"
             disabled={isLoading}
           >
             {isLoading ? '처리중...' : '가입하기'}

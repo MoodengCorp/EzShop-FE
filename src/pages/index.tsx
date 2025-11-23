@@ -21,7 +21,7 @@ export default function Home({ best, meat }: any) {
         <BannerCarousel />
       </section>
 
-      <section className="mx-auto mt-12 flex w-full justify-center">
+      <section className="mx-auto mt-12 flex justify-center">
         <div className="w-[1050px]">
           <CarouselSet
             title="지금 가장 많이 담는 특가"
@@ -32,7 +32,7 @@ export default function Home({ best, meat }: any) {
         </div>
       </section>
 
-      <section className="mx-auto mt-12 flex w-full justify-center">
+      <section className="mx-auto mt-12 flex justify-center">
         <div className="w-[1050px]">
           <CarouselSet
             title="정육 특가 모음"

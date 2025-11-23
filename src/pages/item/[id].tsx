@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { Heart, Bell, Share2 } from 'lucide-react'
+import { Bell, Heart, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import QuantityStepper from '@/components/common/QuantityStepper'
 import { useAddToCart } from '@/features/cart/hooks/useCart'
@@ -33,7 +33,6 @@ export default function ItemDetailPage() {
       {
         onSuccess: () => {
           // TODO: 토스트 메시지나 알림 모달 띄울 수 있으면 하기
-          console.log('장바구니에 추가되었습니다.')
         },
         onError: (error) => {
           console.error('장바구니 추가 실패:', error)

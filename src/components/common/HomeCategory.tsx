@@ -21,7 +21,7 @@ export default function HomeCategory() {
   return (
     <div className="flex justify-center border-b py-4 shadow-[0_4px_8px_-1px_rgba(0,0,0,0.08)]">
       <div className="mx-auto flex w-[1050px] flex-col">
-        <div className="pb-3 text-[18px] font-bold text-gray-600">카테고리</div>
+        {/*<div className="pb-3 text-[18px] font-bold text-gray-600">카테고리</div>*/}
 
         <div className="flex items-center justify-between">
           {categories.map(({ name, icon: Icon }) => (

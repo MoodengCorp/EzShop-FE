@@ -2,7 +2,6 @@
 import { apiClient } from '@/lib/apiClient'
 import { SellerOrderSearchParams, SellerOrderSearchResponse, OrderStatusCounts } from '../types/seller-order.types'
 import { ApiResponse } from '@/types/api'
-import { getMockSellerOrdersResponse, MOCK_ORDER_STATUS_COUNTS } from '@/mocks/SellerOrders'
 import { OrderStatus } from '@/features/orders'
 
 export const sellerOrdersApi = {
@@ -12,42 +11,32 @@ export const sellerOrdersApi = {
   getSellerOrders: async (
     params: SellerOrderSearchParams
   ): Promise<SellerOrderSearchResponse> => {
-    // 🔧 목 데이터 사용 (백엔드 준비 전)
-    await new Promise((resolve) => setTimeout(resolve, 500)) // 로딩 시뮬레이션
-    return getMockSellerOrdersResponse(params.page, params.perPage)
+    const queryParams: Record<string, string | number | boolean | undefined> = {
+      page: params.page,
+      perPage: params.perPage,
+      status: params.status,
+      startDate: params.startDate,
+      endDate: params.endDate,
+      itemName: params.itemName,
+      buyerName: params.buyerName,
+    }
 
-    // ✅ 백엔드 준비되면 아래 주석 해제
-    // const queryParams: Record<string, string | number | boolean | undefined> = {
-    //   page: params.page,
-    //   perPage: params.perPage,
-    //   status: params.status,
-    //   startDate: params.startDate,
-    //   endDate: params.endDate,
-    //   itemName: params.itemName,
-    //   buyerName: params.buyerName,
-    // }
-    //
-    // const response = await apiClient.get<ApiResponse<SellerOrderSearchResponse>>(
-    //   '/seller/orders',
-    //   { params: queryParams }
-    // )
-    //
-    // return response.data!
+    const response = await apiClient.get<ApiResponse<SellerOrderSearchResponse>>(
+      '/orders/seller',
+      { params: queryParams }
+    )
+
+    return response.data!
   },
 
   /**
    * 주문 상태별 카운트 조회
    */
   getOrderStatusCounts: async (): Promise<OrderStatusCounts> => {
-    // 🔧 목 데이터 사용 (백엔드 준비 전)
-    await new Promise((resolve) => setTimeout(resolve, 300)) // 로딩 시뮬레이션
-    return MOCK_ORDER_STATUS_COUNTS
-
-    // ✅ 백엔드 준비되면 아래 주석 해제
-    // const response = await apiClient.get<ApiResponse<OrderStatusCounts>>(
-    //   '/orders/seller/status-counts'
-    // )
-    // return response.data!
+    const response = await apiClient.get<ApiResponse<OrderStatusCounts>>(
+      '/orders/seller/status-counts'
+    )
+    return response.data!
   },
 
   /**
@@ -59,11 +48,10 @@ export const sellerOrdersApi = {
     orderId: number,
     newStatus: OrderStatus
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    // ✅ 백엔드 준비되면 아래 주석 해제
-    // await apiClient.patch<ApiResponse<void>>(
-    //   `/seller/orders/${orderId}/status`,
-    //   { status: newStatus }
-    // )
+    const response = await apiClient.patch<ApiResponse<void>>(
+      `/orders/${orderId}`,
+      { status: newStatus }
+    )
+    return response.data!
   }
 }

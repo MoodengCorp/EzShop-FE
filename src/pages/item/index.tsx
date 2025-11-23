@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 
 // 컴포넌트
-import Layout from '@/components/layout/Layout'
 import ItemCard from '@/components/carousel/ItemCard'
 import DefaultPagination from '@/components/common/DefaultPagination'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -77,8 +75,8 @@ export default function ItemListPage() {
   }
 
   return (
-    <div className="x-[1050px] flex justify-center py-8">
-      <div className="container flex flex-col">
+    <div className="mx-auto flex w-[1050px] justify-center overflow-hidden py-8">
+      <div className="flex flex-col">
         {/* 상단 헤더 */}
         <div className="mb-8 flex flex-col items-center justify-center text-center">
           <h1 className="text-3xl font-bold text-gray-900">{pageTitle}</h1>
@@ -86,7 +84,7 @@ export default function ItemListPage() {
         </div>
 
         {/* 컨트롤 영역 */}
-        <div className="mb-6 flex flex-col items-start justify-between gap-4 border-b pb-4 md:flex-row md:items-end">
+        <div className="mb-6 flex justify-between gap-4 border-b pb-4">
           <span className="text-sm font-medium text-gray-500">
             총 <span className="font-bold text-black">{totalElements}</span>개의
             상품
@@ -118,7 +116,7 @@ export default function ItemListPage() {
 
         {/* 상품 목록 리스트 */}
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-4 gap-x-6 gap-y-10">
             {Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="flex flex-col space-y-3">
                 <Skeleton className="h-[320px] w-full rounded-xl bg-gray-200" />
@@ -143,7 +141,7 @@ export default function ItemListPage() {
           </div>
         ) : items.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid w-[1050px] grid-cols-4 gap-x-6 gap-y-10">
               {items.map((item) => (
                 <ItemCard key={item.itemId} item={item} />
               ))}

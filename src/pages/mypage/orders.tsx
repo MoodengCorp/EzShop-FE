@@ -3,7 +3,7 @@
 // pages/mypage/orders.tsx
 import MyPageLayout from '@/components/layout/MyPageLayout'
 import { Separator } from '@/components/ui/separator'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -18,38 +18,25 @@ import { Search } from 'lucide-react'
 import { usePagination } from '@/hooks/usePagination'
 import DefaultPagination from '@/components/common/DefaultPagination'
 import { ProtectedRoute } from '@/guards/ProtectedRoute'
-import { useAuth } from '@/features/auth/hooks/useAuth'
-import { MOCK_SELLER_ORDERS  } from '@/mocks/SellerOrders'
 import { useRouter } from 'next/router'
-import { OrderItem, useOrderFilters } from '@/features/orders'
-import { useErrorHandler } from '@/hooks/useErrorHandler'
+import { OrderItem, useOrderFilters, useOrders } from '@/features/orders'
 
 export default function OrdersPage() {
-  const { period, setPeriod } = useOrderFilters()  // URL에서 관리
+  const { period, setPeriod } = useOrderFilters() // URL에서 관리
   const [searchQuery, setSearchQuery] = useState('')
-  const router = useRouter()
+  const { data: orders } = useOrders(period)
 
-  // // 검색 필터링, 백엔드 완성되면 이걸로 교체
-  // const filteredOrders = useMemo(() => {
-  //   if (!searchQuery.trim()) return orders
-  //
-  //   return orders.filter((order) =>
-  //     order.items.some((item) =>
-  //       item.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     ),
-  //   )
-  // }, [orders, searchQuery])
-
-  // 검색 필터링
+  // 검색 필터링, 백엔드 완성되면 이걸로 교체
   const filteredOrders = useMemo(() => {
-    if (!searchQuery.trim()) return MOCK_SELLER_ORDERS
+    if (!orders) return []
+    if (!searchQuery.trim()) return orders
 
-    return MOCK_SELLER_ORDERS.filter((order) =>
+    return orders!.filter((order) =>
       order.items.some((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
     )
-  }, [MOCK_SELLER_ORDERS, searchQuery])
+  }, [orders, searchQuery])
 
   const pagination = usePagination({
     data: filteredOrders,
@@ -88,7 +75,7 @@ export default function OrdersPage() {
             </div>
           </div>
 
-          {filteredOrders.length === 0 ? (
+          {filteredOrders?.length === 0 ? (
             <div className="rounded-2xl bg-white p-8 text-center">
               {searchQuery ? (
                 <>

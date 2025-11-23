@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { sellerOrderKeys } from '@/features/seller/manage_orders/api/queryKeys'
 import { sellerOrdersApi } from '@/features/seller/manage_orders/api/sellerOrdersApi'
 
-export function useSellerOrders(params: SellerOrderSearchParams){
+export function useSellerOrders(params: SellerOrderSearchParams) {
   return useQuery({
     queryKey: sellerOrderKeys.list(params),
     queryFn: () => sellerOrdersApi.getSellerOrders(params),

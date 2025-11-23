@@ -18,8 +18,8 @@ export interface SellerOrderSearchParams {
  * 판매자 주문 검색 응답
  * ✅ 백엔드 ItemSearchResponseDto와 유사한 구조
  */
-export interface SellerOrderSearchResponse {
-  orders: OrderDetail[]
+export type SellerOrderSearchResponse = {
+  sellerOrderList: OrderDetail[]
   pagination: PaginationDto
 }
 

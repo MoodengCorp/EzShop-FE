@@ -14,9 +14,6 @@ import {
 import { UpdateUserInfoFormData } from '@/features/user/types/user'
 
 export function ProfileEditForm() {
-  const router = useRouter()
-  const logout = useAuthStore((state) => state.logout)
-
   // 사용자 정보 조회
   const { data: userInfoResponse, isLoading: isFetching, error, isSuccess } = useUserProfile()
   const updateMutation = useUpdateProfile()
@@ -142,7 +139,6 @@ export function ProfileEditForm() {
   const isSubmitting = updateMutation.isPending || changePasswordMutation.isPending
 
   if (isFetching) {
-    console.log('⏳ 로딩 중...')
     return (
       <div className="flex w-[700px] flex-col gap-2 rounded-2xl bg-white px-4 py-4">
         <p className="text-center text-gray-600">사용자 정보를 불러오는 중...</p>

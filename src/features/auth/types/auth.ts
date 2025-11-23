@@ -68,18 +68,3 @@ export interface SignupFormData {
   addressDetail: string
   role: UserRole
 }
-
-/**
- * 회원가입 API 요청 (백엔드로 전송)
- * - passwordConfirm 제외
- * ✅ 백엔드 SignupRequestDto와 완전히 일치
- */
-export interface SignupRequest {
-  email: string
-  password: string
-  name: string
-  phone: string
-  address: string
-  addressDetail: string
-  role: UserRole
-}
