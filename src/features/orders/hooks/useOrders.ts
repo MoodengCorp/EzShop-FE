@@ -1,6 +1,6 @@
 // src/hooks/useOrders.ts
-import { useQuery } from '@tanstack/react-query'
-import { OrderPeriod } from '@/features/orders/types/order'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { OrderCreateRequest, OrderPeriod } from '@/features/orders/types/order'
 import { ordersApi } from '@/features/orders/api/ordersApi'
 import { mockOrderDetails } from '@/mocks/OrderData'
 import { orderKeys } from '@/features/orders/api/queryKeys'
@@ -12,7 +12,7 @@ export const useOrders = (period: OrderPeriod, search: string = '') => {
   return useQuery({
     queryKey: orderKeys.list(period, search),
     queryFn: async () => {
-      return await ordersApi.getOrders(period) || [];
+      return (await ordersApi.getOrders(period)) || []
     },
     staleTime: 5 * 60 * 1000,
   })
@@ -28,7 +28,7 @@ export const useOrderDetail = (orderId: string) => {
       const id = parseInt(orderId)
 
       // 로딩 시뮬레이션 (500ms 대기)
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       const mockData = mockOrderDetails[22]
 
@@ -43,5 +43,20 @@ export const useOrderDetail = (orderId: string) => {
     enabled: !!orderId,
     staleTime: 5 * 60 * 1000,
     retry: false,
+  })
+}
+
+export const useCreateOrder = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: OrderCreateRequest) => ordersApi.createOrder(data),
+    onSuccess: () => {
+      // 주문 성공 시, 주문 목록 데이터를 갱신
+      queryClient.invalidateQueries({ queryKey: orderKeys.lists() })
+    },
+    onError: (error) => {
+      console.error('주문 생성 실패:', error)
+    },
   })
 }

@@ -53,8 +53,25 @@ export default function BannerCarousel({
     }
   }, [api])
 
-  const handleNext = () => api?.scrollNext()
-  const handlePrev = () => api?.scrollPrev()
+  const handlePrev = () => {
+    if (!api) return
+    api.scrollPrev()
+
+    const autoplay = api.plugins()?.autoplay
+    if (autoplay && playing) {
+      autoplay.reset()
+    }
+  }
+
+  const handleNext = () => {
+    if (!api) return
+    api.scrollNext()
+
+    const autoplay = api.plugins()?.autoplay
+    if (autoplay && playing) {
+      autoplay.reset()
+    }
+  }
   const pause = () => {
     autoplay.current.stop()
     setPlaying(false)
@@ -110,7 +127,6 @@ export default function BannerCarousel({
           </CarouselContent>
         </Carousel>
 
-        {/* 배너 위 < > 화살표 버튼*/}
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-4">
           <button
             onClick={handlePrev}
@@ -133,7 +149,7 @@ export default function BannerCarousel({
         </div>
 
         {/* 우하단 버튼 : 일시정지/시작 , 전체보기 버튼 */}
-        <div className="absolute inset-0 bottom-5 z-10 mr-48 flex items-end justify-end gap-2">
+        <div className="absolute inset-0 bottom-5 z-10 mx-48 flex items-end justify-end gap-2">
           <button
             onClick={togglePlay}
             className="flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white"

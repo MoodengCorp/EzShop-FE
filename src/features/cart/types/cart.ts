@@ -1,3 +1,5 @@
+import { DeliveryType } from '@/features/item/types/item'
+
 /**
  * 장바구니 아이템
  */
@@ -8,13 +10,15 @@ export interface CartItem {
   price: number
   quantity: number
   thumbnailUrl: string
+  deliveryType: DeliveryType
   checked: boolean // UI 전용 (API 요청 시 제외)
 }
 
 export interface CartResponse {
-  cartItems: CartItem[]
+  cartId: number
   totalPrice: number
   totalCount: number // 헤더 장바구니 최종 갯수 표시하기 위함
+  cartItems: CartItem[]
 }
 /**
  * 장바구니 추가 요청

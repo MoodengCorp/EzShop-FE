@@ -4,8 +4,8 @@
  * 백엔드 API 에러 응답 형식
  */
 export interface ApiErrorResponse {
-  type: string      // 에러 타입 (예: "BAD_REQUEST", "UNAUTHORIZED")
-  message: string   // 에러 메시지
+  type: string // 에러 타입 (예: "BAD_REQUEST", "UNAUTHORIZED")
+  message: string // 에러 메시지
 }
 
 /**
@@ -16,10 +16,11 @@ export interface ApiErrorResponse {
  * - statusCode: HTTP 상태 코드 (추가)
  */
 export interface ApiResponse<T = void> {
+  name(name: any): unknown
   success: boolean
   data?: T
   error?: ApiErrorResponse
-  statusCode: number  // ✅ 추가: HTTP 상태 코드
+  statusCode: number // ✅ 추가: HTTP 상태 코드
 }
 
 /**
@@ -29,10 +30,7 @@ export class ApiError extends Error {
   readonly type: string
   readonly statusCode: number
 
-  constructor(
-    statusCode: number,
-    response: ApiErrorResponse
-  ) {
+  constructor(statusCode: number, response: ApiErrorResponse) {
     super(response.message)
     this.name = 'ApiError'
     this.type = response.type

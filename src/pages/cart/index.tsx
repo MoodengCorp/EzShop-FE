@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
-// Header import 제거됨
+
 import CartItem from '@/features/cart/components/CartItem'
 import PaymentSummary from '@/components/common/PaymentSummary'
 import OrderCTA from '@/components/common/OrderCTA'
@@ -8,74 +9,36 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import AddressCard from '@/components/common/AddressCard'
 
-// 테스트용 더미 데이터
-const MOCK_DATA = [
-  {
-    cartItemId: 1,
-    itemId: 101,
-    deliveryType: 'FAST',
-    name: '[겨울간식] 삼립 발효미종 야채호빵(4입)',
-    thumbnailUrl:
-      'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg',
-    price: 4704,
-    quantity: 1,
-  },
-  {
-    cartItemId: 2,
-    itemId: 102,
-    deliveryType: 'FAST',
-    name: '[사미헌] 갈비탕 (냉동)',
-    thumbnailUrl:
-      'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg',
-    price: 12350,
-    quantity: 2,
-  },
-  {
-    cartItemId: 3,
-    itemId: 103,
-    deliveryType: 'NORMAL',
-    name: '유기농 바나나 1송이',
-    thumbnailUrl:
-      'https://product-image.kurly.com/hdims/resize/%5E%3E360x%3E468/cropcenter/360x468/quality/85/src/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg',
-    price: 3900,
-    quantity: 1,
-  },
-  // 스크롤 테스트를 위한 추가 데이터
-  {
-    cartItemId: 4,
-    itemId: 104,
-    deliveryType: 'NORMAL',
-    name: '[컬리] 동물복지 유정란 20구',
-    thumbnailUrl:
-      'https://img-cf.kurly.com/shop/data/goods/1615967006664l0.jpg',
-    price: 8900,
-    quantity: 1,
-  },
-  {
-    cartItemId: 5,
-    itemId: 105,
-    deliveryType: 'FAST',
-    name: '[하림] 닭가슴살 오리지널 100g',
-    thumbnailUrl:
-      'https://img-cf.kurly.com/shop/data/goods/1637154205597l0.jpg',
-    price: 2500,
-    quantity: 5,
-  },
-]
+import {
+  useCart,
+  useUpdateCartQuantity,
+  useRemoveCartItem,
+} from '@/features/cart/hooks/useCart'
+import { CartItem as CartItemType } from '@/features/cart/types/cart'
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(MOCK_DATA)
-  const isLoading = false
+  const router = useRouter()
+
+  const { data, isLoading } = useCart()
+
+  const cartItems = useMemo(() => {
+    return data?.cartItems || []
+  }, [data])
+
+  const { mutate: updateQuantity } = useUpdateCartQuantity()
+  const { mutate: removeItem } = useRemoveCartItem()
+
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    if (cartItems.length > 0 && selectedIds.size === 0) {
+    if (cartItems.length > 0 && !isInitialized) {
       const allIds = cartItems.map((item) => item.cartItemId)
       setSelectedIds(new Set(allIds))
+      setIsInitialized(true)
     }
-  }, [cartItems, selectedIds])
+  }, [cartItems, isInitialized])
 
-  // 개별 선택 핸들러
   const handleToggle = (id: number, checked: boolean) => {
     const newSet = new Set(selectedIds)
     if (checked) newSet.add(id)
@@ -83,7 +46,6 @@ export default function CartPage() {
     setSelectedIds(newSet)
   }
 
-  // 전체 선택 핸들러
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
       setSelectedIds(new Set(cartItems.map((i) => i.cartItemId)))
@@ -92,8 +54,7 @@ export default function CartPage() {
     }
   }
 
-  // 그룹 선택 핸들러 (배송 그룹별)
-  const handleSelectGroup = (items: typeof cartItems, checked: boolean) => {
+  const handleSelectGroup = (items: CartItemType[], checked: boolean) => {
     const newSet = new Set(selectedIds)
     items.forEach((item) => {
       if (checked) {
@@ -107,18 +68,16 @@ export default function CartPage() {
 
   const handleChangeQty = (cartItemId: number, quantity: number) => {
     if (quantity < 1) return
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.cartItemId === cartItemId ? { ...item, quantity } : item,
-      ),
-    )
+
+    updateQuantity({
+      cartItemId,
+      quantity: quantity,
+    })
   }
 
   const handleRemove = (cartItemId: number) => {
     if (confirm('해당 상품을 장바구니에서 삭제하시겠습니까?')) {
-      setCartItems((prev) =>
-        prev.filter((item) => item.cartItemId !== cartItemId),
-      )
+      removeItem([cartItemId])
       const newSelected = new Set(selectedIds)
       newSelected.delete(cartItemId)
       setSelectedIds(newSelected)
@@ -128,14 +87,23 @@ export default function CartPage() {
   const handleRemoveSelected = () => {
     if (selectedIds.size === 0) return
     if (confirm(`선택한 ${selectedIds.size}개 상품을 삭제하시겠습니까?`)) {
-      setCartItems((prev) =>
-        prev.filter((item) => !selectedIds.has(item.cartItemId)),
-      )
+      removeItem(Array.from(selectedIds))
       setSelectedIds(new Set())
     }
   }
 
-  // 가격 계산
+  const handleOrder = () => {
+    if (selectedIds.size === 0) {
+      alert('주문할 상품을 선택해주세요.')
+      return
+    }
+    const itemsParam = Array.from(selectedIds).join(',')
+    router.push({
+      pathname: '/orders',
+      query: { items: itemsParam },
+    })
+  }
+
   const { totalPrice, totalCount } = useMemo(() => {
     return cartItems.reduce(
       (acc, item) => {
@@ -149,7 +117,6 @@ export default function CartPage() {
     )
   }, [cartItems, selectedIds])
 
-  // 배송 타입별 그룹
   const groupedItems = useMemo(() => {
     const fastItems = cartItems.filter((item) => item.deliveryType === 'FAST')
     const normalItems = cartItems.filter(
@@ -179,9 +146,9 @@ export default function CartPage() {
           </div>
         ) : (
           <div className="flex justify-between gap-[24px]">
-            {/* 좌 : 상품 리스트*/}
             <div className="flex-1">
               <div className="relative overflow-hidden rounded-xl bg-white shadow-sm">
+                {/* 전체 선택 헤더 */}
                 <div className="flex items-center justify-between rounded-t-xl border-b border-[#f4f4f4] bg-white px-4 py-4">
                   <label className="flex cursor-pointer select-none items-center gap-2 text-sm font-medium">
                     <Checkbox
@@ -207,7 +174,7 @@ export default function CartPage() {
 
                 {/* 상품 리스트 */}
                 <div className="flex flex-col">
-                  {/* 샛별배송 그룹 */}
+                  {/* 샛별배송 */}
                   {groupedItems.fastItems.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 border-b border-[#f4f4f4] bg-white px-4 py-4">
@@ -250,7 +217,7 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  {/* 일반배송(택배배송) 그룹 */}
+                  {/* 일반배송 */}
                   {groupedItems.normalItems.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 border-b border-[#f4f4f4] bg-white px-4 py-4">
@@ -294,7 +261,7 @@ export default function CartPage() {
                   )}
                 </div>
 
-                {/* 하단 계산 요약 바 */}
+                {/* 요약 바 */}
                 <div className="rounded-b-xl border-t border-[#f4f4f4] bg-white p-4">
                   <div className="flex flex-col items-center justify-center rounded-[10px] bg-[#f7f7f7] py-4 text-center">
                     <div className="mb-2 flex items-center text-base font-medium text-[#666]">
@@ -302,7 +269,6 @@ export default function CartPage() {
                       <span className="mx-2 text-base font-light">+</span>
                       <span>배송비 0 원</span>
                     </div>
-
                     <div className="text-lg font-bold text-[#333]">
                       {totalPrice.toLocaleString()} 원
                     </div>
@@ -311,19 +277,15 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* 우 */}
             <div className="w-[375px] shrink-0">
               <div className="sticky top-[72px] flex flex-col gap-4">
                 <AddressCard />
-
                 <PaymentSummary itemsSubtotal={totalPrice} />
-
                 <OrderCTA
                   amount={totalPrice}
                   disabled={totalCount === 0}
-                  onClick={() => alert('주문 페이지로 이동합니다!')}
+                  onClick={handleOrder}
                 />
-
                 <div className="px-2 text-[12px] leading-5 text-[#666]">
                   <ul className="list-disc pl-4">
                     <li>[주문완료] 상태일 경우에만 주문 취소가 가능합니다.</li>
