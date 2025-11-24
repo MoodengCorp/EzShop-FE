@@ -11,6 +11,10 @@ import {
   GlassWater,
   ChevronLeft,
   ChevronRight,
+  CookingPot,
+  Cookie,
+  Milk,
+  Wine,
 } from 'lucide-react'
 import {
   Carousel,
@@ -20,13 +24,18 @@ import {
 } from '@/components/ui/carousel'
 import { useCategories } from '@/features/category/hooks/useCategories'
 
+// 왼쪽이 categoryName, 오른쪽이 lucide icon 명칭
 const CATEGORY_ICONS: Record<string, any> = {
-  과일: Apple,
-  채소: Carrot,
-  해산물: Fish,
-  정육: Beef,
-  베이커리: Croissant,
-  음료: GlassWater,
+  vegetable: Carrot,
+  fruit: Apple,
+  seafood: Fish,
+  meat: Beef,
+  mealkit: CookingPot,
+  drinks: GlassWater,
+  snacks: Cookie,
+  bakery: Croissant,
+  dairy: Milk,
+  alcohol: Wine,
 }
 
 // 매칭되는 아이콘 없을시, 기본 아이콘 사과로 설정
