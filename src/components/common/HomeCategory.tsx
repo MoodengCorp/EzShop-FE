@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { useState } from 'react'
 import {
@@ -23,6 +21,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { useCategories } from '@/features/category/hooks/useCategories'
+import { CATEGORY_NAME_KR } from '@/features/category/constants/category-constants'
 
 // 왼쪽이 categoryName, 오른쪽이 lucide icon 명칭
 const CATEGORY_ICONS: Record<string, any> = {
@@ -100,7 +99,7 @@ export default function HomeCategory() {
                           <IconWrapper Icon={IconComponent} />
                         </div>
                         <span className="relative mt-2 text-[14px] text-gray-700 group-hover:text-mainBlue">
-                          {category}
+                          {CATEGORY_NAME_KR[category] || category}
                           <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-mainBlue transition-all duration-300 group-hover:w-full"></span>
                         </span>
                       </Link>
