@@ -18,6 +18,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'via.placeholder.com'
+      },
+      {
+        protocol: 'https',
+        hostname: process.env.IMAGE_SRC
       }
     ],
   },
